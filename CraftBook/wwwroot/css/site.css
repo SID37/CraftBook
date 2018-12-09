@@ -5,55 +5,44 @@ for details on configuring this project to bundle and minify static web assets. 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 /*Адское зануление*/
-body {
-    margin: 0;
-}
+body { margin: 0; }
+
 * {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
 
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
 /* Carousel */
+
 .carousel-caption p {
     font-size: 20px;
     line-height: 1.4;
 }
 
 /* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
+
+.carousel-inner .item img[src$=".svg"] { width: 100%; }
 
 
 /* Hide/rearrange for smaller screens */
+
 @media screen and (max-width: 767px) {
     /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+    .carousel-caption { display: none; }
 }
 
-body > header {
-    background: blue;
-    color: aqua;
+body > header, body > footer {
+    background: #1e6cdb;
+    color: #0ed9ac;
     height: 3.5em;
+    text-shadow: 1px 1px 2px black, 0 0 1em #2470df;
 }
 
-body > article {
-    display: flex;
-}
+body > article { display: flex; }
 
-footer{
-    background-color: blueviolet;
-    position: absolute;
-}
+body > article section:nth-child(even) { flex: 3; }
 
-footer:hover {
-    background-color: green;
-
+body > article section:nth-child(odd) {
+    flex: 1;
+    background-color: #e2e6ef;
 }
