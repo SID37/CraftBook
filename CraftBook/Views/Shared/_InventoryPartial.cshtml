@@ -3,15 +3,22 @@
 *@
 @{
 }
-<article name="inventory">
+<article class="inventory">
     <header>
-        <label>Мой инвентарь</label>
-        <input type="text" name="ingredient" placeholder="Ингредиент" />
-        <input type="text" name="ingredient_count" placeholder="Количество" />
+        <input type="submit" name="find_recept_by_ingr" value="Найти рецепты!" />
+        <fieldset>
+            <legend>Мой инвентарь</legend>
+            <input type="text" name="ingredient_name" placeholder="Ингредиент" required="required" />
+            <input type="number" name="ingredient_count" placeholder="Количество" required />
+            <input type="button" name="add_ingredient" value="+" id="buttonAddIngridient" />
+        </fieldset>
     </header>
     <ul>
         <li>
-            Тут ингредиент с количеством и кнопкой удаления
+            <fieldset>
+                <output name="ingredient_name">Арбуз</output>
+                <output name="ingredient_count">10</output>
+            </fieldset>
         </li>
     </ul>
 </article>
