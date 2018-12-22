@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "name": "craftbook",
+  "private": true,
+  "devDependencies": {
+    "gulp": "3.9.1",
+    "rimraf": "2.5.4",
+    "gulp-sass": "2.3.2"
+  }
+}
