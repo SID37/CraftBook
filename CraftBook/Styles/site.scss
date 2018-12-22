@@ -1,9 +1,9 @@
-﻿
+﻿@import 'palette.scss';
 
 /*Адское зануление*/
-body, fieldset, output {
+body, fieldset, output, article {
     margin: 0;
-    padding: 0
+    padding: 0;
 }
 
 * {
@@ -11,73 +11,57 @@ body, fieldset, output {
     box-sizing: border-box;
 }
 
-/* Carousel */
-
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+header, footer {
+    background: $primary-color;
+    color: $primary-color-text;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
+body {
+    & > header, & > footer {
+        height: 3.5em;
+    }
 
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
+    & > article {
+        display: flex;
 
 
-/* Hide/rearrange for smaller screens */
+        section:nth-child(even) {
+            flex: 3;
+        }
 
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
+        section:nth-child(odd) {
+            flex: 1;
+            background-color: $primary-color-light;
+        }
     }
 }
 
-body > header, body > footer {
-    background: #1e6cdb;
-    color: #0ed9ac;
-    height: 3.5em;
-    text-shadow: 1px 1px 2px black, 0 0 1em #2470df;
-}
+article.inventory {
+    header {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid $divider-color;
 
-body > article {
-    display: flex;
-}
+        fieldset {
+            border: 0;
+        }
+    }
 
-body > article section:nth-child(even) {
-    flex: 3;
-}
+    ul {
+        list-style-type: none;
+        list-style-position: inside;
+        padding-left: 0;
 
-body > article section:nth-child(odd) {
-    flex: 1;
-    background-color: #e2e6ef;
-}
+        fieldset {
+            border-radius: 5px;
+            background-color: $primary-color;
+            color: $primary-color-text;
+            margin: 5px 15px 5px 15px;
 
-article.inventory header {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid #1e6cdb;
-}
-
-article.inventory > header > fieldset {
-    border: 0;
-}
-
-article.inventory > ul fieldset {
-    border-radius: 5px;
-    background-color: #1e6cdb;
-    color: #ffffff;
-    margin: 5px 15px 5px 15px;
-}
-
-article.inventory > ul fieldset > output {
-    padding-right: 30%;
-    border-right: 1px solid #ffffff;
-}
-
-article.inventory > ul {
-    list-style-type: none;
-    list-style-position: inside;
-    padding-left: 0;
+            output {
+                padding-right: 30%;
+                border-right: 1px solid $primary-color-text;
+            }
+        }
+    }
 }
