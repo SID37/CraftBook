@@ -1,7 +1,7 @@
 ﻿@import 'palette.scss';
 
 /*Адское зануление*/
-body, fieldset, output, article {
+body, fieldset, output, article, section, footer, header, p {
     margin: 0;
     padding: 0;
 }
