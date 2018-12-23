@@ -45,10 +45,19 @@ body > article {
     flex: 1;
     background-color: #C5CAE9; }
   body > article > section:nth-child(2) {
-    margin-left: 40px; }
-    body > article > section:nth-child(2) form {
-      display: flex;
-      justify-content: flex-start;
-      height: 20px; }
-      body > article > section:nth-child(2) form img {
-        height: auto; }
+    margin-left: 40px;
+    margin-right: 40px; }
+
+form {
+  display: flex;
+  justify-content: flex-end;
+  height: 25px;
+  border: 2px solid #BDBDBD;
+  border-radius: 5px; }
+  form input[type="text"] {
+    border: 0 hidden red;
+    flex-basis: 100%; }
+  form input[type="image"] {
+    width: 25px;
+    border-left: 1px solid #BDBDBD;
+    background-color: #C5CAE9; }

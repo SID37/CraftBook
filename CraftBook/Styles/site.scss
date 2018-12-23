@@ -37,15 +37,27 @@ body {
 
         & > section:nth-child(2) {
             margin-left: 40px;
+            margin-right: 40px;
+        }
+    }
+}
 
-            form {
-                display: flex;
-                justify-content: flex-start;
-                height:20px;
-                img {
-                    height:auto;
-                }
-            }
+form {
+    display: flex;
+    justify-content: flex-end;
+    height: 25px;
+    border: 2px solid $divider-color;
+    border-radius: 5px;
+
+    input {
+        &[type="text"] {
+            border: 0 hidden red;
+            flex-basis: 100%;
+        }
+        &[type="image"] {
+            width: 25px;
+            border-left: 1px solid $divider-color;
+            background-color: $primary-color-light;
         }
     }
 }
