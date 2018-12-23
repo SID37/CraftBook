@@ -35,6 +35,9 @@
             @foreach (var iq in Model.Ingredients)
             {
                 @iq.Ingredient.Name
+                <h> </h>
+                @iq.Volume
+                @iq.Ingredient.Unit.ShortName
                 <br>
             }
         </dd>
