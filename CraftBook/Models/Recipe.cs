@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CraftBook.Models
 {
@@ -12,6 +13,12 @@ namespace CraftBook.Models
         public string Description { get; set; }
         public string Instruction { get; set; }
         public byte[] Image { get; set; }
-        public ICollection<Ingredient> Ingredients { get; set; }
+
+        public List<IngredientQuantity> Ingredients{ get; set; }
+
+        public Recipe()
+        {
+            Ingredients = new List<IngredientQuantity>();
+        }
     }
 }

@@ -59,24 +59,10 @@ namespace CraftBook
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.Map("/Secrets", Secrets);
-
             app.Run(async context =>
                 {
                     await context.Response.WriteAsync("Error 404: Page not found");
                 });
-        }
-
-        public void Secrets(IApplicationBuilder app)
-        {
-            app.Run(async context =>
-            {
-                string value = context.Request.Query["value"];
-                if(value == "13")
-                    await context.Response.WriteAsync("The chamber of Secrets has been opened \r\n enemies of the heir...beware.");
-                else
-                    await context.Response.WriteAsync("incorrect value");
-            });
         }
     }
 }

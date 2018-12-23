@@ -6,11 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CraftBook.Models
 {
-    public class Ingredient
+    public class UnitOfMeasurement
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public int UnitID { get; set; }
-        public UnitOfMeasurement Unit { get; set; }
+        public string ShortName { get; set; }
     }
 }
