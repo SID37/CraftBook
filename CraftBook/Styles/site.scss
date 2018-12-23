@@ -1,4 +1,5 @@
 ﻿@import 'palette.scss';
+@import 'inventory.scss';
 
 /*Адское зануление*/
 body, fieldset, output, article, section, footer, header, p {
@@ -33,34 +34,17 @@ body {
             flex: 1;
             background-color: $primary-color-light;
         }
-    }
-}
 
-article.inventory {
-    header {
-        display: flex;
-        flex-direction: column;
-        border-bottom: 1px solid $divider-color;
+        & > section:nth-child(2) {
+            margin-left: 40px;
 
-        fieldset {
-            border: 0;
-        }
-    }
-
-    ul {
-        list-style-type: none;
-        list-style-position: inside;
-        padding-left: 0;
-
-        fieldset {
-            border-radius: 5px;
-            background-color: $primary-color;
-            color: $primary-color-text;
-            margin: 5px 15px 5px 15px;
-
-            output {
-                padding-right: 30%;
-                border-right: 1px solid $primary-color-text;
+            form {
+                display: flex;
+                justify-content: flex-start;
+                height:20px;
+                img {
+                    height:auto;
+                }
             }
         }
     }

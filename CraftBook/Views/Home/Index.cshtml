@@ -2,20 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Craft Book</h1>
+<div class="description">
+    <p>Craftbook — это сервис, подобный электронной поваренной книге. 
+        Но, в отличие от неё, он не ограничен рецептами еды и поможет сделать что угодно из ингредиентов,
+        которые уже имеются у вас в наличии.</p>
 </div>
-<div class="row">
-    <div class="col-md-6">
-        <h2>Ура, у нас теперь есть сайтик!</h2>
-        <p>
-            Теперь надо его делать...
-        </p>
-    </div>
-    <div class="col-md-6">
-        <h2>Описание сайта:</h2>
-        <p>Описание будет когда будет сайтик</p>
-        <p>А сайтик будет когда мы его сделаем</p>
-        <p>А сделаем мы его когда будет описание того, что делать</p>
-    </div>
+<div class="search-string">
+    <form>
+        <input type="text" name="search_string" required placeholder="Что хотим приготовить..." />
+        <img src="images/filter.svg" />
+        <img src="images/search.svg" />
+    </form>
 </div>
+<article class="recipe_list">
+    
+</article>
