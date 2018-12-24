@@ -1,8 +1,8 @@
-﻿@import 'palette.scss';
-@import 'inventory.scss';
-
+﻿@import 'palette';
+@import 'inventory';
+@import 'mixins';
 /*Адское зануление*/
-body, fieldset, output, article, section, footer, header, p {
+body, fieldset, output, article, section, footer, header, p, h1 {
     margin: 0;
     padding: 0;
 }
@@ -42,22 +42,57 @@ body {
     }
 }
 
-form {
+.fieldform {
     display: flex;
     justify-content: flex-end;
     height: 25px;
-    border: 2px solid $divider-color;
-    border-radius: 5px;
+
 
     input {
-        &[type="text"] {
-            border: 0 hidden red;
-            flex-basis: 100%;
-        }
-        &[type="image"] {
-            width: 25px;
+        &:nth-child(n+2) {
             border-left: 1px solid $divider-color;
-            background-color: $primary-color-light;
         }
+
+        &:first-child {
+            flex: 7;
+        }
+
+        &:not(:first-child) {
+            flex: 2 25px;
+        }
+
+        &[type="text"], &[type="number"] {
+            min-width: 0;
+            width: 100%;
+        }
+
+        &[type="image"] {
+            max-width: 25px;
+        }
+    }
+
+    form > & {
+        margin: 4px 0 4px 0;
+    }
+}
+
+.in-frame {
+    @extend .fieldform;
+    border: 2px solid $divider-color;
+    @include rounding;
+}
+
+input {
+    border:0;
+    &[type="submit"] {
+        @include rounding;
+        margin: 16px 0px 16px 0;
+        background-color:$accent-color;
+        color:$primary-color-text;
+        height:32px;
+    }
+
+    &[type="text"], &[type="number"] {
+        padding-left: 4px;
     }
 }

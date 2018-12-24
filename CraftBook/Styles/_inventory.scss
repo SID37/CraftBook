@@ -1,0 +1,23 @@
+﻿@import 'palette.scss';
+@import '_mixins.scss';
+
+article.inventory {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    background-color: $primary-color-light;
+    color: $primary-text-color;
+
+    & > form {
+        border-bottom: 1px solid $primary-color-dark;
+
+        &.list-ingredients input:not([type="image"]) {
+            background-color: $primary-color-dark;
+            color: $primary-color-text;
+        }
+    }
+
+
+}
