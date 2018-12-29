@@ -176,6 +176,7 @@ namespace CraftBook.Controllers
             return PartialView("Item", new IngredientQuantity
             {
                 Ingredient = ing,
+                IngredientID = ing.ID,
                 Volume = volume
             });
         }
