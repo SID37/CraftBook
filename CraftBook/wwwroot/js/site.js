@@ -1,44 +1,54 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-// Write your JavaScript code.
 
-function createIngredient(name, count) {
-    var ing = document.createElement('div');
-    ing.setAttribute('class', 'fieldform')
-    ing.appendChild(document.createElement('div'));
-    ing = ing.firstChild;
-    ing.setAttribute('class', 'in-frame');
-    const fname = document.createElement('input');
-    fname.setAttribute('type', 'text');
-    const fcount = document.createElement('input');
-    fcount.setAttribute('type', 'number');
-    fname.setAttribute('value',name);
-    fcount.setAttribute('value', count);
-    ing.appendChild(fname);
-    ing.appendChild(fcount);
-    return ing;
-}
 function Inventory() {
-    xhr = new XMLHttpRequest();
     inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]");
     inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]");
+    inputUIIngr = document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
     form = document.querySelector("article.inventory form.create-ingredient");
     listIngridients = document.querySelector("article.inventory form.list-ingredients");
+
+    inputNameIngr.oninput = function () {
+        var nameChip = inputNameIngr.value;
+        console.log(nameChip);
+        if (nameChip.length === 0)
+            return;
+        var requestSearch = new XMLHttpRequest();
+        requestSearch.open("POST", "/Ingredients/Index", true);
+        requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        requestSearch.onloadend = function() {
+            if (requestSearch.status === 404)
+                return;
+            var tmp = document.querySelector("datalist[id=\"ingredients\"");
+            if(tmp!=null)
+                tmp.parentNode.removeChild(tmp);
+            form.insertAdjacentHTML("afterend", requestSearch.response);
+        }
+        requestSearch.send("nameChip=" + encodeURIComponent(nameChip));
+    }
+
+    inputNameIngr.onchange = function() {
+        var nameChip = inputNameIngr.value;
+        var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
+        inputUIIngr.setAttribute("value", tmp.getAttribute("label"));
+    }
+
+    RequestAdd = new XMLHttpRequest();
     function addIngredient() {
-        xhr.open("POST", "IngredientQuant/FindName", true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onloadend = function (event) {
+        RequestAdd.open("POST", "/IngredientQuant/FindName", true);
+        RequestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        RequestAdd.onloadend = function (event) {
             //todo нормально как-то
-            if (xhr.status === 404) {
+            if (RequestAdd.status === 404) {
                 alert('ингредиент не найден!');
                 return;
             }
-            listIngridients.insertAdjacentHTML("beforeend", xhr.response);
+            listIngridients.insertAdjacentHTML("beforeend", RequestAdd.response);
             inputCountIngr.value = null;
             inputNameIngr.value = null;
         };
-        xhr.send("ingredientName=" + encodeURIComponent(inputNameIngr.value) + "&volume=" +encodeURIComponent(inputCountIngr.value));
+        RequestAdd.send("ingredientName=" + encodeURIComponent(inputNameIngr.value) + "&volume=" +encodeURIComponent(inputCountIngr.value));
         return false;
     }
     form.onsubmit = addIngredient;

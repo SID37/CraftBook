@@ -8,14 +8,14 @@
     <h1>Мой инвентарь</h1>
     <form class="create-ingredient">
         <div class="in-frame">
-            <input type="text" name="ingredient_name" placeholder="Ингредиент" required="required" />
+            <input type="text" name="ingredient_name" placeholder="Ингредиент" required list="ingredients" />
         </div>
         <div class="fieldform">
             <div class="in-frame">
-                <input type="number" name="ingredient_count" placeholder="Количество" required/>
-                <input type="text" placeholder="ед. изм." required>
+                <input type="number" name="ingredient_count" placeholder="Количество" required />
+                <input type="text" name="ingredient_unit" placeholder="ед. изм." required readonly />
             </div>
-            <input type="image" name="add_ingredient" src="/images/add.svg" id="buttonAddIngridient"/>
+            <input type="image" name="add_ingredient" src="/images/add.svg" id="buttonAddIngridient" />
         </div>
 
     </form>
