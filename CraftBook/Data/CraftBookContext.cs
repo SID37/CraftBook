@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CraftBook.Models;
+using System.Text.RegularExpressions;
 
 namespace CraftBook.Data
 {
@@ -12,6 +13,12 @@ namespace CraftBook.Data
         public CraftBookContext(DbContextOptions<CraftBookContext> options) : base(options)
         {
 
+        }
+
+        public List<Ingredient> FindIngredients(string nameChip, int n)
+        {
+            Regex regex = new Regex(@"^" + nameChip, RegexOptions.Compiled);
+            return Ingredients.Include(i => i.Unit).Where(i => regex.IsMatch(i.Name)).Take(n).ToList();
         }
 
         public DbSet<Recipe> Recipe { get; set; }
