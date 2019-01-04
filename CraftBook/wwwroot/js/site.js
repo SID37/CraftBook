@@ -1,15 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-
+/*AJAX запрос на address
+function Request(address) {
+    this.__proto__ = new XMLHttpRequest();
+    open("POST", address, true);
+    setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+}*/
 function Inventory() {
-    inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]");
-    inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]");
-    inputUIIngr = document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
-    form = document.querySelector("article.inventory form.create-ingredient");
-    listIngridients = document.querySelector("article.inventory form.list-ingredients");
-
-    inputNameIngr.oninput = function () {
+    var inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]");
+    var inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]");
+    var inputUIIngr = document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
+    var form = document.querySelector("article.inventory form.create-ingredient");
+    var listIngridients = document.querySelector("article.inventory form.list-ingredients");
+    //Подсказки при вводе
+    inputNameIngr.addEventListener("input", function () {
         var nameChip = inputNameIngr.value;
         console.log(nameChip);
         if (nameChip.length === 0)
@@ -17,42 +19,48 @@ function Inventory() {
         var requestSearch = new XMLHttpRequest();
         requestSearch.open("POST", "/Ingredients/Index", true);
         requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        requestSearch.onloadend = function() {
+        requestSearch.onloadend = function () {
             if (requestSearch.status === 404)
                 return;
             var tmp = document.querySelector("datalist[id=\"ingredients\"");
-            if(tmp!=null)
+            if (tmp != null)
                 tmp.parentNode.removeChild(tmp);
             form.insertAdjacentHTML("afterend", requestSearch.response);
-        }
+        };
         requestSearch.send("nameChip=" + encodeURIComponent(nameChip));
-    }
-
-    inputNameIngr.onchange = function() {
+    });
+    //Окончание ввода названия ингредиента - устанавливаем единицы измерения
+    inputNameIngr.addEventListener("change", function () {
         var nameChip = inputNameIngr.value;
         var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
+        if (tmp == null)
+            return;
         inputUIIngr.setAttribute("value", tmp.getAttribute("label"));
-    }
-
-    RequestAdd = new XMLHttpRequest();
+    });
+    var requestAdd = new XMLHttpRequest();
     function addIngredient() {
-        RequestAdd.open("POST", "/IngredientQuant/FindName", true);
-        RequestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        RequestAdd.onloadend = function (event) {
+        requestAdd.open("POST", "/IngredientQuant/FindName", true);
+        requestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        requestAdd.onloadend = function () {
             //todo нормально как-то
-            if (RequestAdd.status === 404) {
+            if (requestAdd.status === 404) {
                 alert('ингредиент не найден!');
                 return;
             }
-            listIngridients.insertAdjacentHTML("beforeend", RequestAdd.response);
-            inputCountIngr.value = null;
-            inputNameIngr.value = null;
+            listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
+            var fieldform = form.lastChild;
+            console.log(fieldform);
+            fieldform.lastChild.onkeyup = function () {
+                form.removeChild(fieldform);
+                return false;
+            };
+            inputCountIngr.setAttribute("value", null);
+            inputNameIngr.setAttribute("value", null);
+            inputUIIngr.setAttribute("value", null);
         };
-        RequestAdd.send("ingredientName=" + encodeURIComponent(inputNameIngr.value) + "&volume=" +encodeURIComponent(inputCountIngr.value));
+        requestAdd.send("ingredientName=" + encodeURIComponent(inputNameIngr.value) + "&volume=" + encodeURIComponent(inputCountIngr.value));
         return false;
     }
     form.onsubmit = addIngredient;
 }
-
 var inventory = new Inventory();
-
