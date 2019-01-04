@@ -34,6 +34,8 @@ class Inventory {
                 console.log(nameChip);
                 if (nameChip.length === 0)
                     return;
+                if (document.querySelector("option[value=\"" + nameChip + "\""))
+                    return;
                 var requestSearch = new XMLHttpRequest();
                 requestSearch.open("POST", "/Ingredients/Index", true);
                 requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
