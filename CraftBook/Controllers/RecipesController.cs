@@ -152,5 +152,22 @@ namespace CraftBook.Controllers
         {
             return _context.Recipe.Any(e => e.ID == id);
         }
+
+        [HttpPost]
+        public IActionResult SearchByIngredients(int PageNumber, [FromBody] List<UserIngredient> ingredients)
+        {
+            return View("Index", CutList( _context.FindRecipes(ingredients), PageNumber, 2));
+        }
+
+        [HttpPost]
+        public IActionResult SearchByString(int PageNumber, string searchString)
+        {
+            return View("Index", CutList(_context.FindRecipes(searchString), PageNumber, 2));
+        }
+
+        private List<Recipe> CutList(List<Recipe> ingredients, int PageNumber, int PageSize)
+        {
+            return ingredients.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+        }
     }
 }

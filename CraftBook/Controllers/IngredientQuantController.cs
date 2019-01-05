@@ -164,20 +164,22 @@ namespace CraftBook.Controllers
         }
 
         [HttpPost]
-        public IActionResult FindName(string ingredientName, double volume)
+        public JsonResult FindName(string ingredientName, double volume)
         {
             Ingredient ing = _context.Ingredients.Include(i => i.Unit).FirstOrDefault(i => i.Name == ingredientName);
 
             if (ing == null)
             {
-                return NotFound();
+                return Json(new UserIngredient { });
             }
 
-            return PartialView("Item", new IngredientQuantity
+            return Json(new UserIngredient
             {
-                Ingredient = ing,
-                IngredientID = ing.ID,
-                Volume = volume
+                Name = ing.Name,
+                UnitName = ing.Unit.Name,
+                UnitShortName = ing.Unit.ShortName,
+                Quantity = volume,
+                ID = ing.ID,
             });
         }
 

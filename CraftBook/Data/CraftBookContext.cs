@@ -21,6 +21,28 @@ namespace CraftBook.Data
             return Ingredients.Include(i => i.Unit).Where(i => regex.IsMatch(i.Name)).Take(n).ToList();
         }
 
+        public List<Recipe> FindRecipes(List<UserIngredient> ingredients)
+        {
+            return this.Recipe
+                .Include(r => r.Ingredients)
+                .ThenInclude(iq => iq.Ingredient)
+                .ThenInclude(i => i.Unit)
+                .Where(r => r.Ingredients.All(iq => ingredients.Select(igr => igr.ID).Contains(iq.ID)))
+                .ToList();
+        }
+
+        public List<Recipe> FindRecipes(string searchString)
+        {
+            Regex regex = new Regex(searchString, RegexOptions.Compiled);
+
+            return this.Recipe
+                .Include(r => r.Ingredients)
+                .ThenInclude(iq => iq.Ingredient)
+                .ThenInclude(i => i.Unit)
+                .Where(r => regex.IsMatch(r.Name) || regex.IsMatch(r.Description))
+                .ToList();
+        }
+
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<IngredientQuantity> IngredientQuantities { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
