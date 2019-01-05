@@ -160,7 +160,7 @@ namespace CraftBook.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchByString(int PageNumber, string searchString)
+        public IActionResult SearchByString(string searchString, int PageNumber=1 )
         {
             return PartialView("Index", CutList(_context.FindRecipes(searchString), PageNumber, 2));
         }

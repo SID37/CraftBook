@@ -8,9 +8,9 @@
         которые уже имеются у вас в наличии.</p>
 </div>
 <div class="search-string">
-    <form>
+    <form asp-controller="Recipes" asp-action="SearchByString">
         <div class="in-frame">
-            <input type="text" name="search_string" required placeholder="Что хотим приготовить..." />
+            <input type="text" name="searchString" required placeholder="Что хотим приготовить..." />
             <input type="image" src="/images/filter.svg" />
             <input type="image" src="/images/search.svg" />
         </div>

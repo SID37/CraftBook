@@ -1,10 +1,10 @@
 ﻿
 
 class IngredientSoul {
-    volume: number;
+    quantity: number;
     id: number;
     name: string;
-    unit: string;
+    unitShortName: string;
 }
 
 class IngredientView {
@@ -12,6 +12,7 @@ class IngredientView {
     name: HTMLInputElement;
     volume: HTMLInputElement;
     unit: HTMLInputElement;
+
     constructor() {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
@@ -34,14 +35,17 @@ class IngredientView {
 class Ingredient {
     private soul: IngredientSoul;
     view: IngredientView;
+
     constructor(json: string) {
         this.soul = <IngredientSoul>JSON.parse(json);
         this.view = new IngredientView();
         this.view.name.value = this.soul.name;
-        this.view.volume.value = this.soul.volume.toString();
-        this.view.unit.value = this.soul.unit;
+        this.view.volume.value = this.soul.quantity.toString();
+        this.view.unit.value = this.soul.unitShortName;
     }
-    
+    getView = () => {
+        return this.view.main;
+    }
 }
 
 class Inventory {
@@ -93,7 +97,7 @@ class Inventory {
                 var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
                 if (tmp == null) {
                     this.inputUIIngr.value = null;
-                    this.inputButton.style.visibility= "hidden";
+                    this.inputButton.style.visibility = "hidden";
                 } else {
                     this.inputUIIngr.value = tmp.getAttribute("label");
                     this.inputButton.style.visibility = "visible";
@@ -114,12 +118,14 @@ class Inventory {
                         alert('ингредиент не найден!');
                         return;
                     }
+                    /*
                     this.listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
                     const fieldform = this.listIngridients.lastChild as HTMLElement;
                     (fieldform.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
                         fieldform.remove();
                         return false;
-                    };
+                    };*/
+                    this.listIngridients.appendChild(new Ingredient(requestAdd.response).getView());
                     this.inputCountIngr.value = null;
                     this.inputNameIngr.value = null;
                     this.inputUIIngr.value = null;
@@ -141,7 +147,7 @@ class Inventory {
 }
 
 var inventory = new Inventory();
-var ingr1 = new Ingredient('{"volume":1, "name":"test", "unit":"y.e", "id":321}');
+var ingr1 = new Ingredient('{"quantity":1, "name":"tes1t", "unitShortName":"y.e", "id":321}');
 
-for(var i = 0; i<10; i++)
-    inventory.listIngridients.appendChild(ingr1.view.main);
+for (var i = 0; i < 10; i++)
+    inventory.listIngridients.appendChild(ingr1.getView());

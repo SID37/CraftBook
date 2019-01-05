@@ -26,11 +26,15 @@ var IngredientView = /** @class */ (function () {
 }());
 var Ingredient = /** @class */ (function () {
     function Ingredient(json) {
+        var _this = this;
+        this.getView = function () {
+            return _this.view.main;
+        };
         this.soul = JSON.parse(json);
         this.view = new IngredientView();
         this.view.name.value = this.soul.name;
-        this.view.volume.value = this.soul.volume.toString();
-        this.view.unit.value = this.soul.unit;
+        this.view.volume.value = this.soul.quantity.toString();
+        this.view.unit.value = this.soul.unitShortName;
     }
     return Ingredient;
 }());
@@ -92,12 +96,14 @@ var Inventory = /** @class */ (function () {
                         alert('ингредиент не найден!');
                         return;
                     }
-                    _this.listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
-                    var fieldform = _this.listIngridients.lastChild;
-                    fieldform.querySelector("input[type=\"image\"").onclick = function () {
+                    /*
+                    this.listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
+                    const fieldform = this.listIngridients.lastChild as HTMLElement;
+                    (fieldform.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
                         fieldform.remove();
                         return false;
-                    };
+                    };*/
+                    _this.listIngridients.appendChild(new Ingredient(requestAdd.response).getView());
                     _this.inputCountIngr.value = null;
                     _this.inputNameIngr.value = null;
                     _this.inputUIIngr.value = null;
@@ -119,6 +125,6 @@ var Inventory = /** @class */ (function () {
     return Inventory;
 }());
 var inventory = new Inventory();
-var ingr1 = new Ingredient('{"volume":1, "name":"test", "unit":"y.e", "id":321}');
+var ingr1 = new Ingredient('{"quantity":1, "name":"tes1t", "unitShortName":"y.e", "id":321}');
 for (var i = 0; i < 10; i++)
-    inventory.listIngridients.appendChild(ingr1.view.main);
+    inventory.listIngridients.appendChild(ingr1.getView());
