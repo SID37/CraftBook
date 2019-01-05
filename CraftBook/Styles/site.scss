@@ -15,6 +15,7 @@ body, fieldset, output, article, section, footer, header, p, h1 {
 header, footer {
     background: $primary-color;
     color: $primary-color-text;
+    min-height: 6vh;
 }
 
 body {
@@ -24,8 +25,8 @@ body {
 
     & > article {
         display: flex;
-
-
+        min-height:88vh;
+        overflow:auto;
         section:nth-child(even) {
             flex: 3;
         }
@@ -41,6 +42,7 @@ body {
         }
     }
 }
+
 
 .fieldform {
     display: flex;

@@ -1,13 +1,50 @@
 ﻿
-/*AJAX запрос на address
-function Request(address) {
-    this.__proto__ = new XMLHttpRequest();
-    open("POST", address, true);
-    setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-}*/
+
+class IngredientSoul {
+    volume: number;
+    id: number;
+    name: string;
+    unit: string;
+}
+
+class IngredientView {
+    main: HTMLElement;
+    name: HTMLInputElement;
+    volume: HTMLInputElement;
+    unit: HTMLInputElement;
+    constructor() {
+        this.main = document.createElement("div") as HTMLElement;
+        this.main.classList.add("fieldform");
+        this.main.innerHTML = '<div class="in-frame">' +
+            '<input type="text" name="name" readonly />' +
+            '<input type="number" name="volume" readonly />' +
+            '<input type="text" name="unit" readonly />' +
+            '</div>' +
+            '<input type="image" name="del_ingredient" src="/images/close.svg" />';
+        (this.main.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
+            this.main.remove();
+            return false;
+        };
+        this.name = this.main.querySelector('input[name="name"]') as HTMLInputElement;
+        this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
+        this.volume = this.main.querySelector('input[name="volume"]') as HTMLInputElement;
+    }
+}
+
+class Ingredient {
+    private soul: IngredientSoul;
+    view: IngredientView;
+    constructor(json: string) {
+        this.soul = <IngredientSoul>JSON.parse(json);
+        this.view = new IngredientView();
+        this.view.name.value = this.soul.name;
+        this.view.volume.value = this.soul.volume.toString();
+        this.view.unit.value = this.soul.unit;
+    }
+    
+}
 
 class Inventory {
-    //requestAdd: XMLHttpRequest;
     inputNameIngr: HTMLInputElement;
     inputButton: HTMLInputElement;
     inputCountIngr: HTMLInputElement;
@@ -22,7 +59,7 @@ class Inventory {
         this.inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]") as HTMLInputElement;
         this.inputUIIngr =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
-        this.form = document.querySelector("article.inventory form.create-ingredient") as HTMLFormElement;
+        this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
         this.listIngridients = ((document.querySelector("article.inventory form.list-ingredients")) as HTMLElement);
 
 
@@ -104,3 +141,7 @@ class Inventory {
 }
 
 var inventory = new Inventory();
+var ingr1 = new Ingredient('{"volume":1, "name":"test", "unit":"y.e", "id":321}');
+
+for(var i = 0; i<10; i++)
+    inventory.listIngridients.appendChild(ingr1.view.main);

@@ -6,7 +6,7 @@
 <article class="inventory">
     <input type="submit" form="list-ingredients" name="find_recept_by_ingr" value="Найти рецепты!" />
     <h1>Мой инвентарь</h1>
-    <form class="create-ingredient">
+    <form class="add-ingredient">
         <div class="in-frame">
             <input type="text" name="ingredient_name" placeholder="Ингредиент" required list="ingredients" />
         </div>
@@ -20,21 +20,5 @@
 
     </form>
     <form class="list-ingredients" id="list-ingredients">
-        <div class="fieldform">
-            <div class="in-frame">
-                <input type="text" name="ingredient_name" value="Арбуз" readonly />
-                <input type="number" name="ingredient_count" value="10" readonly />
-                <input type="text" value="шт." readonly />
-            </div>
-            <input type="image" name="del_ingredient" src="/images/close.svg" />
-        </div>
-        <div class="fieldform">
-            <div class="in-frame">
-                <input type="text" name="ingredient_name" value="Лист бумаги" readonly />
-                <input type="number" name="ingredient_count" value="5" readonly />
-                <input type="text" value="шт." readonly />
-            </div>
-            <input type="image" name="del_ingredient" src="/images/close.svg" />
-        </div>
     </form>
 </article>

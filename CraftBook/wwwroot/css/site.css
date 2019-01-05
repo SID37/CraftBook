@@ -26,13 +26,16 @@ body, fieldset, output, article, section, footer, header, p, h1 {
 
 header, footer {
   background: #3F51B5;
-  color: #FFFFFF; }
+  color: #FFFFFF;
+  min-height: 6vh; }
 
 body > header, body > footer {
   height: 3.5em; }
 
 body > article {
-  display: flex; }
+  display: flex;
+  min-height: 88vh;
+  overflow: auto; }
   body > article section:nth-child(even) {
     flex: 3; }
   body > article section:nth-child(odd) {

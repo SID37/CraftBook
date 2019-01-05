@@ -1,9 +1,39 @@
-/*AJAX запрос на address
-function Request(address) {
-    this.__proto__ = new XMLHttpRequest();
-    open("POST", address, true);
-    setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-}*/
+var IngredientSoul = /** @class */ (function () {
+    function IngredientSoul() {
+    }
+    return IngredientSoul;
+}());
+var IngredientView = /** @class */ (function () {
+    function IngredientView() {
+        var _this = this;
+        this.main = document.createElement("div");
+        this.main.classList.add("fieldform");
+        this.main.innerHTML = '<div class="in-frame">' +
+            '<input type="text" name="name" readonly />' +
+            '<input type="number" name="volume" readonly />' +
+            '<input type="text" name="unit" readonly />' +
+            '</div>' +
+            '<input type="image" name="del_ingredient" src="/images/close.svg" />';
+        this.main.querySelector("input[type=\"image\"").onclick = function () {
+            _this.main.remove();
+            return false;
+        };
+        this.name = this.main.querySelector('input[name="name"]');
+        this.unit = this.main.querySelector('input[name="unit"]');
+        this.volume = this.main.querySelector('input[name="volume"]');
+    }
+    return IngredientView;
+}());
+var Ingredient = /** @class */ (function () {
+    function Ingredient(json) {
+        this.soul = JSON.parse(json);
+        this.view = new IngredientView();
+        this.view.name.value = this.soul.name;
+        this.view.volume.value = this.soul.volume.toString();
+        this.view.unit.value = this.soul.unit;
+    }
+    return Ingredient;
+}());
 var Inventory = /** @class */ (function () {
     function Inventory() {
         var _this = this;
@@ -12,7 +42,7 @@ var Inventory = /** @class */ (function () {
         this.inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]");
         this.inputUIIngr =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
-        this.form = document.querySelector("article.inventory form.create-ingredient");
+        this.form = document.querySelector("article.inventory form.add-ingredient");
         this.listIngridients = (document.querySelector("article.inventory form.list-ingredients"));
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input", function () {
@@ -89,3 +119,6 @@ var Inventory = /** @class */ (function () {
     return Inventory;
 }());
 var inventory = new Inventory();
+var ingr1 = new Ingredient('{"volume":1, "name":"test", "unit":"y.e", "id":321}');
+for (var i = 0; i < 10; i++)
+    inventory.listIngridients.appendChild(ingr1.view.main);
