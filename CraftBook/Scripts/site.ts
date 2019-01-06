@@ -12,8 +12,8 @@ class IngredientView {
     name: HTMLInputElement;
     volume: HTMLInputElement;
     unit: HTMLInputElement;
-
-    constructor() {
+    ondeleted: (v:IngredientView)=>void;
+    constructor(soul: IngredientSoul) {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
         this.main.innerHTML = '<div class="in-frame">' +
@@ -24,27 +24,53 @@ class IngredientView {
             '<input type="image" name="del_ingredient" src="/images/close.svg" />';
         (this.main.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
             this.main.remove();
+            this.ondeleted(this);
             return false;
         };
         this.name = this.main.querySelector('input[name="name"]') as HTMLInputElement;
         this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
         this.volume = this.main.querySelector('input[name="volume"]') as HTMLInputElement;
+
+        this.name.value = soul.name;
+        this.volume.value = soul.quantity.toString();
+        this.unit.value = soul.unitShortName;
     }
 }
 
-class Ingredient {
-    private soul: IngredientSoul;
-    view: IngredientView;
+class ListIngredients {
+    private views: Array<IngredientView>;
+    private models: Array<IngredientSoul>;
+    private key = "listIngredient";
+    private headNode: HTMLElement;
 
-    constructor(json: string) {
-        this.soul = <IngredientSoul>JSON.parse(json);
-        this.view = new IngredientView();
-        this.view.name.value = this.soul.name;
-        this.view.volume.value = this.soul.quantity.toString();
-        this.view.unit.value = this.soul.unitShortName;
+    constructor(node:HTMLElement) {
+        this.headNode = node;
+        this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientSoul>;
+        this.views = new Array<IngredientView>();
+        if (this.models == null) 
+            this.models = new Array<IngredientSoul>();
+        else 
+            this.models.forEach(this.addView());
+        window.addEventListener("unload", () => { localStorage.setItem(this.key, JSON.stringify(this.models)); });
     }
-    getView = () => {
-        return this.view.main;
+
+    addIngredient = (model: string) => {
+        const index = this.models.length;
+        this.models[index] = (JSON.parse(model) as IngredientSoul);
+        this.addView()(this.models[index], index, this.models);
+
+    }
+
+    private addView(): (value: IngredientSoul, index: number, array: IngredientSoul[]) => void {
+        return (soul: IngredientSoul, i: number) => {
+            this.views[i] = new IngredientView(soul);
+            this.views[i].ondeleted = (view: IngredientView) => {
+                let j = this.views.lastIndexOf(view);
+                this.models.splice(j, 1);
+                this.views.splice(j, 1);
+            };
+            this.headNode.appendChild(this.views[i].main);
+        };
     }
 }
 
@@ -54,8 +80,7 @@ class Inventory {
     inputCountIngr: HTMLInputElement;
     inputUIIngr: HTMLInputElement;
     form: HTMLFormElement;
-    listIngridients: HTMLElement;
-
+    listIngridients: ListIngredients;
 
     constructor() {
         this.inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
@@ -64,37 +89,37 @@ class Inventory {
         this.inputUIIngr =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
-        this.listIngridients = ((document.querySelector("article.inventory form.list-ingredients")) as HTMLElement);
+        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLElement);
+
 
 
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input",
             () => {
-
-                var nameChip = this.inputNameIngr.value;
+                let nameChip = this.inputNameIngr.value;
                 console.log(nameChip);
                 if (nameChip.length === 0)
                     return;
-                if (document.querySelector("option[value=\"" + nameChip + "\""))
+                if (document.querySelector(`option[value="${nameChip}"`))
                     return;
-                var requestSearch = new XMLHttpRequest();
+                let requestSearch = new XMLHttpRequest();
                 requestSearch.open("POST", "/Ingredients/Index", true);
                 requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 requestSearch.onloadend = () => {
                     if (requestSearch.status === 404)
                         return;
-                    var tmp = document.querySelector("datalist[id=\"ingredients\"");
+                    let tmp = document.querySelector("datalist[id=\"ingredients\"");
                     if (tmp != null)
                         tmp.parentNode.removeChild(tmp);
                     this.form.insertAdjacentHTML("afterend", requestSearch.response);
                 }
-                requestSearch.send("nameChip=" + encodeURIComponent(nameChip));
+                requestSearch.send(`nameChip=${encodeURIComponent(nameChip)}`);
             });
         //Окончание ввода названия ингредиента - устанавливаем единицы измерения
         this.inputNameIngr.addEventListener("change",
             () => {
-                var nameChip = this.inputNameIngr.value;
-                var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
+                const nameChip = this.inputNameIngr.value;
+                const tmp = document.querySelector(`option[value="${nameChip}"`);
                 if (tmp == null) {
                     this.inputUIIngr.value = null;
                     this.inputButton.style.visibility = "hidden";
@@ -109,7 +134,7 @@ class Inventory {
                 if (this.inputUIIngr.value === "") {
                     return false;
                 }
-                var requestAdd = new XMLHttpRequest();
+                const requestAdd = new XMLHttpRequest();
                 requestAdd.open("POST", "/IngredientQuant/FindName", true);
                 requestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 requestAdd.onloadend = () => {
@@ -118,24 +143,14 @@ class Inventory {
                         alert('ингредиент не найден!');
                         return;
                     }
-                    /*
-                    this.listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
-                    const fieldform = this.listIngridients.lastChild as HTMLElement;
-                    (fieldform.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
-                        fieldform.remove();
-                        return false;
-                    };*/
-                    this.listIngridients.appendChild(new Ingredient(requestAdd.response).getView());
+                    this.listIngridients.addIngredient(requestAdd.response);
                     this.inputCountIngr.value = null;
                     this.inputNameIngr.value = null;
                     this.inputUIIngr.value = null;
                 };
                 const name = this.inputNameIngr.value;
                 const count = this.inputCountIngr.value;
-                requestAdd.send("ingredientName=" +
-                    encodeURIComponent(name) +
-                    "&volume=" +
-                    encodeURIComponent(count));
+                requestAdd.send(`ingredientName=${encodeURIComponent(name)}&volume=${encodeURIComponent(count)}`);
 
             } catch (e) {
                 console.log(e.toString());
@@ -146,8 +161,4 @@ class Inventory {
     }
 }
 
-var inventory = new Inventory();
-var ingr1 = new Ingredient('{"quantity":1, "name":"tes1t", "unitShortName":"y.e", "id":321}');
-
-for (var i = 0; i < 10; i++)
-    inventory.listIngridients.appendChild(ingr1.getView());
+let inventory = new Inventory();

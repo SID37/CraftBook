@@ -4,7 +4,7 @@ var IngredientSoul = /** @class */ (function () {
     return IngredientSoul;
 }());
 var IngredientView = /** @class */ (function () {
-    function IngredientView() {
+    function IngredientView(soul) {
         var _this = this;
         this.main = document.createElement("div");
         this.main.classList.add("fieldform");
@@ -16,27 +16,49 @@ var IngredientView = /** @class */ (function () {
             '<input type="image" name="del_ingredient" src="/images/close.svg" />';
         this.main.querySelector("input[type=\"image\"").onclick = function () {
             _this.main.remove();
+            _this.ondeleted(_this);
             return false;
         };
         this.name = this.main.querySelector('input[name="name"]');
         this.unit = this.main.querySelector('input[name="unit"]');
         this.volume = this.main.querySelector('input[name="volume"]');
+        this.name.value = soul.name;
+        this.volume.value = soul.quantity.toString();
+        this.unit.value = soul.unitShortName;
     }
     return IngredientView;
 }());
-var Ingredient = /** @class */ (function () {
-    function Ingredient(json) {
+var ListIngredients = /** @class */ (function () {
+    function ListIngredients(node) {
         var _this = this;
-        this.getView = function () {
-            return _this.view.main;
+        this.key = "listIngredient";
+        this.addIngredient = function (model) {
+            var index = _this.models.length;
+            _this.models[index] = JSON.parse(model);
+            _this.addView()(_this.models[index], index, _this.models);
         };
-        this.soul = JSON.parse(json);
-        this.view = new IngredientView();
-        this.view.name.value = this.soul.name;
-        this.view.volume.value = this.soul.quantity.toString();
-        this.view.unit.value = this.soul.unitShortName;
+        this.headNode = node;
+        this.models = JSON.parse(localStorage.getItem(this.key));
+        this.views = new Array();
+        if (this.models == null)
+            this.models = new Array();
+        else
+            this.models.forEach(this.addView());
+        window.addEventListener("unload", function () { localStorage.setItem(_this.key, JSON.stringify(_this.models)); });
     }
-    return Ingredient;
+    ListIngredients.prototype.addView = function () {
+        var _this = this;
+        return function (soul, i) {
+            _this.views[i] = new IngredientView(soul);
+            _this.views[i].ondeleted = function (view) {
+                var j = _this.views.lastIndexOf(view);
+                _this.models.splice(j, 1);
+                _this.views.splice(j, 1);
+            };
+            _this.headNode.appendChild(_this.views[i].main);
+        };
+    };
+    return ListIngredients;
 }());
 var Inventory = /** @class */ (function () {
     function Inventory() {
@@ -47,7 +69,7 @@ var Inventory = /** @class */ (function () {
         this.inputUIIngr =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
         this.form = document.querySelector("article.inventory form.add-ingredient");
-        this.listIngridients = (document.querySelector("article.inventory form.list-ingredients"));
+        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")));
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input", function () {
             var nameChip = _this.inputNameIngr.value;
@@ -87,33 +109,23 @@ var Inventory = /** @class */ (function () {
                 if (_this.inputUIIngr.value === "") {
                     return false;
                 }
-                var requestAdd = new XMLHttpRequest();
-                requestAdd.open("POST", "/IngredientQuant/FindName", true);
-                requestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                requestAdd.onloadend = function () {
+                var requestAdd_1 = new XMLHttpRequest();
+                requestAdd_1.open("POST", "/IngredientQuant/FindName", true);
+                requestAdd_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                requestAdd_1.onloadend = function () {
                     //todo нормально как-то
-                    if (requestAdd.status === 404) {
+                    if (requestAdd_1.status === 404) {
                         alert('ингредиент не найден!');
                         return;
                     }
-                    /*
-                    this.listIngridients.insertAdjacentHTML("beforeend", requestAdd.response);
-                    const fieldform = this.listIngridients.lastChild as HTMLElement;
-                    (fieldform.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
-                        fieldform.remove();
-                        return false;
-                    };*/
-                    _this.listIngridients.appendChild(new Ingredient(requestAdd.response).getView());
+                    _this.listIngridients.addIngredient(requestAdd_1.response);
                     _this.inputCountIngr.value = null;
                     _this.inputNameIngr.value = null;
                     _this.inputUIIngr.value = null;
                 };
                 var name_1 = _this.inputNameIngr.value;
                 var count = _this.inputCountIngr.value;
-                requestAdd.send("ingredientName=" +
-                    encodeURIComponent(name_1) +
-                    "&volume=" +
-                    encodeURIComponent(count));
+                requestAdd_1.send("ingredientName=" + encodeURIComponent(name_1) + "&volume=" + encodeURIComponent(count));
             }
             catch (e) {
                 console.log(e.toString());
@@ -125,6 +137,3 @@ var Inventory = /** @class */ (function () {
     return Inventory;
 }());
 var inventory = new Inventory();
-var ingr1 = new Ingredient('{"quantity":1, "name":"tes1t", "unitShortName":"y.e", "id":321}');
-for (var i = 0; i < 10; i++)
-    inventory.listIngridients.appendChild(ingr1.getView());
