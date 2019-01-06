@@ -154,7 +154,7 @@ namespace CraftBook.Controllers
         }
 
         [HttpPost]
-        public IActionResult SearchByIngredients(int PageNumber, [FromBody] List<UserIngredient> ingredients)
+        public IActionResult SearchByIngredients([FromBody] List<UserIngredient> ingredients, int PageNumber=1 )
         {
             return PartialView("Index", CutList( _context.FindRecipes(ingredients), PageNumber, 2));
         }

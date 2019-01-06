@@ -45,6 +45,19 @@ var ListIngredients = /** @class */ (function () {
         else
             this.models.forEach(this.addView());
         window.addEventListener("unload", function () { localStorage.setItem(_this.key, JSON.stringify(_this.models)); });
+        this.headNode.onsubmit = function () {
+            var requestSearch = new XMLHttpRequest();
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            //todo отправка в список рецептов
+            requestSearch.onloadend = function () {
+                if (requestSearch.status === 404)
+                    return;
+                _this.headNode.insertAdjacentHTML("afterend", requestSearch.response);
+            };
+            requestSearch.send(JSON.stringify(_this.models));
+            return false;
+        };
     }
     ListIngredients.prototype.addView = function () {
         var _this = this;

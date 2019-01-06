@@ -41,9 +41,9 @@ class ListIngredients {
     private views: Array<IngredientView>;
     private models: Array<IngredientSoul>;
     private key = "listIngredient";
-    private headNode: HTMLElement;
+    private headNode: HTMLFormElement;
 
-    constructor(node:HTMLElement) {
+    constructor(node: HTMLFormElement) {
         this.headNode = node;
         this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientSoul>;
         this.views = new Array<IngredientView>();
@@ -52,6 +52,19 @@ class ListIngredients {
         else 
             this.models.forEach(this.addView());
         window.addEventListener("unload", () => { localStorage.setItem(this.key, JSON.stringify(this.models)); });
+        this.headNode.onsubmit = () => {
+            let requestSearch = new XMLHttpRequest();
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            //todo отправка в список рецептов
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404)
+                    return;
+                this.headNode.insertAdjacentHTML("afterend", requestSearch.response);
+            }
+            requestSearch.send(JSON.stringify(this.models));
+            return false;
+        }
     }
 
     addIngredient = (model: string) => {
@@ -89,7 +102,7 @@ class Inventory {
         this.inputUIIngr =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
-        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLElement);
+        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
 
 
 
