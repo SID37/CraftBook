@@ -12,6 +12,7 @@ class IngredientView {
     name: HTMLInputElement;
     volume: HTMLInputElement;
     unit: HTMLInputElement;
+    button: HTMLInputElement;
     ondeleted: (v:IngredientView)=>void;
     constructor(soul: IngredientSoul) {
         this.main = document.createElement("div") as HTMLElement;
@@ -22,7 +23,8 @@ class IngredientView {
             '<input type="text" name="unit" readonly />' +
             '</div>' +
             '<input type="image" name="del_ingredient" src="/images/close.svg" />';
-        (this.main.querySelector("input[type=\"image\"") as HTMLInputElement).onclick = () => {
+        this.button = (this.main.querySelector("input[type=\"image\"") as HTMLInputElement);
+        this.button.onclick = () => {
             this.main.remove();
             this.ondeleted(this);
             return false;
@@ -35,8 +37,10 @@ class IngredientView {
         this.volume.value = soul.quantity.toString();
         this.unit.value = soul.unitShortName;
     }
+
 }
 
+//Отвечает за список ингредиентов в инвентаре
 class ListIngredients {
     private views: Array<IngredientView>;
     private models: Array<IngredientSoul>;
@@ -56,7 +60,7 @@ class ListIngredients {
             let requestSearch = new XMLHttpRequest();
             requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
             requestSearch.setRequestHeader("Content-Type", "application/json");
-            //todo отправка в список рецептов
+            //todo отправка в список рецептов. Возможно, тут стоить сделать событие, на которое будет подписываться список рецептов
             requestSearch.onloadend = () => {
                 if (requestSearch.status === 404)
                     return;
@@ -67,9 +71,16 @@ class ListIngredients {
         }
     }
 
-    addIngredient = (model: string) => {
+    addIngredient = (data: string) => {
+        const soul = (JSON.parse(data) as IngredientSoul);
+        //на случай, если добавляемый ингредиент уже есть
+        let find = this.models.filter((model: IngredientSoul) => model.id === soul.id);
+        if (find != null && find.length !== 0) {
+            let j = this.models.lastIndexOf(find[0]);
+            this.views[j].button.onclick(null);
+        }
         const index = this.models.length;
-        this.models[index] = (JSON.parse(model) as IngredientSoul);
+        this.models[index] = soul;
         this.addView()(this.models[index], index, this.models);
 
     }
@@ -141,7 +152,7 @@ class Inventory {
                     this.inputButton.style.visibility = "visible";
                 }
             });
-
+        //Добавление ингредиента в список
         this.form.onsubmit = (event: Event) => {
             try {
                 if (this.inputUIIngr.value === "") {

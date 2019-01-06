@@ -14,7 +14,8 @@ var IngredientView = /** @class */ (function () {
             '<input type="text" name="unit" readonly />' +
             '</div>' +
             '<input type="image" name="del_ingredient" src="/images/close.svg" />';
-        this.main.querySelector("input[type=\"image\"").onclick = function () {
+        this.button = this.main.querySelector("input[type=\"image\"");
+        this.button.onclick = function () {
             _this.main.remove();
             _this.ondeleted(_this);
             return false;
@@ -28,13 +29,21 @@ var IngredientView = /** @class */ (function () {
     }
     return IngredientView;
 }());
+//Отвечает за список ингредиентов в инвентаре
 var ListIngredients = /** @class */ (function () {
     function ListIngredients(node) {
         var _this = this;
         this.key = "listIngredient";
-        this.addIngredient = function (model) {
+        this.addIngredient = function (data) {
+            var soul = JSON.parse(data);
+            //на случай, если добавляемый ингредиент уже есть
+            var find = _this.models.filter(function (model) { return model.id === soul.id; });
+            if (find != null && find.length !== 0) {
+                var j = _this.models.lastIndexOf(find[0]);
+                _this.views[j].button.onclick(null);
+            }
             var index = _this.models.length;
-            _this.models[index] = JSON.parse(model);
+            _this.models[index] = soul;
             _this.addView()(_this.models[index], index, _this.models);
         };
         this.headNode = node;
@@ -49,7 +58,7 @@ var ListIngredients = /** @class */ (function () {
             var requestSearch = new XMLHttpRequest();
             requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
             requestSearch.setRequestHeader("Content-Type", "application/json");
-            //todo отправка в список рецептов
+            //todo отправка в список рецептов. Возможно, тут стоить сделать событие, на которое будет подписываться список рецептов
             requestSearch.onloadend = function () {
                 if (requestSearch.status === 404)
                     return;
@@ -117,6 +126,7 @@ var Inventory = /** @class */ (function () {
                 _this.inputButton.style.visibility = "visible";
             }
         });
+        //Добавление ингредиента в список
         this.form.onsubmit = function (event) {
             try {
                 if (_this.inputUIIngr.value === "") {
