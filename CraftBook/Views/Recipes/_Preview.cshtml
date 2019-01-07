@@ -1,20 +1,33 @@
 ﻿@model CraftBook.Models.Recipe
+<a asp-action="Details" asp-route-id="@Model.ID">
+    <article class="recipe-preview">
+        <section>
+            @Html.Raw("<img src=" +(Model.Image != null ? " \"data:image/jpeg;base64,"
+                                                          + Convert.ToBase64String(Model.Image) : "/images/recipe_default.jpg") + " />")
+        </section>
+        <section>
+            <header>
+                <h4>@Html.DisplayFor(modelItem => Model.Name)</h4>
+            </header>
+            <section>
+                <img src="/images/recipe/instruction.svg" />
+                @Html.DisplayFor(modelItem => Model.Description)
+            </section>
+            <section>
+                <img src="/images/recipe/ingredients.svg" />
 
-<article class="recipe-preview">
-    <section>
-        @Html.Raw("<img src=" +(Model.Image != null ? " \"data:image/jpeg;base64,"
-                                                     + Convert.ToBase64String(Model.Image) : "/images/recipe_default.jpg") + " />")
-    </section>
-    <section>
-        @Html.DisplayFor(modelItem => Model.Name)
-        @Html.DisplayFor(modelItem => Model.Description)
-        @Html.DisplayFor(modelItem => Model.Instruction)
-    </section>
-    <section>
+                @foreach (var iq in Model.Ingredients)
+                {
+                    <span>@iq.Ingredient.Name</span>
+                }
+            </section>
+        </section>
+        <!--section>
         <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
         <a asp-action="Details" asp-route-id="@Model.ID">Details</a> |
         <a asp-action="Delete" asp-route-id="@Model.ID">Delete</a>
-    </section>
+        </section-->
 
 
-</article>
+    </article>
+</a>
