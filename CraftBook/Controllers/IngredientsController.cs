@@ -14,53 +14,42 @@ namespace CraftBook.Controllers
     {
         private readonly CraftBookContext _context;
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="context">Контекст базы данных</param>
         public IngredientsController(CraftBookContext context)
         {
             _context = context;
         }
-        
-        /* потом пригодится 
-        public async Task<IActionResult> Index()
-        {
-            var craftBookContext = _context.Ingredients.Include(i => i.Unit);
-            return View(craftBookContext.ToListAsync());
-        }*/
 
+        /// <summary>
+        /// POST Запрос, да, надо было выбрать другое имя(не Index), но он возвращает
+        /// представление списка ингредиентов, ничинающихся на сстроку
+        /// </summary>
+        /// <param name="nameChip">Начало названия ингредиента для поиска</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Index(string nameChip)
         {
             return PartialView("View", _context.FindIngredients(nameChip, 5));
         }
 
-        // GET: Ingredients/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ingredient = await _context.Ingredients
-                .Include(i => i.Unit)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (ingredient == null)
-            {
-                return NotFound();
-            }
-
-            return View(ingredient);
-        }
-
-        // GET: Ingredients/Create
+        /// <summary>
+        /// Страничка создания ингредиента
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Create()
         {
             ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID");
             return View();
         }
 
-        // POST: Ingredients/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        /// <summary>
+        /// POST Запрос на создание ингредиента
+        /// </summary>
+        /// <param name="ingredient">Ингредиент</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,UnitID")] Ingredient ingredient)
@@ -73,62 +62,13 @@ namespace CraftBook.Controllers
             }
             ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID", ingredient.UnitID);
             return View(ingredient);
-        }
+        }        
 
-        // GET: Ingredients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var ingredient = await _context.Ingredients.FindAsync(id);
-            if (ingredient == null)
-            {
-                return NotFound();
-            }
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID", ingredient.UnitID);
-            return View(ingredient);
-        }
-
-        // POST: Ingredients/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,UnitID")] Ingredient ingredient)
-        {
-            if (id != ingredient.ID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(ingredient);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!IngredientExists(ingredient.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID", ingredient.UnitID);
-            return View(ingredient);
-        }
-
-        // GET: Ingredients/Delete/5
+        /// <summary>
+        /// Страничка удаления ингредиента
+        /// </summary>
+        /// <param name="id">Его ID</param>
+        /// <returns></returns>
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,7 +87,11 @@ namespace CraftBook.Controllers
             return View(ingredient);
         }
 
-        // POST: Ingredients/Delete/5
+        /// <summary>
+        /// POST Запрос на удаление ингредиента
+        /// </summary>
+        /// <param name="id">Его ID</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
