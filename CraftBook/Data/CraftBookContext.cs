@@ -44,11 +44,17 @@ namespace CraftBook.Data
                 .ThenInclude(iq => iq.Ingredient)
                 .ThenInclude(i => i.Unit)
                 .Where(r => ingredients.Any(ui => r.Ingredients.Select(iq => iq.IngredientID).Contains(ui.ID)));
-       
+
             //  сортировака по соответствию списку ингредиентов
+            //  костыли..они везде!
             var ingredSort = filter
-                .OrderBy(r => r.Ingredients.Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID)).Count()
-                    - r.Ingredients.Count);
+                .OrderBy(r => r.Ingredients.Count 
+                    - r.Ingredients.Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID)).Count())
+                .ThenBy(r => 1 - r.Ingredients
+                    .Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID))
+                    .Select(igr => (igr.Volume % ingredients.First(ui => ui.ID == igr.IngredientID).Quantity)
+                                        / ingredients.First(ui => ui.ID == igr.IngredientID).Quantity)
+                    .Sum() / r.Ingredients.Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID)).Count());
 
             return ingredSort
                 .ToList();

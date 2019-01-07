@@ -197,7 +197,7 @@ namespace CraftBook.Controllers
                 Title = "Найденные рецепты",
                 Recipes = CutList(found, PageNumber, PageSize),
                 PageNumber = PageNumber,
-                PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize) : 1,
+                PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
             };
             return PartialView("Index", result);
         }
