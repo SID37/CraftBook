@@ -7,7 +7,7 @@ article.inventory {
   width: 90%;
   display: flex;
   flex-direction: column;
-  background-color: #C5CAE9;
+  background-color: #E3E7F1;
   color: #212121; }
   article.inventory > form {
     border-bottom: 1px solid #303F9F; }
@@ -19,21 +19,42 @@ article.inventory {
 article.recipe_list {
   display: flex;
   flex-direction: column; }
-  article.recipe_list section {
+  article.recipe_list > section {
     margin: 4px 0 4px 0; }
+  article.recipe_list a {
+    text-decoration: none;
+    color: inherit; }
 
 article.recipe-preview {
-  background-color: #C5CAE9;
+  background-color: #E3E7F1;
   display: flex;
   border: 2px solid #BDBDBD;
   border-width: 2px;
-  border-radius: 5px; }
-  article.recipe-preview img {
-    width: 80px;
-    height: 80px; }
+  border-radius: 5px;
+  height: 128px; }
+  article.recipe-preview > section > img {
+    border-radius: 5px 0 0 5px;
+    height: 100%;
+    width: 128px; }
+  article.recipe-preview > section:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px; }
+    article.recipe-preview > section:nth-child(2) > section {
+      display: flex;
+      align-items: center; }
+      article.recipe-preview > section:nth-child(2) > section img {
+        height: 32px; }
+      article.recipe-preview > section:nth-child(2) > section * {
+        margin-right: 8px; }
+      article.recipe-preview > section:nth-child(2) > section span:first-of-type::first-letter {
+        text-transform: uppercase; }
+      article.recipe-preview > section:nth-child(2) > section span:not(:last-of-type)::after {
+        content: ","; }
 
 /*Адское зануление*/
-body, fieldset, output, article, section, footer, header, p, h1, h2 {
+body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0; }
 
@@ -41,13 +62,11 @@ body, fieldset, output, article, section, footer, header, p, h1, h2 {
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-header, footer {
+body > header, body > footer {
+  height: 3.5em;
   background: #3F51B5;
   color: #FFFFFF;
   min-height: 6vh; }
-
-body > header, body > footer {
-  height: 3.5em; }
 
 body > article {
   display: flex;
@@ -57,7 +76,7 @@ body > article {
     flex: 3; }
   body > article > section:nth-child(odd) {
     flex: 1;
-    background-color: #C5CAE9; }
+    background-color: #E3E7F1; }
   body > article > section:nth-child(2) {
     margin-left: 40px;
     margin-right: 40px; }
