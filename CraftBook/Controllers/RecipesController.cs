@@ -164,7 +164,7 @@ namespace CraftBook.Controllers
                 PageNumber = PageNumber,
                 PageCount = found.Count,
             };
-            return PartialView("Index", found);
+            return PartialView("Index", result);
         }
 
         [HttpPost]
@@ -178,7 +178,7 @@ namespace CraftBook.Controllers
                 PageNumber = PageNumber,
                 PageCount = found.Count,
             };
-            return PartialView("Index", found);
+            return PartialView("Index", result);
         }
 
         private List<Recipe> CutList(List<Recipe> Recips, int PageNumber, int PageSize)
