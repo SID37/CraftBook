@@ -3,7 +3,7 @@
 @import 'mixins';
 @import 'recipe';
 /*Адское зануление*/
-body, fieldset, output, article, section, footer, header, p, h1 {
+body, fieldset, output, article, section, footer, header, p, h1, h2 {
     margin: 0;
     padding: 0;
 }
@@ -28,11 +28,12 @@ body {
         display: flex;
         min-height:88vh;
         overflow:auto;
-        section:nth-child(even) {
+
+        &>section:nth-child(even) {
             flex: 3;
         }
 
-        section:nth-child(odd) {
+        &>section:nth-child(odd) {
             flex: 1;
             background-color: $primary-color-light;
         }
@@ -51,7 +52,7 @@ body {
     height: 25px;
 
 
-    input {
+    * {
         &:nth-child(n+2) {
             border-left: 1px solid $divider-color;
         }
@@ -75,7 +76,7 @@ body {
     }
 
     form > & {
-        margin: 4px 0 4px 0;
+        @include line-spacing;
     }
 }
 

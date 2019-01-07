@@ -1,8 +1,23 @@
 ﻿@import '_palette.scss';
 @import '_mixins.scss';
+
+article.recipe_list {
+    display: flex;
+    flex-direction: column;
+
+    section {
+        @include line-spacing;
+    }
+}
+
 article.recipe-preview {
     background-color: $primary-color-light;
     display: flex;
     border: 2px solid $divider-color;
     @include rounding;
+
+    img {
+        width: 80px;
+        height: 80px;
+    }
 }

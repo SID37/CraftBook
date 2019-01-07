@@ -3,29 +3,30 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h2>Index</h2>
-
-<p>
+<section>
+    <h2>Найденные рецепты</h2>
     <a asp-action="Create">Create New</a>
-</p>
+</section>
 @foreach (var item in Model.Recipes)
 {
-<article class="recipe-preview">
-    <section>
-        @Html.DisplayFor(modelItem => item.Image)
-    </section>
-    <section>
-        @Html.DisplayFor(modelItem => item.Name)
-        @Html.DisplayFor(modelItem => item.Description)
-        @Html.DisplayFor(modelItem => item.Instruction)
-    </section>
-    <section>
-        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-    </section>
+<section>
+    <article class="recipe-preview">
+        <section>
+            @Html.Raw("<img src=" +(item.Image != null ? " \"data:image/jpeg;base64,"
+            + Convert.ToBase64String(item.Image) : "/images/recipe_default.jpg") + " />")
+        </section>
+        <section>
+            @Html.DisplayFor(modelItem => item.Name)
+            @Html.DisplayFor(modelItem => item.Description)
+            @Html.DisplayFor(modelItem => item.Instruction)
+        </section>
+        <section>
+            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+        </section>
 
 
-</article>
+    </article>
+</section>
 }
