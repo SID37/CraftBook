@@ -62,7 +62,7 @@ var ListIngredients = /** @class */ (function () {
             requestSearch.onloadend = function () {
                 if (requestSearch.status === 404)
                     return;
-                _this.headNode.insertAdjacentHTML("afterend", requestSearch.response);
+                document.querySelector('article.recipe_list').insertAdjacentHTML("beforeend", requestSearch.response);
             };
             requestSearch.send(JSON.stringify(_this.models));
             return false;
@@ -81,6 +81,11 @@ var ListIngredients = /** @class */ (function () {
         };
     };
     return ListIngredients;
+}());
+var ListRecipes = /** @class */ (function () {
+    function ListRecipes() {
+    }
+    return ListRecipes;
 }());
 var Inventory = /** @class */ (function () {
     function Inventory() {

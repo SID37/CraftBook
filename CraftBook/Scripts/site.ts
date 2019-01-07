@@ -64,7 +64,7 @@ class ListIngredients {
             requestSearch.onloadend = () => {
                 if (requestSearch.status === 404)
                     return;
-                this.headNode.insertAdjacentHTML("afterend", requestSearch.response);
+                document.querySelector('article.recipe_list').insertAdjacentHTML("beforeend", requestSearch.response);
             }
             requestSearch.send(JSON.stringify(this.models));
             return false;
@@ -96,6 +96,10 @@ class ListIngredients {
             this.headNode.appendChild(this.views[i].main);
         };
     }
+}
+
+class ListRecipes {
+
 }
 
 class Inventory {

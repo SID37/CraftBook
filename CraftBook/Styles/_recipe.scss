@@ -1,0 +1,8 @@
+﻿@import '_palette.scss';
+@import '_mixins.scss';
+article.recipe-preview {
+    background-color: $primary-color-light;
+    display: flex;
+    border: 2px solid $divider-color;
+    @include rounding;
+}
