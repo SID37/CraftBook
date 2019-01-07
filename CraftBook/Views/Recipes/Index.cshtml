@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CraftBook.Models.Recipe>
+﻿@model CraftBook.Models.UserRecipes
 
 @{
     ViewData["Title"] = "Index";
@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-@foreach (var item in Model)
+@foreach (var item in Model.Recipes)
 {
 <article class="recipe-preview">
     <section>

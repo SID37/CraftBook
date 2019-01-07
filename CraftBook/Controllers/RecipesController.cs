@@ -156,18 +156,34 @@ namespace CraftBook.Controllers
         [HttpPost]
         public IActionResult SearchByIngredients([FromBody] List<UserIngredient> ingredients, int PageNumber=1 )
         {
-            return PartialView("Index", CutList( _context.FindRecipes(ingredients), PageNumber, 2));
+            var found = _context.FindRecipes(ingredients);
+            UserRecipes result = new UserRecipes
+            {
+                Title = "Найденные рецепты",
+                Recipes = CutList(found, PageNumber, 2),
+                PageNumber = PageNumber,
+                PageCount = found.Count,
+            };
+            return PartialView("Index", found);
         }
 
         [HttpPost]
         public IActionResult SearchByString(string searchString, int PageNumber=1 )
         {
-            return PartialView("Index", CutList(_context.FindRecipes(searchString), PageNumber, 2));
+            var found = _context.FindRecipes(searchString);
+            UserRecipes result = new UserRecipes
+            {
+                Title = "Найденные рецепты",
+                Recipes = CutList(found, PageNumber, 2),
+                PageNumber = PageNumber,
+                PageCount = found.Count,
+            };
+            return PartialView("Index", found);
         }
 
-        private List<Recipe> CutList(List<Recipe> ingredients, int PageNumber, int PageSize)
+        private List<Recipe> CutList(List<Recipe> Recips, int PageNumber, int PageSize)
         {
-            return ingredients.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
+            return Recips.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
         }
     }
 }
