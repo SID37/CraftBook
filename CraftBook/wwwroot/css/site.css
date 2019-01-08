@@ -65,8 +65,14 @@ body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5,
 body > header, body > footer {
   height: 3.5em;
   background: #3F51B5;
-  color: #FFFFFF;
   min-height: 6vh; }
+  body > header div, body > footer div {
+    color: #FFFFFF;
+    padding-top: 3vh; }
+  body > header img, body > footer img {
+    float: left;
+    height: 4vh;
+    margin: 1vh 4px 1vh 8px; }
 
 body > article {
   display: flex;

@@ -24,6 +24,12 @@
     <TypeScriptCompile Include="Scripts\site.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\favicon.ico">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES3</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>

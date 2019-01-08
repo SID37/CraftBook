@@ -21,8 +21,21 @@ body {
     & > header, & > footer {
         height: 3.5em;
         background: $primary-color;
-        color: $primary-color-text;
         min-height: 6vh;
+
+        div {
+            color: $primary-color-text;
+            padding-top:3vh;
+            //transform: rotate(-30deg);
+            //width:auto;
+        }
+
+
+        img {
+            float:left;
+            height: 4vh;
+            margin: 1vh 4px 1vh 8px;
+        }
     }
 
     & > article {

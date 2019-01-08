@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean:css, sass, min:css' />
+/// <binding BeforeBuild='clean:css, sass, min:css, min:js' />
 "use strict";
  
 var gulp = require("gulp"),
@@ -42,7 +42,7 @@ gulp.task("min:js", function () {
         .pipe(gulp.dest("."));
 });
 
-// регистрируем задачу для конвертации файла scss в css
+// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ scss пїЅ css
 gulp.task("sass", function () {
     return gulp.src('Styles/site.scss')
         .pipe(sass())
