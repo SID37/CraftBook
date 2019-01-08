@@ -27,7 +27,7 @@ namespace CraftBook.Data
         /// <returns></returns>
         public List<Ingredient> FindIngredients(string nameChip, int n)
         {
-            Regex regex = new Regex(@"^|s" + nameChip, RegexOptions.Compiled);
+            Regex regex = new Regex(@"(^|\s)" + nameChip, RegexOptions.Compiled);
             return Ingredients.Include(i => i.Unit).Where(i => regex.IsMatch(i.Name)).Take(n).ToList();
         }
 
