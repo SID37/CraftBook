@@ -73,6 +73,20 @@ var ListIngredients = /** @class */ (function () {
     };
     return ListIngredients;
 }());
+var SearchString = /** @class */ (function () {
+    function SearchString() {
+        var _this = this;
+        this.form = document.querySelector('form[action="/Recipes/SearchByString"');
+        this.data = this.form.querySelector('input[name="searchString"]');
+        this.form.onsubmit = function () {
+            var str = _this.data.value;
+            if (str)
+                _this.onshearch(str);
+            return false;
+        };
+    }
+    return SearchString;
+}());
 var ListRecipes = /** @class */ (function () {
     function ListRecipes(node) {
         this.headNode = node;
@@ -94,16 +108,21 @@ var ListRecipes = /** @class */ (function () {
             pageNumber: 1
         };
         requestSearch.send(JSON.stringify(message));
-        var ingredients = "";
-        var istr = "ingredients";
-        for (var i = 0; i < list.length; ++i) {
-            var soul = list[i];
-            for (var item in soul) {
-                if (soul.hasOwnProperty(item)) {
-                    ingredients += istr + ("[" + i + "].") + item + "=" + soul[item] + "&";
-                }
-            }
-        }
+    };
+    ;
+    ListRecipes.prototype.searchByString = function (str) {
+        var _this = this;
+        var requestSearch = new XMLHttpRequest();
+        requestSearch.open("POST", "/Recipes/SearchByString", true);
+        requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        requestSearch.onloadend = function () {
+            if (requestSearch.status === 404)
+                return;
+            while (_this.headNode.hasChildNodes())
+                _this.headNode.removeChild(_this.headNode.firstChild);
+            _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
+        };
+        requestSearch.send("searchString=" + encodeURIComponent(str) + "&pageNumber=1");
     };
     ;
     return ListRecipes;
@@ -121,6 +140,10 @@ var Inventory = /** @class */ (function () {
         this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list'));
         this.listIngridients.onshearch = function (list) {
             _this.listRecipes.search(list);
+        };
+        var ss = new SearchString;
+        ss.onshearch = function (str) {
+            _this.listRecipes.searchByString(str);
         };
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input", function () {

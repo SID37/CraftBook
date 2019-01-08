@@ -90,6 +90,24 @@ class ListIngredients {
     }
 }
 
+class SearchString {
+    form: HTMLFormElement;
+    data: HTMLInputElement;
+    onshearch: (searchString: string) => void;
+
+    constructor() {
+        this.form = document.querySelector('form[action="/Recipes/SearchByString"') as HTMLFormElement;
+        this.data = this.form.querySelector('input[name="searchString"]') as HTMLInputElement;
+
+        this.form.onsubmit = () => {
+            const str = this.data.value;
+            if (str)
+                this.onshearch(str);
+            return false;
+        }
+    }
+}
+
 class ListRecipes {
     private headNode: HTMLElement;
     search(list: IngredientSoul[]): void {
@@ -109,16 +127,19 @@ class ListRecipes {
             pageNumber: 1
         }
         requestSearch.send(JSON.stringify(message));
-        let ingredients = "";
-        const istr = "ingredients";
-        for (let i = 0; i < list.length; ++i) {
-            let soul = list[i];
-            for (const item in soul) {
-                if (soul.hasOwnProperty(item)) {
-                    ingredients += istr + `[${i}].` + item + "=" + soul[item] + "&";
-                }
-            }
+    };
+    searchByString(str: string):void {
+        let requestSearch = new XMLHttpRequest();
+        requestSearch.open("POST", "/Recipes/SearchByString", true);
+        requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        requestSearch.onloadend = () => {
+            if (requestSearch.status === 404)
+                return;
+            while (this.headNode.hasChildNodes())
+                this.headNode.removeChild(this.headNode.firstChild);
+            this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
         }
+        requestSearch.send(`searchString=${encodeURIComponent(str)}&pageNumber=1`);
     };
     constructor(node: HTMLElement) {
         this.headNode = node;
@@ -146,8 +167,10 @@ class Inventory {
         this.listIngridients.onshearch = (list) => {
             this.listRecipes.search(list);
         };
-
-
+        var ss = new SearchString;
+        ss.onshearch = (str) => {
+            this.listRecipes.searchByString(str);
+        };
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input",
             () => {
