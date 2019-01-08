@@ -201,7 +201,7 @@ namespace CraftBook.Controllers
         [HttpPost]
         public IActionResult SearchByIngredients([FromBody] M message)
         {
-            if (ingredients.Any(ui => !ui.IsCorrect()))
+            if (message.ingredients.Any(ui => !ui.IsCorrect()))
             {
                 return Redirect("~/Error/Code400/?message=- one or more ingredients are not correct");
             }
@@ -210,7 +210,7 @@ namespace CraftBook.Controllers
             UserRecipes result = new UserRecipes
             {
                 Title = "Найденные рецепты",
-                Recipes = CutList(found, message.pageNumber),
+                Recipes = CutList(found, message.pageNumber, PageSize),
                 PageNumber = message.pageNumber,
                 PageCount = found.Count,
             };
