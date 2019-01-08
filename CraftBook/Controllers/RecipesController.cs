@@ -13,6 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
+        private static int PageSize = 2;
 
         /// <summary>
         /// Конструктор
@@ -64,8 +65,7 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Instruction,Image")]
-            Recipe recipe)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -106,8 +106,7 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Instruction,Image")]
-            Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
         {
             if (id != recipe.ID)
             {
@@ -132,10 +131,8 @@ namespace CraftBook.Controllers
                         throw;
                     }
                 }
-
                 return Redirect("~/Home/Index");
             }
-
             return View(recipe);
         }
 
@@ -204,6 +201,11 @@ namespace CraftBook.Controllers
         [HttpPost]
         public IActionResult SearchByIngredients([FromBody] M message)
         {
+            if (ingredients.Any(ui => !ui.IsCorrect()))
+            {
+                return Redirect("~/Error/Code400/?message=- one or more ingredients are not correct");
+            }
+
             var found = _context.FindRecipes(message.ingredients);
             UserRecipes result = new UserRecipes
             {
@@ -229,9 +231,9 @@ namespace CraftBook.Controllers
             UserRecipes result = new UserRecipes
             {
                 Title = "Найденные рецепты",
-                Recipes = CutList(found, PageNumber),
+                Recipes = CutList(found, PageNumber, PageSize),
                 PageNumber = PageNumber,
-                PageCount = found.Count,
+                PageCount = found.Count / PageSize,
             };
             return PartialView("Index", result);
         }
@@ -243,7 +245,7 @@ namespace CraftBook.Controllers
         /// <param name="PageNumber">номер страницы</param>
         /// <param name="PageSize">размер каждой страницы</param>
         /// <returns></returns>
-        private List<Recipe> CutList(List<Recipe> Recips, int PageNumber, int PageSize = 2)
+        private List<Recipe> CutList(List<Recipe> Recips, int PageNumber, int PageSize)
         {
             return Recips.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
         }
