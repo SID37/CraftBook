@@ -8,15 +8,25 @@ article.recipe_list {
     & > section {
         @include line-spacing;
     }
+
     a {
-        text-decoration:none;
-        color:inherit;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    nav {
+        .page {
+            color:red;
+        }
+
+        #currentPage {
+            color:green;
+        }
     }
 }
 
 
 article.recipe-preview {
-
     background-color: $primary-color-light;
     display: flex;
     border: 2px solid $divider-color;
@@ -38,7 +48,8 @@ article.recipe-preview {
 
         & > section {
             display: flex;
-            align-items:center;
+            align-items: center;
+
             img {
                 height: 32px;
             }
@@ -47,10 +58,11 @@ article.recipe-preview {
                 margin-right: 8px;
             }
 
-            span{
+            span {
                 &:first-of-type::first-letter {
                     text-transform: uppercase;
                 }
+
                 &:not(:last-of-type)::after {
                     content: ","
                 }

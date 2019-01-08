@@ -55,16 +55,7 @@ var ListIngredients = /** @class */ (function () {
             this.models.forEach(this.addView());
         window.addEventListener("unload", function () { localStorage.setItem(_this.key, JSON.stringify(_this.models)); });
         this.headNode.onsubmit = function () {
-            var requestSearch = new XMLHttpRequest();
-            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
-            requestSearch.setRequestHeader("Content-Type", "application/json");
-            //todo отправка в список рецептов. Возможно, тут стоить сделать событие, на которое будет подписываться список рецептов
-            requestSearch.onloadend = function () {
-                if (requestSearch.status === 404)
-                    return;
-                document.querySelector('article.recipe_list').insertAdjacentHTML("beforeend", requestSearch.response);
-            };
-            requestSearch.send(JSON.stringify(_this.models));
+            _this.onshearch(_this.models);
             return false;
         };
     }
@@ -83,8 +74,24 @@ var ListIngredients = /** @class */ (function () {
     return ListIngredients;
 }());
 var ListRecipes = /** @class */ (function () {
-    function ListRecipes() {
+    function ListRecipes(node) {
+        this.headNode = node;
     }
+    ListRecipes.prototype.search = function (list) {
+        var _this = this;
+        var requestSearch = new XMLHttpRequest();
+        requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+        requestSearch.setRequestHeader("Content-Type", "application/json");
+        requestSearch.onloadend = function () {
+            if (requestSearch.status === 404)
+                return;
+            while (_this.headNode.hasChildNodes())
+                _this.headNode.removeChild(_this.headNode.firstChild);
+            _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
+        };
+        requestSearch.send(JSON.stringify(list));
+    };
+    ;
     return ListRecipes;
 }());
 var Inventory = /** @class */ (function () {
@@ -97,6 +104,10 @@ var Inventory = /** @class */ (function () {
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
         this.form = document.querySelector("article.inventory form.add-ingredient");
         this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")));
+        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list'));
+        this.listIngridients.onshearch = function (list) {
+            _this.listRecipes.search(list);
+        };
         //Подсказки при вводе
         this.inputNameIngr.addEventListener("input", function () {
             var nameChip = _this.inputNameIngr.value;

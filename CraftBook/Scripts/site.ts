@@ -46,7 +46,7 @@ class ListIngredients {
     private models: Array<IngredientSoul>;
     private key = "listIngredient";
     private headNode: HTMLFormElement;
-
+    onshearch: (listIngredients:Array<IngredientSoul>)=>void;
     constructor(node: HTMLFormElement) {
         this.headNode = node;
         this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientSoul>;
@@ -57,16 +57,8 @@ class ListIngredients {
             this.models.forEach(this.addView());
         window.addEventListener("unload", () => { localStorage.setItem(this.key, JSON.stringify(this.models)); });
         this.headNode.onsubmit = () => {
-            let requestSearch = new XMLHttpRequest();
-            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
-            requestSearch.setRequestHeader("Content-Type", "application/json");
-            //todo отправка в список рецептов. Возможно, тут стоить сделать событие, на которое будет подписываться список рецептов
-            requestSearch.onloadend = () => {
-                if (requestSearch.status === 404)
-                    return;
-                document.querySelector('article.recipe_list').insertAdjacentHTML("beforeend", requestSearch.response);
-            }
-            requestSearch.send(JSON.stringify(this.models));
+            this.onshearch(this.models);
+            
             return false;
         }
     }
@@ -99,7 +91,23 @@ class ListIngredients {
 }
 
 class ListRecipes {
-
+    private headNode: HTMLElement;
+    search(list: IngredientSoul[]): void {
+        let requestSearch = new XMLHttpRequest();
+        requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+        requestSearch.setRequestHeader("Content-Type", "application/json");
+        requestSearch.onloadend = () => {
+            if (requestSearch.status === 404)
+                return;
+            while (this.headNode.hasChildNodes())
+                this.headNode.removeChild(this.headNode.firstChild);
+            this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
+        }
+        requestSearch.send(JSON.stringify(list));
+    };
+    constructor(node: HTMLElement) {
+        this.headNode = node;
+    }
 }
 
 class Inventory {
@@ -109,6 +117,7 @@ class Inventory {
     inputUIIngr: HTMLInputElement;
     form: HTMLFormElement;
     listIngridients: ListIngredients;
+    listRecipes: ListRecipes;
 
     constructor() {
         this.inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
@@ -118,7 +127,10 @@ class Inventory {
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
         this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
-
+        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
+        this.listIngridients.onshearch = (list) => {
+            this.listRecipes.search(list);
+        };
 
 
         //Подсказки при вводе

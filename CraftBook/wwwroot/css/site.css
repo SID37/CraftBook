@@ -24,6 +24,10 @@ article.recipe_list {
   article.recipe_list a {
     text-decoration: none;
     color: inherit; }
+  article.recipe_list nav .page {
+    color: red; }
+  article.recipe_list nav #currentPage {
+    color: green; }
 
 article.recipe-preview {
   background-color: #E3E7F1;
