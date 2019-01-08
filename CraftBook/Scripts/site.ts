@@ -13,7 +13,7 @@ class IngredientView {
     volume: HTMLInputElement;
     unit: HTMLInputElement;
     button: HTMLInputElement;
-    ondeleted: (v:IngredientView)=>void;
+    ondeleted: (v: IngredientView) => void;
     constructor(soul: IngredientSoul) {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
@@ -46,19 +46,19 @@ class ListIngredients {
     private models: Array<IngredientSoul>;
     private key = "listIngredient";
     private headNode: HTMLFormElement;
-    onshearch: (listIngredients:Array<IngredientSoul>)=>void;
+    onshearch: (listIngredients: Array<IngredientSoul>) => void;
     constructor(node: HTMLFormElement) {
         this.headNode = node;
         this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientSoul>;
         this.views = new Array<IngredientView>();
-        if (this.models == null) 
+        if (this.models == null)
             this.models = new Array<IngredientSoul>();
-        else 
+        else
             this.models.forEach(this.addView());
         window.addEventListener("unload", () => { localStorage.setItem(this.key, JSON.stringify(this.models)); });
         this.headNode.onsubmit = () => {
             this.onshearch(this.models);
-            
+
             return false;
         }
     }
@@ -103,7 +103,22 @@ class ListRecipes {
                 this.headNode.removeChild(this.headNode.firstChild);
             this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
         }
-        requestSearch.send(JSON.stringify(list));
+        let message =
+        {
+            ingredients: list,
+            pageNumber: 1
+        }
+        requestSearch.send(JSON.stringify(message));
+        let ingredients = "";
+        const istr = "ingredients";
+        for (let i = 0; i < list.length; ++i) {
+            let soul = list[i];
+            for (const item in soul) {
+                if (soul.hasOwnProperty(item)) {
+                    ingredients += istr + `[${i}].` + item + "=" + soul[item] + "&";
+                }
+            }
+        }
     };
     constructor(node: HTMLElement) {
         this.headNode = node;

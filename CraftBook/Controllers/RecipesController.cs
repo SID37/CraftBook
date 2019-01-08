@@ -13,7 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
-        
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -64,7 +64,8 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,Instruction,Image")]
+            Recipe recipe)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace CraftBook.Controllers
                 await _context.SaveChangesAsync();
                 return Redirect("~/Home/Index");
             }
+
             return View(recipe);
         }
 
@@ -92,6 +94,7 @@ namespace CraftBook.Controllers
             {
                 return NotFound();
             }
+
             return View(recipe);
         }
 
@@ -103,7 +106,8 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Instruction,Image")]
+            Recipe recipe)
         {
             if (id != recipe.ID)
             {
@@ -128,8 +132,10 @@ namespace CraftBook.Controllers
                         throw;
                     }
                 }
+
                 return Redirect("~/Home/Index");
             }
+
             return View(recipe);
         }
 
@@ -180,22 +186,30 @@ namespace CraftBook.Controllers
             return _context.Recipe.Any(e => e.ID == id);
         }
 
+        //TODO Сергей, перепрячь, пожалуйста
+        //M - значит message
+        public class M
+        {
+            public List<UserIngredient> ingredients { get; set; }
+            public int pageNumber { get; set; }
+        }
+
         /// <summary>
         /// POST Запрос, возвращает требуемую страницу с результами
         /// поиска рецепта по ингредиентам
         /// </summary>
         /// <param name="ingredients">Список ингредиентов</param>
-        /// <param name="PageNumber">Номер страницы</param>
+        /// <param name="pageNumber">Номер страницы</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult SearchByIngredients([FromBody] List<UserIngredient> ingredients, int PageNumber = 1)
+        public IActionResult SearchByIngredients([FromBody] M message)
         {
-            var found = _context.FindRecipes(ingredients);
+            var found = _context.FindRecipes(message.ingredients);
             UserRecipes result = new UserRecipes
             {
                 Title = "Найденные рецепты",
-                Recipes = CutList(found, PageNumber),
-                PageNumber = PageNumber,
+                Recipes = CutList(found, message.pageNumber),
+                PageNumber = message.pageNumber,
                 PageCount = found.Count,
             };
             return PartialView("Index", result);

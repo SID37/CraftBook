@@ -89,7 +89,21 @@ var ListRecipes = /** @class */ (function () {
                 _this.headNode.removeChild(_this.headNode.firstChild);
             _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
         };
-        requestSearch.send(JSON.stringify(list));
+        var message = {
+            ingredients: list,
+            pageNumber: 1
+        };
+        requestSearch.send(JSON.stringify(message));
+        var ingredients = "";
+        var istr = "ingredients";
+        for (var i = 0; i < list.length; ++i) {
+            var soul = list[i];
+            for (var item in soul) {
+                if (soul.hasOwnProperty(item)) {
+                    ingredients += istr + ("[" + i + "].") + item + "=" + soul[item] + "&";
+                }
+            }
+        }
     };
     ;
     return ListRecipes;
