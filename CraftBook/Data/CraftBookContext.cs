@@ -43,21 +43,40 @@ namespace CraftBook.Data
                 .Include(r => r.Ingredients)
                 .ThenInclude(iq => iq.Ingredient)
                 .ThenInclude(i => i.Unit)
-                .Where(r => ingredients.Any(ui => r.Ingredients.Select(iq => iq.IngredientID).Contains(ui.ID)));
+                .Where(r => ingredients.Any(ui => r.Ingredients.Select(iq => iq.IngredientID).Contains(ui.ID)))
+                .ToList();  //  тут я сдался и сделал вместо запросов к БД обычный список
 
             //  сортировака по соответствию списку ингредиентов
-            //  костыли..они везде!
             var ingredSort = filter
-                .OrderBy(r => r.Ingredients.Count 
-                    - r.Ingredients.Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID)).Count())
-                .ThenBy(r => 1 - r.Ingredients
-                    .Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID))
-                    .Select(igr => (igr.Volume % ingredients.First(ui => ui.ID == igr.IngredientID).Quantity)
-                                        / ingredients.First(ui => ui.ID == igr.IngredientID).Quantity)
-                    .Sum() / r.Ingredients.Where(igr => ingredients.Select(ui => ui.ID).Contains(igr.ID)).Count());
+                .OrderBy(r =>
+                {
+                    int count = ingredients                     //  ингредиенты пользователя
+                        .Where(ui => r.CountOfIgr(ui.ID) > 0)   //  которые нужны для рецепта
+                        .Count();                               //  их количество
+                    return r.Ingredients.Count - count;         //  количество тех, которые остались(не хватает для приготовления)
+                })
+                .ThenBy(r =>
+                {
+                    double[] percent = ingredients                                  //  ингредиенты пользователя
+                        .Where(ui => r.CountOfIgr(ui.ID) > 0)                       //  которые содержатся в рецепте
+                        .Select(ui => Percent(ui.Quantity, r.CountOfIgr(ui.ID)))    //  На сколько их у пользователя хватает
+                        .ToArray();                                                 //  пихаем в массив
+                    return 1 - percent.Sum() / percent.Length;
+                });
 
             return ingredSort
                 .ToList();
+        }
+
+        /// <summary>
+        /// Возвращает часть, занимаемую quantity в requiredQuantity или 1 если quantity больше
+        /// </summary>
+        /// <param name="quantity">часть</param>
+        /// <param name="requiredQuantity">необходимое количество</param>
+        /// <returns></returns>
+        private double Percent(double quantity, double requiredQuantity)
+        {
+            return quantity >= requiredQuantity ? 1 : quantity / requiredQuantity;
         }
 
         /// <summary>

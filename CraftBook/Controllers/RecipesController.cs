@@ -191,6 +191,11 @@ namespace CraftBook.Controllers
         [HttpPost]
         public IActionResult SearchByIngredients([FromBody] List<UserIngredient> ingredients, int PageNumber = 1)
         {
+            if (ingredients.Any(ui => !ui.IsCorrect()))
+            {
+                return Redirect("~/Error/Code400/?message=- one or more ingredients are not correct");
+            }
+
             var found = _context.FindRecipes(ingredients);
             UserRecipes result = new UserRecipes
             {
