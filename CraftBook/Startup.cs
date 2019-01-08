@@ -57,7 +57,8 @@ namespace CraftBook
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            
+
+            app.UseStatusCodePagesWithReExecute("/Error/Code{0}");
 
             app.UseMvc(routes =>
             {
@@ -65,11 +66,6 @@ namespace CraftBook
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-
-            app.Run(async context =>
-                {
-                    await context.Response.WriteAsync("Error 404: Page not found");
-                });
         }
     }
 }
