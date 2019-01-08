@@ -67,10 +67,6 @@ body {
 
 
     * {
-        &:nth-child(n+2) {
-            border-left: 1px solid $divider-color;
-        }
-
         &:first-child {
             flex: 7;
         }
@@ -98,6 +94,10 @@ body {
     @extend .fieldform;
     border: 2px solid $divider-color;
     @include rounding;
+
+    *:not(:first-child) {
+        border-left: 1px solid $divider-color;
+    }
 }
 
 input {

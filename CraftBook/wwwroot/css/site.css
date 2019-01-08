@@ -95,8 +95,6 @@ body > article {
   display: flex;
   justify-content: flex-end;
   height: 25px; }
-  .fieldform *:nth-child(n+2), .in-frame *:nth-child(n+2) {
-    border-left: 1px solid #BDBDBD; }
   .fieldform *:first-child, .in-frame *:first-child {
     flex: 7; }
   .fieldform *:not(:first-child), .in-frame *:not(:first-child) {
@@ -113,6 +111,8 @@ body > article {
   border: 2px solid #BDBDBD;
   border-width: 2px;
   border-radius: 5px; }
+  .in-frame *:not(:first-child) {
+    border-left: 1px solid #BDBDBD; }
 
 input {
   border: 0; }

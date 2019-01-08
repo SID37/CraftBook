@@ -12,10 +12,12 @@ article.inventory {
 
     & > form {
         border-bottom: 1px solid $primary-color-dark;
-
-        &.list-ingredients input:not([type="image"]) {
+        &.list-ingredients input {
+            &:not([type="image"]) {
             background-color: $primary-color-dark;
             color: $primary-color-text;
+            }
+            
         }
     }
 
