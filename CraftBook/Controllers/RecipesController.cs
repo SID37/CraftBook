@@ -183,14 +183,6 @@ namespace CraftBook.Controllers
             return _context.Recipe.Any(e => e.ID == id);
         }
 
-        //TODO Сергей, перепрячь, пожалуйста
-        //M - значит message
-        public class M
-        {
-            public List<UserIngredient> ingredients { get; set; }
-            public int pageNumber { get; set; }
-        }
-
         /// <summary>
         /// POST Запрос, возвращает требуемую страницу с результами
         /// поиска рецепта по ингредиентам
@@ -199,19 +191,19 @@ namespace CraftBook.Controllers
         /// <param name="pageNumber">Номер страницы</param>
         /// <returns></returns>
         [HttpPost]
-        public IActionResult SearchByIngredients([FromBody] M message)
+        public IActionResult SearchByIngredients([FromBody] UserSearchByIngredientsPage request)
         {
-            if (message.ingredients.Any(ui => !ui.IsCorrect()))
+            if (request.ingredients.Any(ui => !ui.IsCorrect()))
             {
                 return Redirect("~/Error/Code400/?message=- one or more ingredients are not correct");
             }
 
-            var found = _context.FindRecipes(message.ingredients);
+            var found = _context.FindRecipes(request.ingredients);
             UserRecipes result = new UserRecipes
             {
                 Title = "Найденные рецепты",
-                Recipes = CutList(found, message.pageNumber, PageSize),
-                PageNumber = message.pageNumber,
+                Recipes = CutList(found, request.pageNumber, PageSize),
+                PageNumber = request.pageNumber,
                 PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
             };
             return PartialView("Index", result);
