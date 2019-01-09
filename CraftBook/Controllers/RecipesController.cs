@@ -187,8 +187,7 @@ namespace CraftBook.Controllers
         /// POST Запрос, возвращает требуемую страницу с результами
         /// поиска рецепта по ингредиентам
         /// </summary>
-        /// <param name="ingredients">Список ингредиентов</param>
-        /// <param name="pageNumber">Номер страницы</param>
+        /// <param name="request">Список ингредиентов и номер страницы</param>
         /// <returns></returns>
         [HttpPost]
         public IActionResult SearchByIngredients([FromBody] UserSearchByIngredientsPage request)
