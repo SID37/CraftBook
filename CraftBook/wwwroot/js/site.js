@@ -6,6 +6,9 @@ var IngredientSoul = /** @class */ (function () {
 var IngredientView = /** @class */ (function () {
     function IngredientView(soul) {
         var _this = this;
+        this["delete"] = function () {
+            _this.button.onclick(null);
+        };
         this.main = document.createElement("div");
         this.main.classList.add("fieldform");
         this.main.innerHTML = '<div class="in-frame">' +
@@ -40,7 +43,7 @@ var ListIngredients = /** @class */ (function () {
             var find = _this.models.filter(function (model) { return model.id === soul.id; });
             if (find != null && find.length !== 0) {
                 var j = _this.models.lastIndexOf(find[0]);
-                _this.views[j].button.onclick(null);
+                _this.views[j]["delete"]();
             }
             var index = _this.models.length;
             _this.models[index] = soul;
@@ -91,63 +94,57 @@ var ListRecipes = /** @class */ (function () {
     function ListRecipes(node) {
         this.headNode = node;
     }
-    ListRecipes.prototype.search = function (list) {
+    ListRecipes.prototype.search = function (a, page) {
         var _this = this;
-        var requestSearch = new XMLHttpRequest();
-        requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
-        requestSearch.setRequestHeader("Content-Type", "application/json");
-        requestSearch.onloadend = function () {
-            if (requestSearch.status === 404)
-                return;
-            while (_this.headNode.hasChildNodes())
-                _this.headNode.removeChild(_this.headNode.firstChild);
-            _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
-        };
-        var message = {
-            ingredients: list,
-            pageNumber: 1
-        };
-        requestSearch.send(JSON.stringify(message));
-    };
-    ;
-    ListRecipes.prototype.searchByString = function (str) {
-        var _this = this;
-        var requestSearch = new XMLHttpRequest();
-        requestSearch.open("POST", "/Recipes/SearchByString", true);
-        requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        requestSearch.onloadend = function () {
-            if (requestSearch.status === 404)
-                return;
-            while (_this.headNode.hasChildNodes())
-                _this.headNode.removeChild(_this.headNode.firstChild);
-            _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
-        };
-        requestSearch.send("searchString=" + encodeURIComponent(str) + "&pageNumber=1");
+        if (page === void 0) { page = 1; }
+        if (typeof (a) == "string") {
+            var str = a;
+            var requestSearch_1 = new XMLHttpRequest();
+            requestSearch_1.open("POST", "/Recipes/SearchByString", true);
+            requestSearch_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSearch_1.onloadend = function () {
+                if (requestSearch_1.status === 404)
+                    return;
+                while (_this.headNode.hasChildNodes())
+                    _this.headNode.removeChild(_this.headNode.firstChild);
+                _this.headNode.insertAdjacentHTML("beforeend", requestSearch_1.response);
+            };
+            requestSearch_1.send("searchString=" + encodeURIComponent(str) + "&pageNumber=" + page);
+        }
+        else if (typeof (a) == "object") {
+            var list = a;
+            var requestSearch_2 = new XMLHttpRequest();
+            requestSearch_2.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch_2.setRequestHeader("Content-Type", "application/json");
+            requestSearch_2.onloadend = function () {
+                if (requestSearch_2.status === 404)
+                    return;
+                while (_this.headNode.hasChildNodes())
+                    _this.headNode.removeChild(_this.headNode.firstChild);
+                _this.headNode.insertAdjacentHTML("beforeend", requestSearch_2.response);
+            };
+            var message = {
+                ingredients: list,
+                pageNumber: page
+            };
+            requestSearch_2.send(JSON.stringify(message));
+        }
     };
     ;
     return ListRecipes;
 }());
-var Inventory = /** @class */ (function () {
-    function Inventory() {
+var IngredientAddatorView = /** @class */ (function () {
+    function IngredientAddatorView() {
         var _this = this;
-        this.inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]");
-        this.inputButton = document.getElementById("buttonAddIngridient");
-        this.inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]");
-        this.inputUIIngr =
+        this.name = document.querySelector("article.inventory input[type=\"text\"]");
+        this.btnAdd = document.getElementById("buttonAddIngridient");
+        this.count = document.querySelector("article.inventory input[type=\"number\"]");
+        this.unit =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
         this.form = document.querySelector("article.inventory form.add-ingredient");
-        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")));
-        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list'));
-        this.listIngridients.onshearch = function (list) {
-            _this.listRecipes.search(list);
-        };
-        var ss = new SearchString;
-        ss.onshearch = function (str) {
-            _this.listRecipes.searchByString(str);
-        };
         //Подсказки при вводе
-        this.inputNameIngr.addEventListener("input", function () {
-            var nameChip = _this.inputNameIngr.value;
+        this.name.addEventListener("input", function () {
+            var nameChip = _this.name.value;
             console.log(nameChip);
             if (nameChip.length === 0)
                 return;
@@ -167,22 +164,22 @@ var Inventory = /** @class */ (function () {
             requestSearch.send("nameChip=" + encodeURIComponent(nameChip));
         });
         //Окончание ввода названия ингредиента - устанавливаем единицы измерения
-        this.inputNameIngr.addEventListener("change", function () {
-            var nameChip = _this.inputNameIngr.value;
+        this.name.addEventListener("change", function () {
+            var nameChip = _this.name.value;
             var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
             if (tmp == null) {
-                _this.inputUIIngr.value = null;
-                _this.inputButton.style.visibility = "hidden";
+                _this.unit.value = null;
+                _this.btnAdd.style.visibility = "hidden";
             }
             else {
-                _this.inputUIIngr.value = tmp.getAttribute("label");
-                _this.inputButton.style.visibility = "visible";
+                _this.unit.value = tmp.getAttribute("label");
+                _this.btnAdd.style.visibility = "visible";
             }
         });
         //Добавление ингредиента в список
         this.form.onsubmit = function (event) {
             try {
-                if (_this.inputUIIngr.value === "") {
+                if (_this.unit.value === "") {
                     return false;
                 }
                 var requestAdd_1 = new XMLHttpRequest();
@@ -194,13 +191,13 @@ var Inventory = /** @class */ (function () {
                         alert('ингредиент не найден!');
                         return;
                     }
-                    _this.listIngridients.addIngredient(requestAdd_1.response);
-                    _this.inputCountIngr.value = null;
-                    _this.inputNameIngr.value = null;
-                    _this.inputUIIngr.value = null;
+                    _this.onadded(requestAdd_1.response);
+                    _this.count.value = null;
+                    _this.name.value = null;
+                    _this.unit.value = null;
                 };
-                var name_1 = _this.inputNameIngr.value;
-                var count = _this.inputCountIngr.value;
+                var name_1 = _this.name.value;
+                var count = _this.count.value;
                 requestAdd_1.send("ingredientName=" + encodeURIComponent(name_1) + "&volume=" + encodeURIComponent(count));
             }
             catch (e) {
@@ -209,6 +206,22 @@ var Inventory = /** @class */ (function () {
             }
             return false;
         };
+    }
+    return IngredientAddatorView;
+}());
+var Inventory = /** @class */ (function () {
+    function Inventory() {
+        var _this = this;
+        this.addator = new IngredientAddatorView();
+        this.listIngridients =
+            new ListIngredients((document.querySelector("article.inventory form.list-ingredients")));
+        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list'));
+        this.listIngridients.onshearch = function (list) {
+            _this.listRecipes.search(list);
+        };
+        var ss = new SearchString;
+        ss.onshearch = function (str) { _this.listRecipes.search(str); };
+        this.addator.onadded = this.listIngridients.addIngredient;
     }
     return Inventory;
 }());
