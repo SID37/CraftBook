@@ -16,20 +16,22 @@
         @Html.Partial("_Preview", item)
     </section>
 }
-<section>
-    <nav>
-        @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount); i++)
-        {
-            if (i != Model.PageNumber)
-            {
-                 <span class="page">@i</span>
-            }
-            else
-            {
-                <span class="page" id="currentPage">@i</span>
-            }
+    <section class="nav">
 
-        }
-        <!--@Html.DisplayFor(modelItem => Model.PageNumber)/@Html.DisplayFor(modelItem => Model.PageCount)-->
-    </nav>
-</section>
+        <nav>
+            @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount + 1); i++)
+            {
+                if (i != Model.PageNumber)
+                {
+                    <span class="page">@i</span>
+                }
+                else
+                {
+                    <span class="page" id="currentPage">@i</span>
+                }
+
+            }
+            <!--@Html.DisplayFor(modelItem => Model.PageNumber)/@Html.DisplayFor(modelItem => Model.PageCount)-->
+        </nav>
+
+    </section>

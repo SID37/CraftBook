@@ -24,10 +24,24 @@ article.recipe_list {
   article.recipe_list a {
     text-decoration: none;
     color: inherit; }
-  article.recipe_list nav .page {
-    color: red; }
-  article.recipe_list nav #currentPage {
-    color: green; }
+  article.recipe_list .nav {
+    margin-top: 16px;
+    text-align: center; }
+    article.recipe_list .nav > nav {
+      display: inline-block; }
+      article.recipe_list .nav > nav > span {
+        margin-left: -1px;
+        border: 1px solid #BDBDBD;
+        float: left;
+        padding: 8px 12px; }
+        article.recipe_list .nav > nav > span.page {
+          color: #757575;
+          cursor: pointer; }
+          article.recipe_list .nav > nav > span.page:hover {
+            background-color: #E3E7F1; }
+        article.recipe_list .nav > nav > span#currentPage {
+          background-color: #00BCD4;
+          color: #FFFFFF; }
 
 article.recipe-preview {
   background-color: #E3E7F1;

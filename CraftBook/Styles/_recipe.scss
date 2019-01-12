@@ -14,13 +14,34 @@ article.recipe_list {
         color: inherit;
     }
 
-    nav {
-        .page {
-            color:red;
-        }
+    .nav {
+        margin-top: 16px;
+        text-align: center;
+        & > nav {
+            display: inline-block;
 
-        #currentPage {
-            color:green;
+            & > span {
+                $span-border-width: 1px;
+                margin-left: -$span-border-width;
+                border: $span-border-width solid $divider-color;
+                float: left;
+                padding: 8px 12px;
+
+
+                &.page {
+                    color: $secondary-text-color;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: $primary-color-light;
+                    }
+                }
+
+                &#currentPage {
+                    background-color: $accent-color;
+                    color: $primary-color-text;
+                }
+            }
         }
     }
 }
