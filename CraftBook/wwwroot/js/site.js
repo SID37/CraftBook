@@ -90,6 +90,18 @@ var SearchString = /** @class */ (function () {
     }
     return SearchString;
 }());
+var ListRecipesButton = /** @class */ (function () {
+    function ListRecipesButton(element) {
+        var _this = this;
+        this.btn = element;
+        if (this.btn.id !== "currentPage") {
+            this.btn.onclick = function (ev) {
+                _this.onclick(parseInt(_this.btn.textContent));
+            };
+        }
+    }
+    return ListRecipesButton;
+}());
 var ListRecipes = /** @class */ (function () {
     function ListRecipes(node) {
         this.headNode = node;
@@ -97,37 +109,34 @@ var ListRecipes = /** @class */ (function () {
     ListRecipes.prototype.search = function (a, page) {
         var _this = this;
         if (page === void 0) { page = 1; }
+        var requestSearch = new XMLHttpRequest();
+        requestSearch.onloadend = function () {
+            if (requestSearch.status === 404)
+                return;
+            while (_this.headNode.hasChildNodes())
+                _this.headNode.removeChild(_this.headNode.firstChild);
+            _this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
+            _this.headNode.querySelectorAll(".page").forEach(function (btn) {
+                new ListRecipesButton(btn).onclick = function (page) {
+                    _this.search(a, page);
+                };
+            });
+        };
         if (typeof (a) == "string") {
             var str = a;
-            var requestSearch_1 = new XMLHttpRequest();
-            requestSearch_1.open("POST", "/Recipes/SearchByString", true);
-            requestSearch_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            requestSearch_1.onloadend = function () {
-                if (requestSearch_1.status === 404)
-                    return;
-                while (_this.headNode.hasChildNodes())
-                    _this.headNode.removeChild(_this.headNode.firstChild);
-                _this.headNode.insertAdjacentHTML("beforeend", requestSearch_1.response);
-            };
-            requestSearch_1.send("searchString=" + encodeURIComponent(str) + "&pageNumber=" + page);
+            requestSearch.open("POST", "/Recipes/SearchByString", true);
+            requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSearch.send("searchString=" + encodeURIComponent(str) + "&pageNumber=" + page);
         }
         else if (typeof (a) == "object") {
             var list = a;
-            var requestSearch_2 = new XMLHttpRequest();
-            requestSearch_2.open("POST", "/Recipes/SearchByIngredients", true);
-            requestSearch_2.setRequestHeader("Content-Type", "application/json");
-            requestSearch_2.onloadend = function () {
-                if (requestSearch_2.status === 404)
-                    return;
-                while (_this.headNode.hasChildNodes())
-                    _this.headNode.removeChild(_this.headNode.firstChild);
-                _this.headNode.insertAdjacentHTML("beforeend", requestSearch_2.response);
-            };
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
             var message = {
                 ingredients: list,
                 pageNumber: page
             };
-            requestSearch_2.send(JSON.stringify(message));
+            requestSearch.send(JSON.stringify(message));
         }
     };
     ;

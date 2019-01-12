@@ -45,7 +45,8 @@ article.recipe_list {
             background-color: #F5F5F5; }
         article.recipe_list .nav > nav > span#currentPage {
           background-color: #9E9E9E;
-          color: #FFFFFF; }
+          color: #FFFFFF;
+          cursor: default; }
 
 article.recipe-preview {
   background-color: #F5F5F5;

@@ -50,6 +50,7 @@ article.recipe_list {
                 &#currentPage {
                     background-color: $accent-color;
                     color: $primary-color-text;
+                    cursor: default;
                 }
             }
         }
