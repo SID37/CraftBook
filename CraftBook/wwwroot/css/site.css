@@ -19,6 +19,10 @@ article.inventory {
 article.recipe_list {
   display: flex;
   flex-direction: column; }
+  article.recipe_list > header {
+    margin-bottom: 8px; }
+    article.recipe_list > header img {
+      height: 0.625em; }
   article.recipe_list > section {
     margin: 4px 0 4px 0; }
   article.recipe_list a {
@@ -46,7 +50,6 @@ article.recipe_list {
 article.recipe-preview {
   background-color: #E3E7F1;
   display: flex;
-  border: 2px solid #BDBDBD;
   border-width: 2px;
   border-radius: 5px;
   height: 128px; }
@@ -80,30 +83,31 @@ body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5,
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-body > header, body > footer {
-  height: 3.5em;
-  background: #3F51B5;
-  min-height: 6vh; }
-  body > header div, body > footer div {
-    color: #FFFFFF;
-    padding-top: 3vh; }
-  body > header img, body > footer img {
-    float: left;
-    height: 4vh;
-    margin: 1vh 4px 1vh 8px; }
-
-body > article {
-  display: flex;
-  min-height: 88vh;
-  overflow: auto; }
-  body > article > section:nth-child(even) {
-    flex: 3; }
-  body > article > section:nth-child(odd) {
-    flex: 1;
-    background-color: #E3E7F1; }
-  body > article > section:nth-child(2) {
-    margin-left: 40px;
-    margin-right: 40px; }
+body {
+  font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; }
+  body > header, body > footer {
+    height: 3.5em;
+    background: #3F51B5;
+    min-height: 6vh; }
+    body > header div, body > footer div {
+      color: #FFFFFF;
+      padding-top: 3vh; }
+    body > header img, body > footer img {
+      float: left;
+      height: 4vh;
+      margin: 1vh 4px 1vh 8px; }
+  body > article {
+    display: flex;
+    min-height: 88vh;
+    overflow: auto; }
+    body > article > section:nth-child(even) {
+      flex: 3; }
+    body > article > section:nth-child(odd) {
+      flex: 1;
+      background-color: #E3E7F1; }
+    body > article > section:nth-child(2) {
+      margin-left: 40px;
+      margin-right: 40px; }
 
 .fieldform, .in-frame {
   display: flex;
@@ -129,7 +133,8 @@ body > article {
     border-left: 1px solid #BDBDBD; }
 
 input {
-  border: 0; }
+  border: 0;
+  font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif; }
   input[type="submit"] {
     border-width: 2px;
     border-radius: 5px;
@@ -139,3 +144,11 @@ input {
     height: 32px; }
   input[type="text"], input[type="number"] {
     padding-left: 4px; }
+
+h2 {
+  font-size: 1.25em;
+  font-weight: 500; }
+
+h3 {
+  font-size: 1.1em;
+  font-weight: normal; }

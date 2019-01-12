@@ -4,12 +4,13 @@
 @{
     ViewData["Title"] = "Index";
 }
-<section>
+<header>
     <h2>
         @Html.DisplayFor(modelItem => Model.Title)
-</h2>
-<a asp-action="Create">Create New</a>
-</section>
+        <a asp-action="Create"><img src="images/add.svg" alt="+" /></a>
+    </h2>
+
+</header>
 @foreach (var item in Model.Recipes)
 {
     <section>
@@ -19,7 +20,7 @@
     <section class="nav">
 
         <nav>
-            @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount + 1); i++)
+            @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount); i++)
             {
                 if (i != Model.PageNumber)
                 {
