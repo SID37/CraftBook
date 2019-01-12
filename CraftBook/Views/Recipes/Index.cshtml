@@ -4,32 +4,35 @@
 @{
     ViewData["Title"] = "Index";
 }
-<section>
+<header>
     <h2>
         @Html.DisplayFor(modelItem => Model.Title)
-</h2>
-<a asp-action="Create">Create New</a>
-</section>
+        <a asp-action="Create"><img src="images/add.svg" alt="+" /></a>
+    </h2>
+
+</header>
 @foreach (var item in Model.Recipes)
 {
     <section>
         @Html.Partial("_Preview", item)
     </section>
 }
-<section>
-    <nav>
-        @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount); i++)
-        {
-            if (i != Model.PageNumber)
-            {
-                 <span class="page">@i</span>
-            }
-            else
-            {
-                <span class="page" id="currentPage">@i</span>
-            }
+    <section class="nav">
 
-        }
-        <!--@Html.DisplayFor(modelItem => Model.PageNumber)/@Html.DisplayFor(modelItem => Model.PageCount)-->
-    </nav>
-</section>
+        <nav>
+            @for (int i = Math.Max(1, Model.PageNumber - 3); i <= Math.Min(Model.PageNumber + 3, Model.PageCount); i++)
+            {
+                if (i != Model.PageNumber)
+                {
+                    <span class="page">@i</span>
+                }
+                else
+                {
+                    <span class="page" id="currentPage">@i</span>
+                }
+
+            }
+            <!--@Html.DisplayFor(modelItem => Model.PageNumber)/@Html.DisplayFor(modelItem => Model.PageCount)-->
+        </nav>
+
+    </section>

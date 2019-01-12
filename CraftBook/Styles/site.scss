@@ -18,6 +18,8 @@ header, footer {
 }
 
 body {
+    @include main-font-family;
+
     & > header, & > footer {
         height: 3.5em;
         background: $primary-color;
@@ -25,14 +27,14 @@ body {
 
         div {
             color: $primary-color-text;
-            padding-top:3vh;
+            padding-top: 3vh;
             //transform: rotate(-30deg);
             //width:auto;
         }
 
 
         img {
-            float:left;
+            float: left;
             height: 4vh;
             margin: 1vh 4px 1vh 8px;
         }
@@ -101,16 +103,31 @@ body {
 }
 
 input {
-    border:0;
+    border: 0;
+    @include main-font-family;
+
+
     &[type="submit"] {
         @include rounding;
         margin: 16px 0px 16px 0;
-        background-color:$accent-color;
-        color:$primary-color-text;
-        height:32px;
+        background-color: $accent-color;
+        color: $primary-color-text;
+        height: 32px;
     }
 
     &[type="text"], &[type="number"] {
         padding-left: 4px;
+    }
+}
+
+h {
+    &2 {
+        font-size: $h2-size;
+        font-weight: 500;
+    }
+
+    &3 {
+        font-size: $h3-size;
+        font-weight: normal;
     }
 }

@@ -9,11 +9,15 @@ class IngredientSoul {
 
 class IngredientView {
     main: HTMLElement;
-    name: HTMLInputElement;
-    volume: HTMLInputElement;
-    unit: HTMLInputElement;
-    button: HTMLInputElement;
+    private name: HTMLInputElement;
+    private volume: HTMLInputElement;
+    private unit: HTMLInputElement;
+    private button: HTMLInputElement;
     ondeleted: (v: IngredientView) => void;
+    delete = () => {
+        this.button.onclick(null);
+    }
+
     constructor(soul: IngredientSoul) {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
@@ -47,6 +51,7 @@ class ListIngredients {
     private key = "listIngredient";
     private headNode: HTMLFormElement;
     onshearch: (listIngredients: Array<IngredientSoul>) => void;
+
     constructor(node: HTMLFormElement) {
         this.headNode = node;
         this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientSoul>;
@@ -69,7 +74,7 @@ class ListIngredients {
         let find = this.models.filter((model: IngredientSoul) => model.id === soul.id);
         if (find != null && find.length !== 0) {
             let j = this.models.lastIndexOf(find[0]);
-            this.views[j].button.onclick(null);
+            this.views[j].delete();
         }
         const index = this.models.length;
         this.models[index] = soul;
@@ -108,73 +113,87 @@ class SearchString {
     }
 }
 
+class ListRecipesButton {
+    btn: HTMLElement;
+
+    constructor(element: HTMLElement) {
+        this.btn = element;
+        if (this.btn.id !== "currentPage") {
+            this.btn.onclick = ev => {
+                this.onclick(parseInt(this.btn.textContent));
+            };
+        }
+    }
+
+    onclick: (value: number) => void;
+}
+
 class ListRecipes {
     private headNode: HTMLElement;
-    search(list: IngredientSoul[]): void {
-        let requestSearch = new XMLHttpRequest();
-        requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
-        requestSearch.setRequestHeader("Content-Type", "application/json");
+
+    search(str: string): void;
+    search(list: IngredientSoul[]): void;
+    search(a: any, page: number);
+    search(a: any, page: number = 1): void {
+
+        const requestSearch = new XMLHttpRequest();
         requestSearch.onloadend = () => {
             if (requestSearch.status === 404)
                 return;
             while (this.headNode.hasChildNodes())
                 this.headNode.removeChild(this.headNode.firstChild);
             this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
+            this.headNode.querySelectorAll(".page").forEach((btn: HTMLElement) => {
+                new ListRecipesButton(btn).onclick = (page: number) => {
+                    this.search(a, page);
+                }
+            });
         }
-        let message =
-        {
-            ingredients: list,
-            pageNumber: 1
+
+        if (typeof (a) == "string") {
+            const str = a as string;
+            requestSearch.open("POST", "/Recipes/SearchByString", true);
+            requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSearch.send(`searchString=${encodeURIComponent(str)}&pageNumber=${page}`);
+        } else if (typeof (a) == "object") {
+            const list = a as IngredientSoul[];
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            let message =
+            {
+                ingredients: list,
+                pageNumber: page
+            }
+            requestSearch.send(JSON.stringify(message));
         }
-        requestSearch.send(JSON.stringify(message));
     };
-    searchByString(str: string):void {
-        let requestSearch = new XMLHttpRequest();
-        requestSearch.open("POST", "/Recipes/SearchByString", true);
-        requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        requestSearch.onloadend = () => {
-            if (requestSearch.status === 404)
-                return;
-            while (this.headNode.hasChildNodes())
-                this.headNode.removeChild(this.headNode.firstChild);
-            this.headNode.insertAdjacentHTML("beforeend", requestSearch.response);
-        }
-        requestSearch.send(`searchString=${encodeURIComponent(str)}&pageNumber=1`);
-    };
+
     constructor(node: HTMLElement) {
         this.headNode = node;
     }
 }
 
-class Inventory {
-    inputNameIngr: HTMLInputElement;
-    inputButton: HTMLInputElement;
-    inputCountIngr: HTMLInputElement;
-    inputUIIngr: HTMLInputElement;
-    form: HTMLFormElement;
-    listIngridients: ListIngredients;
-    listRecipes: ListRecipes;
+class IngredientAddatorView {
+    private name: HTMLInputElement;
+    private btnAdd: HTMLInputElement;
+    private count: HTMLInputElement;
+    private unit: HTMLInputElement;
+    private form: HTMLFormElement;
+
+//    onadded: (model: IngredientSoul) => void;
+    onadded: (model: string) => void;
 
     constructor() {
-        this.inputNameIngr = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
-        this.inputButton = document.getElementById("buttonAddIngridient") as HTMLInputElement;
-        this.inputCountIngr = document.querySelector("article.inventory input[type=\"number\"]") as HTMLInputElement;
-        this.inputUIIngr =
+        this.name = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
+        this.btnAdd = document.getElementById("buttonAddIngridient") as HTMLInputElement;
+        this.count = document.querySelector("article.inventory input[type=\"number\"]") as HTMLInputElement;
+        this.unit =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
-        this.listIngridients = new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
-        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
-        this.listIngridients.onshearch = (list) => {
-            this.listRecipes.search(list);
-        };
-        var ss = new SearchString;
-        ss.onshearch = (str) => {
-            this.listRecipes.searchByString(str);
-        };
         //Подсказки при вводе
-        this.inputNameIngr.addEventListener("input",
+        this.name.addEventListener("input",
             () => {
-                let nameChip = this.inputNameIngr.value;
+                let nameChip = this.name.value;
                 console.log(nameChip);
                 if (nameChip.length === 0)
                     return;
@@ -194,22 +213,22 @@ class Inventory {
                 requestSearch.send(`nameChip=${encodeURIComponent(nameChip)}`);
             });
         //Окончание ввода названия ингредиента - устанавливаем единицы измерения
-        this.inputNameIngr.addEventListener("change",
+        this.name.addEventListener("change",
             () => {
-                const nameChip = this.inputNameIngr.value;
+                const nameChip = this.name.value;
                 const tmp = document.querySelector(`option[value="${nameChip}"`);
                 if (tmp == null) {
-                    this.inputUIIngr.value = null;
-                    this.inputButton.style.visibility = "hidden";
+                    this.unit.value = null;
+                    this.btnAdd.style.visibility = "hidden";
                 } else {
-                    this.inputUIIngr.value = tmp.getAttribute("label");
-                    this.inputButton.style.visibility = "visible";
+                    this.unit.value = tmp.getAttribute("label");
+                    this.btnAdd.style.visibility = "visible";
                 }
             });
         //Добавление ингредиента в список
         this.form.onsubmit = (event: Event) => {
             try {
-                if (this.inputUIIngr.value === "") {
+                if (this.unit.value === "") {
                     return false;
                 }
                 const requestAdd = new XMLHttpRequest();
@@ -221,13 +240,13 @@ class Inventory {
                         alert('ингредиент не найден!');
                         return;
                     }
-                    this.listIngridients.addIngredient(requestAdd.response);
-                    this.inputCountIngr.value = null;
-                    this.inputNameIngr.value = null;
-                    this.inputUIIngr.value = null;
+                    this.onadded(requestAdd.response);
+                    this.count.value = null;
+                    this.name.value = null;
+                    this.unit.value = null;
                 };
-                const name = this.inputNameIngr.value;
-                const count = this.inputCountIngr.value;
+                const name = this.name.value;
+                const count = this.count.value;
                 requestAdd.send(`ingredientName=${encodeURIComponent(name)}&volume=${encodeURIComponent(count)}`);
 
             } catch (e) {
@@ -236,6 +255,25 @@ class Inventory {
             }
             return false;
         }
+    }
+}
+
+class Inventory {
+    addator: IngredientAddatorView;
+    listIngridients: ListIngredients;
+    listRecipes: ListRecipes;
+
+    constructor() {
+        this.addator = new IngredientAddatorView();
+        this.listIngridients =
+            new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
+        this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
+        this.listIngridients.onshearch = (list) => {
+            this.listRecipes.search(list);
+        };
+        var ss = new SearchString;
+        ss.onshearch = (str: string) => { this.listRecipes.search(str); };
+        this.addator.onadded = this.listIngridients.addIngredient;
     }
 }
 
