@@ -86,7 +86,7 @@ namespace CraftBook.Data
         /// <returns></returns>
         public List<Recipe> FindRecipes(string searchString)
         {
-            Regex regex = new Regex(searchString, RegexOptions.Compiled);
+            Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
 
             return this.Recipe
                 .Include(r => r.Ingredients)
