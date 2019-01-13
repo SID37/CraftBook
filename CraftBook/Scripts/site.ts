@@ -268,6 +268,7 @@ class Inventory {
         this.listIngridients =
             new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
         this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
+        this.listRecipes.search("");
         this.listIngridients.onshearch = (list) => {
             this.listRecipes.search(list);
         };
