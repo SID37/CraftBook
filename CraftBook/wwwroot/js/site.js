@@ -225,6 +225,7 @@ var Inventory = /** @class */ (function () {
         this.listIngridients =
             new ListIngredients((document.querySelector("article.inventory form.list-ingredients")));
         this.listRecipes = new ListRecipes(document.querySelector('article.recipe_list'));
+        this.listRecipes.search("");
         this.listIngridients.onshearch = function (list) {
             _this.listRecipes.search(list);
         };
