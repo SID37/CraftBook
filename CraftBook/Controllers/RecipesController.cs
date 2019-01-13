@@ -221,7 +221,7 @@ namespace CraftBook.Controllers
             var found = _context.FindRecipes(searchString);
             UserRecipes result = new UserRecipes
             {
-                Title = "Найденные рецепты",
+                Title = (searchString != "")?"Найденные рецепты":"Рецепты",
                 Recipes = CutList(found, PageNumber, PageSize),
                 PageNumber = PageNumber,
                 PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
