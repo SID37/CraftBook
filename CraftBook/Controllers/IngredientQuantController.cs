@@ -46,18 +46,21 @@ namespace CraftBook.Controllers
             Ingredient ing = _context.Ingredients.Include(i => i.Unit).FirstOrDefault(i => i.Name == ingredientName);
 
             if (ing == null)
-            {
-                return Json(new UserIngredient { });
-            }
+                return Json(new ErrorMessage { Message = "Ингредиент не найден" });
 
-            return Json(new UserIngredient
+            UserIngredient ingredient = new UserIngredient
             {
                 Name = ing.Name,
                 UnitName = ing.Unit.Name,
                 UnitShortName = ing.Unit.ShortName,
                 Quantity = volume,
                 ID = ing.ID,
-            });
+            };
+
+            if (!ingredient.IsCorrect())
+                return Json(new ErrorMessage { Message = "Ингредиент задан неверно" });
+
+            return Json(ingredient);
         }
 
     }
