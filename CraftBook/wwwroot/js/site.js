@@ -29,6 +29,7 @@ var IngredientView = /** @class */ (function () {
         this.name.value = soul.name;
         this.volume.value = soul.quantity.toString();
         this.unit.value = soul.unitShortName;
+        this.unit.value = soul.unitShortName;
     }
     return IngredientView;
 }());
