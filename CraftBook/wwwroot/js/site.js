@@ -6,7 +6,7 @@ var IngredientSoul = /** @class */ (function () {
 var IngredientView = /** @class */ (function () {
     function IngredientView(soul) {
         var _this = this;
-        this["delete"] = function () {
+        this.delete = function () {
             _this.button.onclick(null);
         };
         this.main = document.createElement("div");
@@ -37,16 +37,15 @@ var ListIngredients = /** @class */ (function () {
     function ListIngredients(node) {
         var _this = this;
         this.key = "listIngredient";
-        this.addIngredient = function (data) {
-            var soul = JSON.parse(data);
+        this.addIngredient = function (model) {
             //на случай, если добавляемый ингредиент уже есть
-            var find = _this.models.filter(function (model) { return model.id === soul.id; });
+            var find = _this.models.filter(function (model_) { return model_.id === model.id; });
             if (find != null && find.length !== 0) {
                 var j = _this.models.lastIndexOf(find[0]);
-                _this.views[j]["delete"]();
+                _this.views[j].delete();
             }
             var index = _this.models.length;
-            _this.models[index] = soul;
+            _this.models[index] = model;
             _this.addView()(_this.models[index], index, _this.models);
         };
         this.headNode = node;
@@ -142,6 +141,23 @@ var ListRecipes = /** @class */ (function () {
     ;
     return ListRecipes;
 }());
+var ErrorView = /** @class */ (function () {
+    function ErrorView(node) {
+        this.parent = node;
+        this.view = document.createElement("div");
+        this.view.classList.add("error");
+        node.insertAdjacentElement("beforebegin", this.view);
+    }
+    ErrorView.prototype.display = function (flag, message) {
+        if (message)
+            this.view.textContent = message;
+        if (flag)
+            this.view.style.display = "initial";
+        else
+            this.view.style.display = "none";
+    };
+    return ErrorView;
+}());
 var IngredientAddatorView = /** @class */ (function () {
     function IngredientAddatorView() {
         var _this = this;
@@ -151,6 +167,7 @@ var IngredientAddatorView = /** @class */ (function () {
         this.unit =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
         this.form = document.querySelector("article.inventory form.add-ingredient");
+        this.error = new ErrorView(this.form);
         //Подсказки при вводе
         this.name.addEventListener("input", function () {
             var nameChip = _this.name.value;
@@ -178,29 +195,31 @@ var IngredientAddatorView = /** @class */ (function () {
             var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
             if (tmp == null) {
                 _this.unit.value = null;
-                _this.btnAdd.style.visibility = "hidden";
             }
             else {
                 _this.unit.value = tmp.getAttribute("label");
-                _this.btnAdd.style.visibility = "visible";
             }
         });
-        //Добавление ингредиента в список
+        //Запрашиваем у сервера корректность ингредиента
         this.form.onsubmit = function (event) {
+            _this.name.setCustomValidity("");
+            //заглушение исключений ради того, чтобы страничка не обновлялась при сбое скрипта
             try {
                 if (_this.unit.value === "") {
+                    _this.error.display(true, "Такого ингредиента не существует");
                     return false;
                 }
+                _this.error.display(false);
                 var requestAdd_1 = new XMLHttpRequest();
                 requestAdd_1.open("POST", "/IngredientQuant/FindName", true);
                 requestAdd_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 requestAdd_1.onloadend = function () {
-                    //todo нормально как-то
-                    if (requestAdd_1.status === 404) {
-                        alert('ингредиент не найден!');
+                    var response = JSON.parse(requestAdd_1.response);
+                    if (response.message != null) {
+                        _this.error.display(true, response.message);
                         return;
                     }
-                    _this.onadded(requestAdd_1.response);
+                    _this.onadded(response);
                     _this.count.value = null;
                     _this.name.value = null;
                     _this.unit.value = null;

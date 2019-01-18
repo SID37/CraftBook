@@ -68,20 +68,19 @@ class ListIngredients {
         }
     }
 
-    addIngredient = (data: string) => {
-        const soul = (JSON.parse(data) as IngredientSoul);
+    addIngredient = (model: IngredientSoul) => {
         //на случай, если добавляемый ингредиент уже есть
-        let find = this.models.filter((model: IngredientSoul) => model.id === soul.id);
+        let find = this.models.filter((model_: IngredientSoul) => model_.id === model.id);
         if (find != null && find.length !== 0) {
             let j = this.models.lastIndexOf(find[0]);
             this.views[j].delete();
         }
         const index = this.models.length;
-        this.models[index] = soul;
+        this.models[index] = model;
         this.addView()(this.models[index], index, this.models);
 
     }
-
+     
     private addView(): (value: IngredientSoul, index: number, array: IngredientSoul[]) => void {
         return (soul: IngredientSoul, i: number) => {
             this.views[i] = new IngredientView(soul);
@@ -173,15 +172,34 @@ class ListRecipes {
     }
 }
 
+class ErrorView {
+    private view: HTMLElement;
+    private parent: HTMLElement;
+    constructor(node: HTMLElement) {
+        this.parent = node;
+        this.view = document.createElement("div");
+        this.view.classList.add("error");
+        node.insertAdjacentElement("beforebegin", this.view);
+    }
+
+    display(flag: boolean, message?: string) {
+        if (message)
+            this.view.textContent = message;
+        if (flag)
+            this.view.style.display = "initial";
+        else 
+            this.view.style.display = "none";
+    }
+}
+
 class IngredientAddatorView {
     private name: HTMLInputElement;
     private btnAdd: HTMLInputElement;
     private count: HTMLInputElement;
     private unit: HTMLInputElement;
     private form: HTMLFormElement;
-
-//    onadded: (model: IngredientSoul) => void;
-    onadded: (model: string) => void;
+    private error: ErrorView;
+    onadded: (model: IngredientSoul) => void;
 
     constructor() {
         this.name = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
@@ -190,6 +208,8 @@ class IngredientAddatorView {
         this.unit =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]") as HTMLInputElement;
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
+        this.error = new ErrorView(this.form);
+
         //Подсказки при вводе
         this.name.addEventListener("input",
             () => {
@@ -219,28 +239,31 @@ class IngredientAddatorView {
                 const tmp = document.querySelector(`option[value="${nameChip}"`);
                 if (tmp == null) {
                     this.unit.value = null;
-                    this.btnAdd.style.visibility = "hidden";
                 } else {
                     this.unit.value = tmp.getAttribute("label");
-                    this.btnAdd.style.visibility = "visible";
                 }
             });
-        //Добавление ингредиента в список
+        //Запрашиваем у сервера корректность ингредиента
         this.form.onsubmit = (event: Event) => {
+            this.name.setCustomValidity("");
+            //заглушение исключений ради того, чтобы страничка не обновлялась при сбое скрипта
             try {
                 if (this.unit.value === "") {
+                    this.error.display(true, "Такого ингредиента не существует");
                     return false;
                 }
+                this.error.display(false);
                 const requestAdd = new XMLHttpRequest();
                 requestAdd.open("POST", "/IngredientQuant/FindName", true);
                 requestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 requestAdd.onloadend = () => {
-                    //todo нормально как-то
-                    if (requestAdd.status === 404) {
-                        alert('ингредиент не найден!');
+                    const response = JSON.parse(requestAdd.response); 
+                    if (response.message != null) {
+                        this.error.display(true, response.message);
                         return;
                     }
-                    this.onadded(requestAdd.response);
+
+                    this.onadded(response);
                     this.count.value = null;
                     this.name.value = null;
                     this.unit.value = null;

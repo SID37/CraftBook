@@ -131,3 +131,11 @@ h {
         font-weight: normal;
     }
 }
+
+.error {
+    background-color: $color-error-background;
+    color: $color-error-text;
+    font-size: $h4-size;
+    @include rounding;
+    text-align: center;
+}
