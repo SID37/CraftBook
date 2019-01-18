@@ -57,7 +57,7 @@ namespace CraftBook.Controllers
                 ID = ing.ID,
             };
 
-            ErrorMessage message = ingredient.IsCorrect();
+            ErrorMessage message = ingredient.IsIncorrect();
             if(message)
                 return Json(message);
 

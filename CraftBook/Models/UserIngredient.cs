@@ -18,7 +18,7 @@ namespace CraftBook.Models
         /// проверка ингредиента на корректность
         /// </summary>
         /// <returns></returns>
-        public ErrorMessage IsCorrect()
+        public ErrorMessage IsIncorrect()
         {
             if (Name == null)
                 return new ErrorMessage("Название не задано");
