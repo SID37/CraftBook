@@ -57,8 +57,9 @@ namespace CraftBook.Controllers
                 ID = ing.ID,
             };
 
-            if (!ingredient.IsCorrect())
-                return Json(new ErrorMessage { Message = "Ингредиент задан неверно" });
+            ErrorMessage message = ingredient.IsCorrect();
+            if(message)
+                return Json(message);
 
             return Json(ingredient);
         }
