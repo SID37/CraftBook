@@ -18,17 +18,17 @@ namespace CraftBook.Models
         /// проверка ингредиента на корректность
         /// </summary>
         /// <returns></returns>
-        public bool IsCorrect()
+        public ErrorMessage IsIncorrect()
         {
             if (Name == null)
-                return false;
+                return new ErrorMessage("Название не задано");
             if (UnitName == null)
-                return false;
+                return new ErrorMessage("Не задано название единиц измерения");
             if (UnitShortName == null)
-                return false;
+                return new ErrorMessage("Не задано краткое название единиц измерения");
             if (Quantity <= 0)
-                return false;
-            return true;
+                return new ErrorMessage("Ой, кажется, количество отрицательно или даже равно нулю!");
+            return new ErrorMessage();
         }
     }
 }
