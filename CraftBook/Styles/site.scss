@@ -13,20 +13,16 @@ body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5,
     box-sizing: border-box;
 }
 
-header, footer {
-
-}
-
 body {
     @include main-font-family;
 
     & > header, & > footer {
         height: 3.5em;
-        background: $primary-color;
+        background: $color-main-background;
+        color: $color-main-text;
         min-height: 6vh;
 
         div {
-            color: $primary-color-text;
             padding-top: 3vh;
             //transform: rotate(-30deg);
             //width:auto;
@@ -51,7 +47,7 @@ body {
 
         & > section:nth-child(odd) {
             flex: 1;
-            background-color: $primary-color-light;
+            background-color: $color-content-background;
         }
 
         & > section:nth-child(2) {
@@ -94,11 +90,11 @@ body {
 
 .in-frame {
     @extend .fieldform;
-    border: 2px solid $divider-color;
+    border: 2px solid $color-border;
     @include rounding;
 
     *:not(:first-child) {
-        border-left: 1px solid $divider-color;
+        border-left: 1px solid $color-border;
     }
 }
 
@@ -110,8 +106,8 @@ input {
     &[type="submit"] {
         @include rounding;
         margin: 16px 0px 16px 0;
-        background-color: $accent-color;
-        color: $primary-color-text;
+        background-color: $color-button-background;
+        color: $color-button-text;
         height: 32px;
     }
 
@@ -122,12 +118,12 @@ input {
 
 h {
     &2 {
-        font-size: $h2-size;
+        font-size: $size-h2;
         font-weight: 500;
     }
 
     &3 {
-        font-size: $h3-size;
+        font-size: $size-h3;
         font-weight: normal;
     }
 }
@@ -135,7 +131,7 @@ h {
 .error {
     background-color: $color-error-background;
     color: $color-error-text;
-    font-size: $h4-size;
+    font-size: $size-h4;
     @include rounding;
     text-align: center;
 }

@@ -7,19 +7,19 @@ article.inventory {
     width: 90%;
     display: flex;
     flex-direction: column;
-    background-color: $primary-color-light;
-    color: $primary-text-color;
+    background-color: $color-content-background;
+    color: $color-content-text;
 
     & > form {
-        border-bottom: 1px solid $primary-color-dark;
+        border-bottom: 1px solid $color-line;
+        //ингредиент
         &.list-ingredients input {
             &:not([type="image"]) {
-            background-color: $primary-color-dark;
-            color: $primary-color-text;
+                background-color: $color-content-background;
+                color: $color-content-text;
+                font-weight:500;
+                font-variant:small-caps;
             }
-            
         }
     }
-
-
 }

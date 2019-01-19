@@ -8,6 +8,29 @@ $primary-text-color: #212121;
 $secondary-text-color: #757575;
 $divider-color: #BDBDBD;
 
+/*
+    Правила именования констант/переменных
+    что-для_чего-какой_части
+    что: цвет/размер/...
+    для чего: css-класс/селектор, html-узел, другой смысловой элемент
+    какой части: атрибут/свойство/кусок элемента
+    Пример: 
+    $color-error-text
+    что: цвет
+    цвет чего: текста ошибки
+*/
 
 $color-error-text: black;
 $color-error-background: red;
+
+$color-main-background: $primary-color;
+$color-main-text: $primary-color-text;
+
+$color-content-text: $primary-text-color;
+$color-content-background: $primary-color-light;
+
+$color-line: $primary-color-dark;
+$color-border: $divider-color;
+
+$color-button-background: $accent-color;
+$color-button-text: $primary-color-text;
