@@ -261,3 +261,5 @@ paket-files/
 __pycache__/
 *.pyc
 /CraftBook/wwwroot/css/site.css
+/CraftBook/wwwroot/js
+/CraftBook/wwwroot/css/site.min.css
