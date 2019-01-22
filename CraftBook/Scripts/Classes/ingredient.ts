@@ -46,19 +46,26 @@ class IngredientView {
 class ListIngredients {
     private views: Array<IngredientView>;
     private models: Array<IngredientModel>;
-    private key = "listIngredient";
+    private key: string;
+    private storage: Storage;
     private headNode: HTMLFormElement;
     onshearch: (listIngredients: Array<IngredientModel>) => void;
 
-    constructor(node: HTMLFormElement) {
+    getIngredients(): Array<IngredientModel> {
+        return this.models;
+    }
+
+    constructor(node: HTMLFormElement, temporary: boolean = false, name: string = "listIngredient") {
         this.headNode = node;
-        this.models = JSON.parse(localStorage.getItem(this.key)) as Array<IngredientModel>;
+        this.storage = temporary ? sessionStorage : localStorage;
+        this.key = name;
         this.views = new Array<IngredientView>();
+        this.models = JSON.parse(this.storage.getItem(this.key)) as Array<IngredientModel>;
         if (this.models == null)
             this.models = new Array<IngredientModel>();
         else
             this.models.forEach(this.addView());
-        window.addEventListener("unload", () => { localStorage.setItem(this.key, JSON.stringify(this.models)); });
+        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(this.models)); });
         this.headNode.onsubmit = () => {
             this.onshearch(this.models);
 
@@ -66,6 +73,7 @@ class ListIngredients {
         }
     }
 
+    //Лямбдой - чтоб можно было передавать как callback и this не теряла контекст
     addIngredient = (model: IngredientModel) => {
         //на случай, если добавляемый ингредиент уже есть
         let find = this.models.filter((model_: IngredientModel) => model_.id === model.id);
@@ -78,7 +86,7 @@ class ListIngredients {
         this.addView()(this.models[index], index, this.models);
 
     }
-
+    //Лямбдой - чтоб можно было передавать как callback и this не теряла контекст
     private addView(): (value: IngredientModel, index: number, array: IngredientModel[]) => void {
         return (soul: IngredientModel, i: number) => {
             this.views[i] = new IngredientView(soul);

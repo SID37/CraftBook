@@ -16,7 +16,6 @@
 class ListRecipes {
     private headNode: HTMLElement;
 
-    search(str: string): void;
     search(list: IngredientModel[]): void;
     search(a: any, page: number);
     search(a: any, page: number = 1): void {
@@ -34,13 +33,7 @@ class ListRecipes {
                 }
             });
         }
-
-        if (typeof (a) == "string") {
-            const str = a as string;
-            requestSearch.open("POST", "/Recipes/SearchByString", true);
-            requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            requestSearch.send(`searchString=${encodeURIComponent(str)}&pageNumber=${page}`);
-        } else if (typeof (a) == "object") {
+        if (typeof (a) == "object") {
             const list = a as IngredientModel[];
             requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
             requestSearch.setRequestHeader("Content-Type", "application/json");
@@ -52,6 +45,17 @@ class ListRecipes {
             requestSearch.send(JSON.stringify(message));
         }
     };
+
+    setList(html: string, searcher: ISearchEnginePages): void {
+        while (this.headNode.hasChildNodes())
+            this.headNode.removeChild(this.headNode.firstChild);
+        this.headNode.insertAdjacentHTML("beforeend", html);
+        this.headNode.querySelectorAll(".page").forEach((btn: HTMLElement) => {
+            new ListRecipesButton(btn).onclick = (page: number) => {
+                searcher.search(page);
+            }
+        });
+    }
 
     constructor(node: HTMLElement) {
         this.headNode = node;
