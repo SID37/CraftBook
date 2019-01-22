@@ -49,7 +49,6 @@ class ListIngredients {
     private key: string;
     private storage: Storage;
     private headNode: HTMLFormElement;
-    onshearch: (listIngredients: Array<IngredientModel>) => void;
 
     getIngredients(): Array<IngredientModel> {
         return this.models;
@@ -67,8 +66,6 @@ class ListIngredients {
             this.models.forEach(this.addView());
         window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(this.models)); });
         this.headNode.onsubmit = () => {
-            this.onshearch(this.models);
-
             return false;
         }
     }
@@ -186,5 +183,19 @@ class IngredientAddatorView {
             }
             return false;
         }
+    }
+}
+
+class Inventory {
+    private addator: IngredientAddatorView;
+    private listIngridients: ListIngredients;
+    getIngredients(): IngredientModel[] {
+        return this.listIngridients.getIngredients();
+    }
+    constructor() {
+        this.addator = new IngredientAddatorView();
+        this.listIngridients =
+            new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
+        this.addator.onadded = this.listIngridients.addIngredient;
     }
 }

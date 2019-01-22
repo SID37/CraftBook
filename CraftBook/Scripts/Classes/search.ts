@@ -6,22 +6,22 @@ interface ISearchEnginePages {
 }
 
 interface ISearchView {
-    onshearch: (searcher: ISearchEnginePages) => void;
+    onsearch: (searcher: ISearchEnginePages) => void;
 }
 
 class SearcherByStringView implements ISearchView{
     private form: HTMLFormElement;
     private data: HTMLInputElement;
-    onshearch: (searcher: ISearchEnginePages) => void;
-    constructor() {
-        this.form = document.querySelector('form[action="/Recipes/SearchByString"') as HTMLFormElement;
+    onsearch: (searcher: ISearchEnginePages) => void;
+    constructor(form: HTMLFormElement) {
+        this.form = form;
         this.data = this.form.querySelector('input[name="searchString"]') as HTMLInputElement;
 
         this.form.onsubmit = () => {
             const str = this.data.value;
             if (str) {
                 let searcher = new SearcherByString(str);
-                this.onshearch(searcher);
+                this.onsearch(searcher);
             }
             return false;
         }
@@ -33,7 +33,7 @@ class SearcherByString implements ISearchEnginePages {
     private onsearched: SearchListener;
 
     constructor(request: string) {
-        this.request = request;
+        this.request = request.slice();
     }
 
     search(page: number): void;
@@ -60,13 +60,57 @@ class SearcherByString implements ISearchEnginePages {
     }
 }
 
-class SearchByIngredients {
+class SearchByIngredientsView implements ISearchView{
     private button: HTMLElement;
-    constructor(button: HTMLElement) {
+    private data: Inventory;
+    onsearch: (searcher: ISearchEnginePages) => void;
+    constructor(button: HTMLElement, sourse: Inventory) {
         this.button = button;
+        this.data = sourse;
+        this.button.onclick = () => {
+            const ingredients = this.data.getIngredients();
+            if (ingredients) {
+                let searcher = new SearcherByIngredients(ingredients);
+                this.onsearch(searcher);
+            }
+            return false;
+        }
     }
 }
 
-class RecipeSeacher {
 
+class SearcherByIngredients implements ISearchEnginePages {
+    private request: IngredientModel[];
+    private onsearched: SearchListener;
+
+    constructor(request: IngredientModel[]) {
+        this.request = request.slice();
+    }
+
+    search(page: number): void;
+    search(listener: SearchListener): void;
+    search(input: number | ((html: string, me: ISearchEnginePages) => void)): void {
+        if (typeof (input) == "number") {
+            const page = input as number;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
+                    //TODO как-то сообщить пользователю
+                    console.log(`По запросу "${this.request}" ответ: 404`);
+                    return;
+                }
+                this.onsearched(requestSearch.response, this);
+            }
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
+                ingredients: this.request,
+                pageNumber: page
+            };
+            requestSearch.send(JSON.stringify(message));
+        } else {
+            this.onsearched = input as SearchListener;
+            this.search(1);
+        }
+    }
 }
