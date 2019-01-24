@@ -12,10 +12,14 @@ namespace CraftBook.Models
         public string Description { get; }
         public string Instruction { get; }
         public byte[] Image { get;  }
-        public string Time { get; }
+        public string CookingTime { get; }
 
         public List<UserIngredient> Ingredients { get; }
 
+        /// <summary>
+        /// Конструктор из обычного рецепта
+        /// </summary>
+        /// <param name="recipe"></param>
         public UserRecipe(Recipe recipe)
         {
             ID = recipe.ID;
@@ -23,7 +27,7 @@ namespace CraftBook.Models
             Description = recipe.Description;
             Instruction = recipe.Instruction;
             Image = recipe.Image;
-            Time = "10 минуточек";
+            CookingTime = "10 минуточек";
 
             Ingredients = recipe
                 .Ingredients
