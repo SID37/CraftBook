@@ -7,6 +7,10 @@
 
   <ItemGroup>
     <None Remove="gulpfile.js" />
+    <None Remove="Scripts\Classes\error.ts" />
+    <None Remove="Scripts\Classes\ingredient.ts" />
+    <None Remove="Scripts\Classes\recipe.ts" />
+    <None Remove="Scripts\Classes\search.ts" />
     <None Remove="Scripts\site.ts" />
   </ItemGroup>
 
@@ -21,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\Classes\error.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\ingredient.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\recipe.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\search.ts" />
     <TypeScriptCompile Include="Scripts\site.ts" />
   </ItemGroup>
 
@@ -38,7 +46,7 @@
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile></TypeScriptOutFile>
-    <TypeScriptOutDir>..\CraftBook\wwwroot\js</TypeScriptOutDir>
+    <TypeScriptOutDir></TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptSourceMap>False</TypeScriptSourceMap>

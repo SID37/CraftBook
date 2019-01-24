@@ -263,3 +263,5 @@ __pycache__/
 /CraftBook/wwwroot/css/site.css
 /CraftBook/wwwroot/js
 /CraftBook/wwwroot/css/site.min.css
+/CraftBook/Scripts/**/*.js
+/CraftBook/wwwroot/lib/*.js

@@ -7,7 +7,7 @@ article.recipe_list {
 
     & > header {
         img {
-            height: $h2-size/2;
+            height: $size-h2/2;
         }
 
         margin-bottom: 8px;
@@ -33,23 +33,23 @@ article.recipe_list {
             & > span {
                 $span-border-width: 1px;
                 margin-left: -$span-border-width;
-                border: $span-border-width solid $divider-color;
+                border: $span-border-width solid $color-border;
                 float: left;
                 padding: 8px 12px;
 
 
                 &.page {
-                    color: $secondary-text-color;
+                    color: $color-content-text;//$secondary-text-color;
                     cursor: pointer;
 
                     &:hover {
-                        background-color: $primary-color-light;
+                        background-color: $color-content-background;
                     }
                 }
 
                 &#currentPage {
-                    background-color: $accent-color;
-                    color: $primary-color-text;
+                    background-color: $color-button-background;
+                    color: $color-button-text;
                     cursor: default;
                 }
             }
@@ -59,7 +59,8 @@ article.recipe_list {
 
 
 article.recipe-preview {
-    background-color: $primary-color-light;
+    background-color: $color-content-background;
+    color: $color-content-text;
     display: flex;
     @include rounding;
     $height: 128px;

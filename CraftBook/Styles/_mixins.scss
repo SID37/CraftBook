@@ -1,4 +1,6 @@
-﻿@mixin rounding {
+﻿@import "_font.scss";
+
+@mixin rounding {
     border-width: 2px;
     border-radius: 5px;
 }
@@ -6,13 +8,3 @@
 @mixin line-spacing {
     margin: 4px 0 4px 0;
 }
-
-@mixin main-font-family {
-    font-family: Segoe UI,Frutiger,Frutiger Linotype,Dejavu Sans,Helvetica Neue,Arial,sans-serif;
-}
-
-$h1-size: 1.5em;
-$h2-size: 1.25em;
-$h3-size: 1.1em;
-$h4-size: 1em;
-$h5-size: 0.75em;
