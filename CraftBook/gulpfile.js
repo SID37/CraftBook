@@ -23,18 +23,24 @@ paths.concatLibDest = paths.webroot + "Lib/craftbook.min.js";
 paths.concatCssDest = paths.webroot + "css/site.min.css";
 paths.scripts = "./Scripts/*.js";
 paths.classes = "./Scripts/Classes/*.js";
-//надо переделать, возможно, в виде списка задачек очистки
+
 gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
     rimraf(paths.js, cb);
-    rimraf(paths.lib, cb);
+});
+
+gulp.task("clean:lib", function (cb) {
+    rimraf(paths.js, cb);
+});
+
+gulp.task("clean:min", function (cb) {
+    rimraf(paths.concatJsDest, cb);
 });
 
 gulp.task("clean:css", function (cb) {
     rimraf(paths.concatCssDest, cb);
 });
 
-gulp.task("clean", ["clean:js", "clean:css"]);
+gulp.task("clean", ["clean:js", "clean:lib", "clean:min", "clean:css"]);
 
 gulp.task("concat:lib", function() {
     return gulp.src(paths.classes)
