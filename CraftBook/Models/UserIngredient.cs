@@ -11,8 +11,27 @@ namespace CraftBook.Models
         public string Name { get; set; }
         public string UnitName { get; set; }
         public string UnitShortName { get; set; }
-        public double Quantity { get; set; }
+        public double? Quantity { get; set; }
         public int ID { get; set; }
+
+        /// <summary>
+        /// Конструктор по умолчанию чтоб можно было через фигурные скобочки заполнять
+        /// </summary>
+        public UserIngredient()
+        {}
+
+        /// <summary>
+        /// Конструктор от обычного ингредиента
+        /// </summary>
+        /// <param name="igr"></param>
+        public UserIngredient(IngredientQuantity igr)
+        {
+            Name = igr.Ingredient.Name;
+            UnitName = igr.Ingredient.Unit.Name;
+            UnitShortName = igr.Ingredient.Unit.ShortName;
+            Quantity = igr.Volume;
+            ID = igr.Ingredient.ID;
+        }
 
         /// <summary>
         /// проверка ингредиента на корректность

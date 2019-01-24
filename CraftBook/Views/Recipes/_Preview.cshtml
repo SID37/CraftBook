@@ -1,4 +1,4 @@
-﻿@model CraftBook.Models.Recipe
+﻿@model CraftBook.Models.UserRecipe
 <a asp-action="Details" asp-route-id="@Model.ID">
     <article class="recipe-preview">
         <section>
@@ -18,7 +18,7 @@
 
                 @foreach (var iq in Model.Ingredients)
                 {
-                    <span>@iq.Ingredient.Name</span>
+                    <span>@iq.Name</span>
                 }
             </section>
         </section>

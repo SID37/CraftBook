@@ -198,7 +198,7 @@ namespace CraftBook.Controllers
             }
 
             var found = _context.FindRecipes(request.ingredients);
-            UserRecipes result = new UserRecipes
+            UserRecipesPage result = new UserRecipesPage
             {
                 Title = "Найденные рецепты",
                 Recipes = CutList(found, request.pageNumber, PageSize),
@@ -219,7 +219,7 @@ namespace CraftBook.Controllers
         public IActionResult SearchByString(string searchString, int PageNumber = 1)
         {
             var found = _context.FindRecipes(searchString);
-            UserRecipes result = new UserRecipes
+            UserRecipesPage result = new UserRecipesPage
             {
                 Title = (searchString != null)?"Найденные рецепты":"Рецепты",
                 Recipes = CutList(found, PageNumber, PageSize),
@@ -236,7 +236,7 @@ namespace CraftBook.Controllers
         /// <param name="PageNumber">номер страницы</param>
         /// <param name="PageSize">размер каждой страницы</param>
         /// <returns></returns>
-        private List<Recipe> CutList(List<Recipe> Recips, int PageNumber, int PageSize)
+        private List<UserRecipe> CutList(List<UserRecipe> Recips, int PageNumber, int PageSize)
         {
             return Recips.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
         }

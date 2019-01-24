@@ -36,7 +36,7 @@ namespace CraftBook.Data
         /// </summary>
         /// <param name="ingredients">Набор ингредиентов</param>
         /// <returns></returns>
-        public List<Recipe> FindRecipes(List<UserIngredient> ingredients)
+        public List<UserRecipe> FindRecipes(List<UserIngredient> ingredients)
         {
             //  тут отбрасываются рецепты, которые не подходят совсем
             var filter = this.Recipe
@@ -59,12 +59,13 @@ namespace CraftBook.Data
                 {
                     double[] percent = ingredients                                  //  ингредиенты пользователя
                         .Where(ui => r.CountOfIgr(ui.ID) > 0)                       //  которые содержатся в рецепте
-                        .Select(ui => Percent(ui.Quantity, r.CountOfIgr(ui.ID)))    //  На сколько их у пользователя хватает
+                        .Select(ui => Percent(ui.Quantity ?? 0, r.CountOfIgr(ui.ID)))    //  На сколько их у пользователя хватает
                         .ToArray();                                                 //  пихаем в массив
                     return 1 - percent.Sum() / percent.Length;
                 });
 
             return ingredSort
+                .Select(r => new UserRecipe(r))
                 .ToList();
         }
 
@@ -84,7 +85,7 @@ namespace CraftBook.Data
         /// </summary>
         /// <param name="searchString">Строка поиска</param>
         /// <returns></returns>
-        public List<Recipe> FindRecipes(string searchString)
+        public List<UserRecipe> FindRecipes(string searchString)
         {
             Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
 
@@ -93,6 +94,7 @@ namespace CraftBook.Data
                 .ThenInclude(iq => iq.Ingredient)
                 .ThenInclude(i => i.Unit)
                 .Where(r => regex.IsMatch(r.Name) || regex.IsMatch(r.Description))
+                .Select(r => new UserRecipe(r))
                 .ToList();
         }
 
