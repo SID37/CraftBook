@@ -45,7 +45,7 @@ namespace CraftBook.Models
                 return new ErrorMessage("Не задано название единиц измерения");
             if (UnitShortName == null)
                 return new ErrorMessage("Не задано краткое название единиц измерения");
-            if (Quantity <= 0)
+            if ((Quantity ?? 1)<= 0)
                 return new ErrorMessage("Ой, кажется, количество отрицательно или даже равно нулю!");
             return new ErrorMessage();
         }

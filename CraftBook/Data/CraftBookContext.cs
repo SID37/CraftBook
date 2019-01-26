@@ -27,6 +27,7 @@ namespace CraftBook.Data
         /// <returns></returns>
         public List<Ingredient> FindIngredients(string nameChip, int n)
         {
+            nameChip = Regex.Escape(nameChip ?? "");
             Regex regex = new Regex(@"(^|\s)" + nameChip, RegexOptions.Compiled);
             return Ingredients.Include(i => i.Unit).Where(i => regex.IsMatch(i.Name)).Take(n).ToList();
         }
@@ -87,6 +88,7 @@ namespace CraftBook.Data
         /// <returns></returns>
         public List<UserRecipe> FindRecipes(string searchString)
         {
+            searchString = Regex.Escape(searchString ?? "");
             Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
 
             return this.Recipe
