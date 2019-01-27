@@ -16,7 +16,7 @@ namespace CraftBook.Data
         /// <param name="options"></param>
         public CraftBookContext(DbContextOptions<CraftBookContext> options) : base(options)
         {
-
+            Database.Migrate();
         }
 
         /// <summary>
@@ -104,5 +104,6 @@ namespace CraftBook.Data
         public DbSet<IngredientQuantity> IngredientQuantities { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<UnitOfMeasurement> UnitOfMeasurement { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }

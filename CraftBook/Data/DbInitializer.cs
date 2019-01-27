@@ -10,8 +10,6 @@ namespace CraftBook.Data
     {
         public static void Initialize(CraftBookContext context)
         {
-            context.Database.EnsureCreated();
-
             if (context.UnitOfMeasurement.Any())
                 return;
 
