@@ -30,7 +30,7 @@ namespace CraftBook.Controllers
         /// </summary>
         /// <param name="id">Её ID</param>
         /// <returns></returns>
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> View(int? id)
         {
             if (id == null)
             {
@@ -44,7 +44,7 @@ namespace CraftBook.Controllers
                 return NotFound();
             }
 
-            return View(image);
+            return View("View", image);
         }
 
         /// <summary>
@@ -73,10 +73,14 @@ namespace CraftBook.Controllers
             }
             _context.Images.Add(entity);
 
-            return Json(new UserLink($"/Images/Details/?id={entity.ID}"));
+            return Json(new UserLink($"/Images/View/?id={entity.ID}"));
         }
 
-        // POST: Images/Delete/5
+        /// <summary>
+        /// POST запрос на удаление картинки
+        /// </summary>
+        /// <param name="id">Её ID</param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
