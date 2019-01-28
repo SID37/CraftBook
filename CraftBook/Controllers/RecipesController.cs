@@ -65,16 +65,12 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([FromBody]UserRecipe recipe)
+        public JsonResult Create([FromBody]UserRecipe recipe)
         {
-            if (recipe != null)
-            {
-                _context.Add(new Recipe { Name = recipe.Name, Image = recipe.Image, Description = recipe.Description, Instruction = recipe.Instruction });
-                await _context.SaveChangesAsync();
-                return Redirect("~/Home/Index");
-            }
-
-            return View(recipe);
+            ErrorMessage error = _context.AddRecipe(ref recipe);
+            if (error)
+                return Json(error);
+            return Json(new UserLink($"/Recipes/Details/?id={recipe.ID}"));
         }
 
         /// <summary>
