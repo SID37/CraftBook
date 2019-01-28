@@ -192,10 +192,10 @@ class Inventory {
     getIngredients(): IngredientModel[] {
         return this.listIngridients.getIngredients();
     }
-    constructor() {
+    constructor(temporary: boolean = false) {
         this.addator = new IngredientAddatorView();
         this.listIngridients =
-            new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement);
+            new ListIngredients((document.querySelector("article.inventory form.list-ingredients")) as HTMLFormElement, temporary);
         this.addator.onadded = this.listIngridients.addIngredient;
     }
 }

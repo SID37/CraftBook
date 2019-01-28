@@ -64,7 +64,6 @@ namespace CraftBook.Controllers
         /// <param name="recipe">Собственно рецепт</param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromBody]UserRecipe recipe)
         {
             if (recipe != null)

@@ -9,8 +9,10 @@
     <None Remove="gulpfile.js" />
     <None Remove="Scripts\Classes\error.ts" />
     <None Remove="Scripts\Classes\ingredient.ts" />
+    <None Remove="Scripts\Classes\listRecipe.ts" />
     <None Remove="Scripts\Classes\recipe.ts" />
     <None Remove="Scripts\Classes\search.ts" />
+    <None Remove="Scripts\createRecipe.ts" />
     <None Remove="Scripts\site.ts" />
   </ItemGroup>
 
@@ -27,8 +29,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Classes\error.ts" />
     <TypeScriptCompile Include="Scripts\Classes\ingredient.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\listRecipe.ts" />
     <TypeScriptCompile Include="Scripts\Classes\recipe.ts" />
     <TypeScriptCompile Include="Scripts\Classes\search.ts" />
+    <TypeScriptCompile Include="Scripts\createRecipe.ts" />
     <TypeScriptCompile Include="Scripts\site.ts" />
   </ItemGroup>
 

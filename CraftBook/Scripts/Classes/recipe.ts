@@ -1,33 +1,47 @@
-﻿class ListRecipesButton {
-    btn: HTMLElement;
+﻿class RecipeModel {
+    name: string;
+    description: string;
+    instruction: string;
+    image: string;
+    cookingTime: string;
+    ingredients: Array<IngredientModel>;
+}
 
-    constructor(element: HTMLElement) {
-        this.btn = element;
-        if (this.btn.id !== "currentPage") {
-            this.btn.onclick = ev => {
-                this.onclick(parseInt(this.btn.textContent));
-            };
+class RecipeCreateView {
+    name: HTMLInputElement;
+    description: HTMLInputElement;
+    instruction: HTMLInputElement;
+    image: HTMLInputElement;
+    cookingTime: HTMLInputElement;
+    ingredients: Inventory;
+
+    
+
+    constructor(form: HTMLFormElement, inventory: Inventory, listener: (r: RecipeModel) => void) {
+        this.name = document.getElementById("Name") as HTMLInputElement;
+        this.description = document.getElementById("Description") as HTMLInputElement;
+        this.instruction = document.getElementById("Instruction") as HTMLInputElement;
+        this.image = document.getElementById("Image") as HTMLInputElement;
+        //this.cookingTime = document.getElementById("Name") as HTMLInputElement;
+        this.ingredients = inventory;
+        form.onsubmit = () => {
+            try {
+                let recipe = new RecipeModel();
+                for (var field in this) {
+                    if (field == "ingredients") {
+                        recipe[field.toString()] = this.ingredients.getIngredients();
+                    } else {
+                        recipe[field.toString()] = (this[field.toString()] as HTMLInputElement).value;
+                    }
+                }
+                recipe.cookingTime = "42";
+                console.log(recipe);
+                listener(recipe);
+            } catch (err) {
+                console.log(err);
+            }
+            return false;
         }
     }
-
-    onclick: (value: number) => void;
 }
 
-class ListRecipes {
-    private headNode: HTMLElement;
-
-    setList(html: string, searcher: ISearchEnginePages): void {
-        while (this.headNode.hasChildNodes())
-            this.headNode.removeChild(this.headNode.firstChild);
-        this.headNode.insertAdjacentHTML("beforeend", html);
-        this.headNode.querySelectorAll(".page").forEach((btn: HTMLElement) => {
-            new ListRecipesButton(btn).onclick = (page: number) => {
-                searcher.search(page);
-            }
-        });
-    }
-
-    constructor(node: HTMLElement) {
-        this.headNode = node;
-    }
-}
