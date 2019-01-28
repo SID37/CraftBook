@@ -2,8 +2,7 @@
 <a asp-action="Details" asp-route-id="@Model.ID">
     <article class="recipe-preview">
         <section>
-            @Html.Raw("<img src=" +(Model.Image != null ? " \"data:image/jpeg;base64,"
-                                                          + Convert.ToBase64String(Model.Image) : "/images/recipe_default.jpg") + " />")
+            @Html.Raw("<img src=" +(Model.Image != null ? Model.Image : "/images/recipe_default.jpg") + " />")
         </section>
         <section>
             <header>

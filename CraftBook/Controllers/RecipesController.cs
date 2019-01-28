@@ -65,11 +65,11 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
+        public async Task<IActionResult> Create([FromBody]UserRecipe recipe)
         {
-            if (ModelState.IsValid)
+            if (recipe != null)
             {
-                _context.Add(recipe);
+                _context.Add(new Recipe { Name = recipe.Name, Image = recipe.Image, Description = recipe.Description, Instruction = recipe.Instruction });
                 await _context.SaveChangesAsync();
                 return Redirect("~/Home/Index");
             }
@@ -106,8 +106,8 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description,Instruction,Image")] Recipe recipe)
-        {
+        public async Task<IActionResult> Edit(int id, [FromBody]UserRecipe recipe)
+        {/*
             if (id != recipe.ID)
             {
                 return NotFound();
@@ -133,7 +133,8 @@ namespace CraftBook.Controllers
                 }
                 return Redirect("~/Home/Index");
             }
-            return View(recipe);
+            return View(recipe);*/
+            return Redirect("~/Home/Index");
         }
 
         /// <summary>

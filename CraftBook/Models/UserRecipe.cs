@@ -7,14 +7,22 @@ namespace CraftBook.Models
 {
     public class UserRecipe
     {
-        public int ID { get; }
-        public string Name { get;  }
-        public string Description { get; }
-        public string Instruction { get; }
-        public byte[] Image { get;  }
-        public string CookingTime { get; }
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Instruction { get; set; }
+        public string Image { get; set; }
+        public string CookingTime { get; set; }
 
-        public List<UserIngredient> Ingredients { get; }
+        public List<UserIngredient> Ingredients { get; set; }
+
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
+        public UserRecipe()
+        {
+
+        }
 
         /// <summary>
         /// Конструктор из обычного рецепта
