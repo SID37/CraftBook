@@ -101,36 +101,58 @@ namespace CraftBook.Data
         }
 
         /// <summary>
+        /// Проверяет на корректность сам рецепт, его составляющие, и наличие в базе ингредиентов
+        /// </summary>
+        /// <param name="recipe">Рецепт</param>
+        /// <returns></returns>
+        public ErrorMessage CheckRecipe(UserRecipe recipe)
+        {
+            ErrorMessage error = recipe.IsIncorrect();
+            if (error)
+                return error;
+
+            if (recipe.Ingredients != null && recipe.Ingredients.Any(ui => !Ingredients.Select(i => i.ID).Contains(ui.ID)))
+                return new ErrorMessage("Кажется, вы пытаетесь добавить ингредиент, о котором мы не знаем.. Перестаньте.");
+
+            return new ErrorMessage();
+        }
+
+        /// <summary>
         /// Добавляет рецепт в базу данных, возвращает ошибку если добавить не получилось
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
         public ErrorMessage AddRecipe(ref UserRecipe recipe)
         {
-            ErrorMessage error = recipe.IsIncorrect();
+            ErrorMessage error = CheckRecipe(recipe);
             if (error)
                 return error;
-            
-            if (recipe.Ingredients != null && recipe.Ingredients.Any(ui => !Ingredients.Select(i => i.ID).Contains(ui.ID)))
-                return new ErrorMessage("Кажется, вы пытаетесь добавить ингредиент, о котором мы не знаем.. Перестаньте.");
 
-            Recipe entity = new Recipe
-            {
-                Name = recipe.Name,
-                Image = recipe.Image,
-                Description = recipe.Description,
-                Instruction = recipe.Instruction,
-                Ingredients = recipe.Ingredients == null ? new List<IngredientQuantity>() :
-                    recipe.Ingredients.Select(ui => new IngredientQuantity { IngredientID = ui.ID, Volume = ui.Quantity }).ToList(),
-            };
-
+            Recipe entity = recipe.ToRecipe();
             Add(entity);
             SaveChanges();
 
             recipe.ID = entity.ID;
 
             return new ErrorMessage();
+        }
 
+        /// <summary>
+        /// Обновляет рецеп в базе
+        /// </summary>
+        /// <param name="recipe">Рецепт</param>
+        /// <returns></returns>
+        public ErrorMessage UpdateRecipe(UserRecipe recipe)
+        {
+            ErrorMessage error = CheckRecipe(recipe);
+            if (error)
+                return error;
+
+            Recipe entity = recipe.ToRecipe();
+            Update(entity);
+            SaveChanges();
+
+            return new ErrorMessage();
         }
 
         public DbSet<Recipe> Recipe { get; set; }

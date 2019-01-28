@@ -64,5 +64,25 @@ namespace CraftBook.Models
                 }
             return new ErrorMessage();
         }
+
+        /// <summary>
+        /// Возвращает обычный датабазный рецепт, сгенерированный по образу и подобию себя
+        /// </summary>
+        /// <returns></returns>
+        public Recipe ToRecipe()
+        {
+            Recipe result = new Recipe
+            {
+                ID = ID,
+                Name = Name,
+                Image = Image,
+                Description = Description,
+                Instruction = Instruction,
+                Ingredients = Ingredients == null ? new List<IngredientQuantity>() :
+                    Ingredients.Select(ui => new IngredientQuantity { IngredientID = ui.ID, Volume = ui.Quantity }).ToList(),
+            };
+
+            return result;
+        }
     }
 }

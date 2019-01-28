@@ -77,20 +77,20 @@ namespace CraftBook.Controllers
         /// </summary>
         /// <param name="id">Его ID</param>
         /// <returns></returns>
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe.FindAsync(id);
+            var recipe =  _context.Recipe.Find(id);
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(recipe);
+            return View(new UserRecipe(recipe));
         }
 
         /// <summary>
@@ -101,35 +101,20 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [FromBody]UserRecipe recipe)
-        {/*
-            if (id != recipe.ID)
+        public JsonResult Edit([FromBody]UserRecipe recipe)
+        {
+            try
             {
-                return NotFound();
+                ErrorMessage error = _context.UpdateRecipe(recipe);
+                if (error)
+                    return Json(error);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Json(new ErrorMessage("Что-то пошло не так, пожалуйста, повторите попытку."));
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(recipe);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RecipeExists(recipe.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return Redirect("~/Home/Index");
-            }
-            return View(recipe);*/
-            return Redirect("~/Home/Index");
+            return Json(new UserLink($"/Recipes/Details/?id={recipe.ID}"));
         }
 
         /// <summary>
