@@ -42,5 +42,27 @@ namespace CraftBook.Models
                 .Select(igr => new UserIngredient(igr))
                 .ToList();
         }
+
+        /// <summary>
+        /// проверка рецепта на корректность
+        /// </summary>
+        /// <returns></returns>
+        public ErrorMessage IsIncorrect()
+        {
+            if (Name == null)
+                return new ErrorMessage("Не задано рецепта");
+            if (Description == null)
+                return new ErrorMessage("Кажется, вы забыли дать описание рецепта");
+            if (Instruction == null)
+                return new ErrorMessage($"{Name}, звучит аппетитно, но а как же его готовить?");
+            if (Ingredients != null)
+                foreach(UserIngredient ui in Ingredients)
+                {
+                    ErrorMessage error = ui.IsIncorrect();
+                    if (error)
+                        return error;
+                }
+            return new ErrorMessage();
+        }
     }
 }

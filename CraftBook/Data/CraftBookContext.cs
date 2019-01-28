@@ -100,6 +100,39 @@ namespace CraftBook.Data
                 .ToList();
         }
 
+        /// <summary>
+        /// Добавляет рецепт в базу данных, возвращает ошибку если добавить не получилось
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public ErrorMessage AddRecipe(ref UserRecipe recipe)
+        {
+            ErrorMessage error = recipe.IsIncorrect();
+            if (error)
+                return error;
+            
+            if (recipe.Ingredients != null && recipe.Ingredients.Any(ui => !Ingredients.Select(i => i.ID).Contains(ui.ID)))
+                return new ErrorMessage("Кажется, вы пытаетесь добавить ингредиент, о котором мы не знаем.. Перестаньте.");
+
+            Recipe entity = new Recipe
+            {
+                Name = recipe.Name,
+                Image = recipe.Image,
+                Description = recipe.Description,
+                Instruction = recipe.Instruction,
+                Ingredients = recipe.Ingredients == null ? new List<IngredientQuantity>() :
+                    recipe.Ingredients.Select(ui => new IngredientQuantity { IngredientID = ui.ID, Volume = ui.Quantity }).ToList(),
+            };
+
+            Add(entity);
+            SaveChanges();
+
+            recipe.ID = entity.ID;
+
+            return new ErrorMessage();
+
+        }
+
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<IngredientQuantity> IngredientQuantities { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
