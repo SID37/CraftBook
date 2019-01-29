@@ -101,6 +101,20 @@ namespace CraftBook.Data
         }
 
         /// <summary>
+        /// Возвращает рецепт с данным ID или null если ничего не найдено
+        /// </summary>
+        /// <param name="id">Его ID</param>
+        /// <returns></returns>
+        public async Task<UserRecipe> GetRecipeAsync(int id)
+        {
+            Recipe recipe = await Recipe
+                .Include(r => r.Ingredients)
+                .ThenInclude(iq => iq.Ingredient)
+                .ThenInclude(i => i.Unit).FirstOrDefaultAsync(r => r.ID == id);
+            return new UserRecipe(recipe);
+        }
+
+        /// <summary>
         /// Проверяет на корректность сам рецепт, его составляющие, и наличие в базе ингредиентов
         /// </summary>
         /// <param name="recipe">Рецепт</param>
@@ -151,6 +165,23 @@ namespace CraftBook.Data
             Recipe entity = recipe.ToRecipe();
             Update(entity);
             SaveChanges();
+
+            return new ErrorMessage();
+        }
+        
+        /// <summary>
+        /// Удвляет рецепт из базы
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ErrorMessage> DeleteRecipeAsync(int id)
+        {
+            Recipe recipe = await Recipe
+               .Include(r => r.Ingredients)
+               .ThenInclude(iq => iq.Ingredient)
+               .ThenInclude(i => i.Unit).FirstOrDefaultAsync(r => r.ID == id);
+
+            recipe.Ingredients.ForEach(iq => IngredientQuantities.Remove(iq));
+            Recipe.Remove(recipe);
 
             return new ErrorMessage();
         }

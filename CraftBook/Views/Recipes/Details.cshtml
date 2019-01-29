@@ -1,4 +1,4 @@
-﻿@model CraftBook.Models.Recipe
+﻿@model CraftBook.Models.UserRecipe
 
 @{
     ViewData["Title"] = "Details";
@@ -34,10 +34,10 @@
         <dd>
             @foreach (var iq in Model.Ingredients)
             {
-                @iq.Ingredient.Name
+                @iq.Name
                 <h> </h>
-                @iq.Volume
-                @iq.Ingredient.Unit.ShortName
+                @iq.Quantity
+                @iq.UnitShortName
                 <br>
             }
         </dd>

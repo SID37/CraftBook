@@ -13,7 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
-        private static int PageSize = 2;
+        private static int PageSize = 5;
 
         /// <summary>
         /// Конструктор
@@ -36,11 +36,8 @@ namespace CraftBook.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe
-                .Include(r => r.Ingredients)
-                .ThenInclude(iq => iq.Ingredient)
-                .ThenInclude(i => i.Unit)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            UserRecipe recipe = await _context.GetRecipeAsync(id ?? 0);
+
             if (recipe == null)
             {
                 return NotFound();
@@ -77,20 +74,21 @@ namespace CraftBook.Controllers
         /// </summary>
         /// <param name="id">Его ID</param>
         /// <returns></returns>
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var recipe =  _context.Recipe.Find(id);
+            UserRecipe recipe = await _context.GetRecipeAsync(id ?? 0);
+
             if (recipe == null)
             {
                 return NotFound();
             }
 
-            return View(new UserRecipe(recipe));
+            return View(recipe);
         }
 
         /// <summary>
@@ -129,8 +127,8 @@ namespace CraftBook.Controllers
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe
-                .FirstOrDefaultAsync(m => m.ID == id);
+            UserRecipe recipe = await _context.GetRecipeAsync(id ?? 0);
+
             if (recipe == null)
             {
                 return NotFound();
