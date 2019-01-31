@@ -99,6 +99,20 @@ namespace CraftBook.Data
                 .Select(r => new UserRecipe(r))
                 .ToList();
         }
+        
+        /// <summary>
+        /// Находит рецепт в базе данных, если такого рецепта нет, возвращает null
+        /// </summary>
+        /// <param name="id">Его ID</param>
+        /// <returns></returns>
+        private async Task<Recipe> GetDatabaseRecipeAsync(int id)
+        {
+            Recipe recipe = await Recipe
+                .Include(r => r.Ingredients)
+                .ThenInclude(iq => iq.Ingredient)
+                .ThenInclude(i => i.Unit).FirstOrDefaultAsync(r => r.ID == id);
+            return recipe;
+        }
 
         /// <summary>
         /// Возвращает рецепт с данным ID или null если ничего не найдено
@@ -107,11 +121,8 @@ namespace CraftBook.Data
         /// <returns></returns>
         public async Task<UserRecipe> GetRecipeAsync(int id)
         {
-            Recipe recipe = await Recipe
-                .Include(r => r.Ingredients)
-                .ThenInclude(iq => iq.Ingredient)
-                .ThenInclude(i => i.Unit).FirstOrDefaultAsync(r => r.ID == id);
-            return new UserRecipe(recipe);
+            Recipe recipe = await GetDatabaseRecipeAsync(id);
+            return (recipe == null) ? null : new UserRecipe(recipe);
         }
 
         /// <summary>
@@ -175,10 +186,9 @@ namespace CraftBook.Data
         /// <returns></returns>
         public async Task<ErrorMessage> DeleteRecipeAsync(int id)
         {
-            Recipe recipe = await Recipe
-               .Include(r => r.Ingredients)
-               .ThenInclude(iq => iq.Ingredient)
-               .ThenInclude(i => i.Unit).FirstOrDefaultAsync(r => r.ID == id);
+            Recipe recipe = await GetDatabaseRecipeAsync(id);
+            if (recipe == null)
+                return new ErrorMessage("Попытка удалить рецепт, которого в базе нет, но то, что мертво, умереть не может");
 
             recipe.Ingredients.ForEach(iq => IngredientQuantities.Remove(iq));
             Recipe.Remove(recipe);
