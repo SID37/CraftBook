@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='clean, sass, js:scripts, concat:lib, min' />
+/// <binding BeforeBuild='js, css, min' />
 "use strict";
  
 var gulp = require("gulp"),
@@ -74,6 +74,8 @@ gulp.task("sass", function () {
         .pipe(sass())
         .pipe(gulp.dest(paths.webroot + '/css'));
 });
+
+gulp.task("css", ["clean:css", "sass"]);
 
 gulp.task("min:css", function () {
     return gulp.src([paths.css, "!" + paths.minCss])
