@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CraftBook.Data;
 using CraftBook.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
 namespace CraftBook.Controllers
@@ -15,13 +16,15 @@ namespace CraftBook.Controllers
     public class ImagesController : Controller
     {
         private readonly CraftBookContext _context;
+        private readonly IHostingEnvironment _appEnvironment;
 
         /// <summary>
         /// Конструктор контроллера
         /// </summary>
         /// <param name="context">контекст базы данных</param>
-        public ImagesController(CraftBookContext context)
+        public ImagesController(IHostingEnvironment appEnvironment, CraftBookContext context)
         {
+            _appEnvironment = appEnvironment;
             _context = context;
         }
 
@@ -30,21 +33,23 @@ namespace CraftBook.Controllers
         /// </summary>
         /// <param name="id">Её ID</param>
         /// <returns></returns>
-        public async Task<IActionResult> View(int? id)
+        public async Task<FileResult> View(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                string file_path = Path.Combine(_appEnvironment.ContentRootPath, "wwwroot/images/logo.png");
+                return PhysicalFile(file_path, "image/gif");
             }
 
             var image = await _context.Images
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (image == null)
             {
-                return NotFound();
+                string file_path = Path.Combine(_appEnvironment.ContentRootPath, "wwwroot/images/logo.png");
+                return PhysicalFile(file_path, "image/gif");
             }
 
-            return View("View", image);
+            return File(image.Data, "image/gif");
         }
 
         /// <summary>
