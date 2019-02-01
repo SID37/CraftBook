@@ -3,5 +3,8 @@
 }
 <h2>@ViewData["Title"]</h2>
 <h3>@ViewData["Message"]</h3>
-
+<form asp-controller="Images" asp-action="Create" enctype="multipart/form-data" method="post">
+    <input type="file" name="image" />
+    <input type="submit" />
+</form>
 <p>Use this area to provide additional information.</p>

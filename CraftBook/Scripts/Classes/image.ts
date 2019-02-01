@@ -10,7 +10,6 @@ class ImageUploader {
             {
                 console.group();
                 const a = ev.dataTransfer;
-                a.clearData('text/html');
                 for (var v in a) {
                     console.log(`${v}:`);
                     console.log(a[v]);
@@ -30,14 +29,39 @@ class ImageUploader {
                 //console.log(a.getData());
             }
             if (data) {
-                if (mod === "one" && data.items.length > 1) {
+                if (mod === "one" && data.files.length > 1) {
                     error.display(true, "Здесь можно загрузить только один файл!");
                     return false;
                 }
-                for (let  i = 0; i < data.items.length; i++) {
-                    let item = data.items.item(i);
+                console.group("files");
+                let boundary = String(Math.random()).slice(2);
+                let boundaryMiddle = '--' + boundary + '\r\n';
+                let boundaryLast = '--' + boundary + '--\r\n';
+                for (let i = 0; i < data.files.length; i++) {
+                    let file = data.files[i];
+                    if (file.type.match(/image/)) {
+                        let uploadRequest = new XMLHttpRequest();
+                        console.log(`Отловили файл ${file.name}`);
+                        uploadRequest.onloadend = () => {
+                            let message = JSON.parse(uploadRequest.response);
+                            if (uploadRequest.status === 404) {
+                                //TODO как-то сообщить пользователю
+                                error.display(true, `Не удалось загрузить картинку`);
+                                return;
+                            }
+
+                            if (message.message) {
+                                error.display(true, message.message);
+                                return;
+                            }
+                            uploaded(message.link);
+                        }
+                        uploadRequest.open("POST", "/Images/Create", true);
+                        uploadRequest.setRequestHeader("Content-Type", `multipart/form-data; boundary=${boundary}` + boundary);
+                        uploadRequest.send(`Content-Disposition: form-data; image="${file}"` + boundaryLast);
+                    }
                 }
-                let uploadRequest = new XMLHttpRequest();
+                console.groupEnd();
                 return false;
             }
             return false;
