@@ -72,6 +72,7 @@ namespace CraftBook.Controllers
                 return Json(new ErrorMessage("Ваша картинка не попала на сервер, попробуйте загрузить её ещё раз"));
             }
             _context.Images.Add(entity);
+            _context.SaveChanges();
 
             return Json(new UserLink($"/Images/View/?id={entity.ID}"));
         }
