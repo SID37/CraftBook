@@ -12,7 +12,7 @@ namespace CraftBook.Models
         public string Description { get; set; }
         public string Instruction { get; set; }
         public string Image { get; set; }
-        public string CookingTime { get; set; }
+        public UserTime CookingTime { get; set; }
 
         public List<UserIngredient> Ingredients { get; set; }
 
@@ -35,7 +35,7 @@ namespace CraftBook.Models
             Description = recipe.Description;
             Instruction = recipe.Instruction;
             Image = recipe.Image;
-            CookingTime = "10 минуточек";
+            CookingTime = new UserTime(recipe.CookingTime);
 
             Ingredients = recipe
                 .Ingredients
@@ -55,13 +55,18 @@ namespace CraftBook.Models
                 return new ErrorMessage("Кажется, вы забыли дать описание рецепта");
             if (Instruction == null)
                 return new ErrorMessage($"{Name}, звучит аппетитно, но а как же его готовить?");
+            ErrorMessage error;
             if (Ingredients != null)
                 foreach(UserIngredient ui in Ingredients)
                 {
-                    ErrorMessage error = ui.IsIncorrect();
+                    error = ui.IsIncorrect();
                     if (error)
                         return error;
                 }
+            error = CookingTime.IsIncorrect();
+            if (error)
+                return error;
+
             return new ErrorMessage();
         }
 
@@ -78,6 +83,7 @@ namespace CraftBook.Models
                 Image = Image,
                 Description = Description,
                 Instruction = Instruction,
+                CookingTime = CookingTime.ToMinutes(),
                 Ingredients = Ingredients == null ? new List<IngredientQuantity>() :
                     Ingredients.Select(ui => new IngredientQuantity { IngredientID = ui.ID, Volume = ui.Quantity }).ToList(),
             };

@@ -63,6 +63,8 @@ namespace CraftBook.Controllers
         [HttpPost]
         public JsonResult Create([FromBody]UserRecipe recipe)
         {
+            if (recipe == null)
+                return Json(new ErrorMessage("В попытке создать рецепт вы забыли.. послать ним сам рецепт.."));
             ErrorMessage error = _context.AddRecipe(ref recipe);
             if (error)
                 return Json(error);

@@ -9,6 +9,12 @@
                 <h3>@Html.DisplayFor(modelItem => Model.Name)</h3>
             </header>
             <section>
+                <img src="/images/recipe/time.svg" />
+                @Html.DisplayFor(modelItem => Model.CookingTime.Days) д.
+                @Html.DisplayFor(modelItem => Model.CookingTime.Hours) ч.
+                @Html.DisplayFor(modelItem => Model.CookingTime.Minutes) мин.
+            </section>
+            <section>
                 <img src="/images/recipe/instruction.svg" />
                 @Html.DisplayFor(modelItem => Model.Description)
             </section>
