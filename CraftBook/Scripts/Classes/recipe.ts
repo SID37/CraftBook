@@ -30,7 +30,7 @@ class RecipeCreateView {
         form.onsubmit = () => {
             try {
                 let recipe = new RecipeModel();
-                for (var field in this) {
+                for (let field in this) {
                     if (field == "ingredients") {
                         recipe[field.toString()] = this.ingredients.getIngredients();
                     } else {
