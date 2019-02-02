@@ -91,5 +91,5 @@ gulp.task("min", ["min:lib", "min:js", "min:css"]);
 gulp.task('watch', function () {
     gulp.watch(paths.scripts, ["js:scripts"]);
     gulp.watch(paths.classes, ["lib:concat"]);
-    gulp.watch('Styles/*.scss', ["sass"]);
+    gulp.watch('Styles/**/*.scss', ["sass"]);
 });

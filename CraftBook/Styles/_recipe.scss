@@ -1,5 +1,5 @@
-﻿@import '_palette.scss';
-@import '_mixins.scss';
+﻿@import 'vars/_mixins.scss';
+@import 'vars/_palette.scss';
 
 article.recipe_list {
     display: flex;

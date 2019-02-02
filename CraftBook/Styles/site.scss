@@ -1,6 +1,7 @@
-﻿@import 'palette';
+﻿@import 'vars/_mixins.scss';
+@import 'vars/_palette.scss';
+@import 'vars/idents.scss';
 @import 'inventory';
-@import 'mixins';
 @import 'recipe';
 /*Адское зануление*/
 body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
@@ -15,45 +16,53 @@ body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5,
 
 body {
     @include main-font-family;
-
+    //Цвета/всякие штуки
     & > header, & > footer {
-        height: 3.5em;
-        background: $color-main-background;
-        color: $color-main-text;
-        min-height: 6vh;
+        background: $color-header-background;
+        color: $color-header-text;
+        height: 80px;
+        align-items: center;
 
-        div {
-            padding-top: 3vh;
-            //transform: rotate(-30deg);
-            //width:auto;
+        & > section {
+            &.logo {
+                font-weight: 500;
+                font-size: $size-h1;
+            }
+
+            input, button {
+                font-size: $size-h3;
+                font-weight: 500;
+            }
+        }
+    }
+    //Разметка сетки
+    & > header, & > footer, & > article {
+        display: flex;
+        justify-content: space-between;
+
+        & > section:nth-child(odd) {
+            flex: 2;
         }
 
+        & > section:nth-child(even) {
+            flex: 7;
+        }
 
-        img {
-            float: left;
-            height: 4vh;
-            margin: 1vh 4px 1vh 8px;
+        & > section:first-child {
+            margin-left: $margin-main-side;
+        }
+
+        & > section:last-child {
+            margin-right: $margin-main-side;
+            * {
+                float: right
+            }
         }
     }
 
     & > article {
-        display: flex;
         min-height: 88vh;
         overflow: auto;
-
-        & > section:nth-child(even) {
-            flex: 3;
-        }
-
-        & > section:nth-child(odd) {
-            flex: 1;
-            background-color: $color-content-background;
-        }
-
-        & > section:nth-child(2) {
-            margin-left: 40px;
-            margin-right: 40px;
-        }
     }
 }
 
@@ -88,20 +97,14 @@ body {
     }
 }
 
-.in-frame {
-    @extend .fieldform;
-    border: 2px solid $color-border;
-    @include rounding;
-
-    *:not(:first-child) {
-        border-left: 1px solid $color-border;
-    }
+button, input {
+    border: 0;
+    @include main-font-family;
+    background-color: inherit;
+    color: $color-input-text;
 }
 
 input {
-    border: 0;
-    @include main-font-family;
-
 
     &[type="submit"] {
         @include rounding;
@@ -112,7 +115,9 @@ input {
     }
 
     &[type="text"], &[type="number"] {
-        padding-left: 4px;
+        color: $color-input-text;
+        border-bottom: 2px solid $color-input-text;
+        padding-bottom: 4px;
     }
 }
 
