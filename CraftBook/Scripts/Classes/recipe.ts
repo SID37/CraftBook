@@ -8,12 +8,12 @@
 }
 
 class RecipeCreateView {
-    name: HTMLInputElement;
-    description: HTMLInputElement;
-    instruction: HTMLInputElement;
-    image: HTMLInputElement;
-    cookingTime: HTMLInputElement;
-    ingredients: Inventory;
+    private name: HTMLInputElement;
+    private description: HTMLInputElement;
+    private instruction: HTMLInputElement;
+    private image: HTMLInputElement;
+    private cookingTime: HTMLInputElement;
+    private ingredients: Inventory;
 
     
 

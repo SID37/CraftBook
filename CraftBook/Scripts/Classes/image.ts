@@ -47,7 +47,7 @@ class ImageUploader {
 }
 
 class ImageView {
-    img: HTMLImageElement;
+    private img: HTMLImageElement;
     constructor(imgNode: HTMLImageElement, link?: string) {
         this.img = imgNode;
         if (link)
