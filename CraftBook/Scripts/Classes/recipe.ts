@@ -23,7 +23,7 @@ class RecipeCreateView {
         this.instruction = document.getElementById("Instruction") as HTMLInputElement;
         this.image = document.getElementById("Image") as HTMLInputElement;
         let up = new ImageUploader(this.image, (link: string) => {
-            console.log(link)
+            console.log(link);
         });
         //this.cookingTime = document.getElementById("Name") as HTMLInputElement;
         this.ingredients = inventory;

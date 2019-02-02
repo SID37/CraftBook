@@ -44,9 +44,9 @@ class ImageUploader {
                         console.log(`Отловили файл ${file.name}`);
                         uploadRequest.onloadend = () => {
                             let message = JSON.parse(uploadRequest.response);
-                            if (uploadRequest.status === 404) {
+                            if (uploadRequest.status > 300) {
                                 //TODO как-то сообщить пользователю
-                                error.display(true, `Не удалось загрузить картинку`);
+                                error.display(true, `Не удалось загрузить картинку. Ошибка ${uploadRequest.status}.`);
                                 return;
                             }
 
@@ -58,7 +58,8 @@ class ImageUploader {
                         }
                         uploadRequest.open("POST", "/Images/Create", true);
                         uploadRequest.setRequestHeader("Content-Type", `multipart/form-data; boundary=${boundary}` + boundary);
-                        uploadRequest.send(`Content-Disposition: form-data; image="${file}"` + boundaryLast);
+                        //uploadRequest.send(`\r\nContent-Disposition: form-data; name="image"\r\n\r\n"${file}"` + boundaryLast);
+                        uploadRequest.send(file);
                     }
                 }
                 console.groupEnd();

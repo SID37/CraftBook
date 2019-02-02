@@ -42,7 +42,7 @@ gulp.task("clean:css", function (cb) {
 
 gulp.task("clean", ["clean:js", "clean:lib", "clean:min", "clean:css"]);
 
-gulp.task("concat:lib", function() {
+gulp.task("lib:concat", function() {
     return gulp.src(paths.classes)
         .pipe(concat('craftbook.js'))
         .pipe(gulp.dest(paths.webroot + "lib/"));
@@ -53,7 +53,10 @@ gulp.task("js:scripts", function() {
         .pipe(gulp.dest(paths.webroot + "js/"));
 });
 
-gulp.task("js", ["clean:js", "js:scripts", "concat:lib"]);
+gulp.task("js", ["clean:js", "js:scripts", "lib:concat"]);
+
+
+
 
 gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
@@ -85,3 +88,8 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:lib", "min:js", "min:css"]);
+gulp.task('watch', function () {
+    gulp.watch(paths.scripts, ["js:scripts"]);
+    gulp.watch(paths.classes, ["lib:concat"]);
+    gulp.watch('Styles/*.scss', ["sass"]);
+});
