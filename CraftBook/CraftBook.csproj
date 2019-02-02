@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Remove="gulpfile.js" />
     <None Remove="Scripts\Classes\error.ts" />
+    <None Remove="Scripts\Classes\image.ts" />
     <None Remove="Scripts\Classes\ingredient.ts" />
     <None Remove="Scripts\Classes\listRecipe.ts" />
     <None Remove="Scripts\Classes\recipe.ts" />
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\Classes\error.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\image.ts" />
     <TypeScriptCompile Include="Scripts\Classes\ingredient.ts" />
     <TypeScriptCompile Include="Scripts\Classes\listRecipe.ts" />
     <TypeScriptCompile Include="Scripts\Classes\recipe.ts" />
