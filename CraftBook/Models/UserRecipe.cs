@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MarkdownSharp;
 
 namespace CraftBook.Models
 {
@@ -33,7 +34,7 @@ namespace CraftBook.Models
             ID = recipe.ID;
             Name = recipe.Name;
             Description = recipe.Description;
-            Instruction = recipe.Instruction;
+            Instruction = new Markdown().Transform(recipe.Instruction);
             Image = recipe.Image;
             CookingTime = new UserTime(recipe.CookingTime);
 
