@@ -6,6 +6,7 @@
         this.view = document.createElement("div");
         this.view.classList.add("error");
         node.insertAdjacentElement("beforebegin", this.view);
+        this.display(false);
     }
 
     display(message: string|boolean) {

@@ -1,16 +1,18 @@
-﻿var eventDebug;
-
-type UploadMod = "one" | "many";
+﻿type UploadMod = "one" | "many";
 type UploadListener = (link: string) => void;
+
 class ImageUploader {
     constructor(node: HTMLElement, uploaded: UploadListener, mod: UploadMod = "one") {
         let error = new ErrorView(node);
         node.ondrop = (ev: DragEvent) => {
             const data = ev.dataTransfer;
             if (data) {
-                if (mod === "one" && data.files.length > 1) {
-                    error.display("Здесь можно загрузить только один файл!");
-                    return false;
+                if (data.files.length > 0) {
+                    ev.preventDefault();
+                    if (data.files.length > 1 && mod === "one") {
+                        error.display("Здесь можно загрузить только один файл!");
+                        return;
+                    }
                 }
                 console.group("files");
                 for (let i = 0; i < data.files.length; i++) {
@@ -39,9 +41,19 @@ class ImageUploader {
                     }
                 }
                 console.groupEnd();
-                return false;
             }
-            return false;
         };
+    }
+}
+
+class ImageView {
+    img: HTMLImageElement;
+    constructor(imgNode: HTMLImageElement, link?: string) {
+        this.img = imgNode;
+        if (link)
+            this.setLink(link);
+    }
+    setLink(link: string): void {
+        this.img.src = link;
     }
 }
