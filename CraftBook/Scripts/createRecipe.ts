@@ -8,7 +8,7 @@
                 if (msg["link"]) {
                     location.href = msg["link"];
                 }
-                document.body.insertAdjacentHTML("afterbegin", createRequest.response);
+                rV.setError(msg.message);
             };
             createRequest.open("POST", "/Recipes/Create", true);
             createRequest.setRequestHeader("Content-Type", "application/json");

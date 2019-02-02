@@ -14,28 +14,38 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" required/>
+                <input asp-for="Name" class="form-control" required />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" required/>
+                <input asp-for="Description" class="form-control" required />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Instruction" class="control-label"></label>
-                <input asp-for="Instruction" class="form-control" required/>
+                <input asp-for="Instruction" class="form-control" required />
                 <span asp-validation-for="Instruction" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" required/>
-                <img src="/images/logo.png" id="ImageOut" class="recipe-avatar"/>
+                <input asp-for="Image" class="form-control" required />
+                <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+            <fieldset name="time">
+                <legend>Время</legend>
+                Дни
+                <input type="number" name="days" value="0" required/>
+                Часы
+                <input type="number" name="hours" value="0" required/>
+                Минуты
+                <input type="number" name="minutes" required/>
+            </fieldset>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
+
         </form>
     </div>
 </article>
