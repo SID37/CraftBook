@@ -6,14 +6,15 @@
         this.view = document.createElement("div");
         this.view.classList.add("error");
         node.insertAdjacentElement("beforebegin", this.view);
+        this.display(false);
     }
 
-    display(flag: boolean, message?: string) {
-        if (message)
-            this.view.textContent = message;
-        if (flag)
+    display(message: string|boolean) {
+        if (message) {
+            if (typeof message == "string")
+                this.view.textContent = message;
             this.view.style.display = "initial";
-        else
+        } else
             this.view.style.display = "none";
     }
 }

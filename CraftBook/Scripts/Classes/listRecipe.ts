@@ -25,6 +25,13 @@ class ListRecipes {
                 searcher.search(page);
             }
         });
+
+        this.headNode.querySelectorAll("img").forEach((img: HTMLImageElement) => {
+            img.addEventListener("error",
+                () => {
+                    img.src = "/images/default.png";
+                });
+        });
     }
 
     constructor(node: HTMLElement) {

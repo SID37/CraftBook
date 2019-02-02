@@ -154,7 +154,7 @@ class IngredientAddatorView {
             //заглушение исключений ради того, чтобы страничка не обновлялась при сбое скрипта
             try {
                 if (this.unit.value === "") {
-                    this.error.display(true, "Такого ингредиента не существует");
+                    this.error.display("Такого ингредиента не существует");
                     return false;
                 }
                 this.error.display(false);
@@ -164,7 +164,7 @@ class IngredientAddatorView {
                 requestAdd.onloadend = () => {
                     const response = JSON.parse(requestAdd.response);
                     if (response.message != null) {
-                        this.error.display(true, response.message);
+                        this.error.display(response.message);
                         return;
                     }
 

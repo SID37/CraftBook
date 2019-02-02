@@ -8,7 +8,7 @@
 
 <h4>Recipe</h4>
 <hr />
-<div class="row">
+<article class="recipe-creator">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -30,6 +30,7 @@
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
                 <input asp-for="Image" class="form-control" required/>
+                <img src="/images/logo.png" id="ImageOut" class="recipe-avatar"/>
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,17 +38,13 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</article>
 
 @section Scripts {
     <environment include="Development">
         <script src="~/js/createRecipe.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/createRecipe.min.js asp-append-version="true"></script>
+        <script src="~/js/createRecipe.min.js" asp-append-version="true"></script>
     </environment>
 }
