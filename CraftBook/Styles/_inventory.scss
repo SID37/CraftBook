@@ -7,21 +7,36 @@ article.inventory {
     display: flex;
     flex-direction: column;
 
+    & > header, & > form {
+        @include line-spacing;
+    }
+
     & > form {
-        //ингредиент
-        &.list-ingredients input {
-            &:not([type="image"]) {
-                color: $color-content-text;
-                border: 0;
+        &.add-ingredient {
+            input[type="image"] {
+                max-height: $size-h3 * 0.9;
+                //max-width: $size-h3 * 0.9;
+                padding-left: (25px-$size-h3*0.8)/2;
+                padding-right: (25px-$size-h3*0.8)/2;
             }
+        }
+        //ингредиент
+        &.list-ingredients * {
+            color: $color-content-text;
+            border: 0;
+            font-size: $size-h3;
+            font-weight: lighter;
 
             &::first-letter {
                 text-transform: uppercase;
             }
 
+            &.volume {
+                text-align: right;
+            }
+
             &[type="image"] {
-                border: 0;
-                max-height:inherit;
+                max-height: $size-h3 * 0.8;
             }
         }
     }

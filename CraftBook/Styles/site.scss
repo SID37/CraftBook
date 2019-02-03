@@ -24,12 +24,13 @@ body {
         align-items: center;
 
         & > section {
+
             &.logo {
                 font-weight: bold;
                 font-size: $size-h1;
             }
 
-            input, button {
+            input[type="text"], button {
                 font-size: $size-h2;
                 font-weight: 500;
                 color: $color-header-text;
@@ -42,11 +43,11 @@ body {
         justify-content: space-between;
 
         & > section:nth-child(odd) {
-            flex: 2;
+            flex: 6;
         }
 
         & > section:nth-child(even) {
-            flex: 7;
+            flex: 24;
         }
 
         & > section:first-child {
@@ -124,6 +125,8 @@ input {
         color: $color-input-text;
         border-bottom: 2px solid $color-input-text;
         padding-bottom: 4px;
+        font-weight: lighter;
+        font-size: $size-h3;
     }
 }
 
