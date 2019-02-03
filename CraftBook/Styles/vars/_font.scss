@@ -2,8 +2,8 @@
     font-family: Calibri;
 }
 
-$size-h1: 40px;
-$size-h2: 30px;
-$size-h3: 20px;
-$size-h4: 1em;
+$size-h1: 24px;
+$size-h4: $size-h1/4;
+$size-h2: 3*$size-h4;
+$size-h3: 2*$size-h4;
 $size-h5: 0.75em;

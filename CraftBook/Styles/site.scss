@@ -43,11 +43,11 @@ body {
         justify-content: space-between;
 
         & > section:nth-child(odd) {
-            flex: 6;
+            flex: 10;
         }
 
         & > section:nth-child(even) {
-            flex: 24;
+            flex: 50;
         }
 
         & > section:first-child {
@@ -68,7 +68,7 @@ body {
     & > article {
         min-height: 88vh;
         overflow: auto;
-        padding-top: 48px;
+        padding-top: $margin-main-side;
     }
 }
 
@@ -85,7 +85,7 @@ body {
 
         &:not(:first-child) {
             flex: 2 25px;
-            margin-left: 16px;
+            margin-left: 12px;
         }
 
         &[type="text"], &[type="number"] {
@@ -118,7 +118,7 @@ input {
         margin: 16px 0px 16px 0;
         background-color: $color-button-background;
         color: $color-button-text;
-        height: 32px;
+        height: 24px;
     }
 
     &[type="text"], &[type="number"] {
