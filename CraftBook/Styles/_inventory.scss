@@ -6,18 +6,22 @@ article.inventory {
     margin-right: auto;
     display: flex;
     flex-direction: column;
-    background-color: $color-content-background;
-    color: $color-content-text;
 
     & > form {
-        border-bottom: 1px solid $color-line;
         //ингредиент
         &.list-ingredients input {
             &:not([type="image"]) {
-                background-color: $color-content-background;
                 color: $color-content-text;
-                font-weight:500;
-                font-variant:small-caps;
+                border: 0;
+            }
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+
+            &[type="image"] {
+                border: 0;
+                max-height:inherit;
             }
         }
     }

@@ -22,7 +22,7 @@
                 <form asp-controller="Recipes" asp-action="SearchByString">
                     <div class="fieldform">
                         <input type="text" name="searchString" required placeholder="Ищем рецепт..."/>
-                        <input type="image" src="/images/search.svg"/>
+                        <input type="image" src="/images/search/white.svg"/>
                     </div>
                 </form>
             </div>
@@ -40,6 +40,8 @@
             @RenderBody()
         </section>
         <section>
+            <a asp-controller="Recipes" asp-action="Create">Создать рецепт</a>
+
         </section>
     </article>
     <footer>

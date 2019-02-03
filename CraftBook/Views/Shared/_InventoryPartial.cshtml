@@ -4,21 +4,20 @@
 @{
 }
 <article class="inventory">
-    <input type="submit" form="list-ingredients" name="find_recept_by_ingr" value="Найти рецепты!" />
-    <h1>Мой инвентарь</h1>
+    <header class="fieldform">
+        <h1>Инвентарь</h1>
+        <input type="image" form="list-ingredients" name="find_recept_by_ingr" src="/images/search/black.svg" />
+    </header>
+    
+
     <form class="add-ingredient">
-        <div class="in-frame">
-            <input type="text" name="ingredient_name" placeholder="Ингредиент" required list="ingredients" />
-        </div>
         <div class="fieldform">
-            <div class="in-frame">
-                <input type="number" name="ingredient_count" placeholder="Количество" required />
-                <input type="text" name="ingredient_unit" placeholder="ед. изм." required readonly />
-            </div>
+            <input type="text" name="ingredient_name" placeholder="Ингредиент" required list="ingredients" />
+            <input type="number" name="ingredient_count" placeholder="Количество" required />
+            <input type="text" name="ingredient_unit" placeholder="ед. изм." required readonly style="display: none" />
             <input type="image" name="add_ingredient" src="/images/add.svg" id="buttonAddIngridient" />
         </div>
 
     </form>
-    <form class="list-ingredients" id="list-ingredients">
-    </form>
+    <form class="list-ingredients" id="list-ingredients"></form>
 </article>

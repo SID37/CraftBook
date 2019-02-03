@@ -19,7 +19,7 @@ class IngredientView {
     constructor(soul: IngredientModel) {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
-        this.main.innerHTML = '<div class="in-frame">' +
+        this.main.innerHTML = '<div class="fieldform">' +
             '<input type="text" name="name" readonly />' +
             '<input type="number" name="volume" readonly />' +
             '<input type="text" name="unit" readonly />' +

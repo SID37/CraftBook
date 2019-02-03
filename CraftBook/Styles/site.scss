@@ -1,10 +1,10 @@
 ﻿@import 'vars/_mixins.scss';
 @import 'vars/_palette.scss';
-@import 'vars/idents.scss';
+@import 'vars/sizes.scss';
 @import 'inventory';
 @import 'recipe';
 /*Адское зануление*/
-body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
+body, fieldset, input, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
 }
@@ -20,18 +20,19 @@ body {
     & > header, & > footer {
         background: $color-header-background;
         color: $color-header-text;
-        height: 80px;
+        height: $size-header-height;
         align-items: center;
 
         & > section {
             &.logo {
-                font-weight: 500;
+                font-weight: bold;
                 font-size: $size-h1;
             }
 
             input, button {
-                font-size: $size-h3;
+                font-size: $size-h2;
                 font-weight: 500;
+                color: $color-header-text;
             }
         }
     }
@@ -49,11 +50,14 @@ body {
         }
 
         & > section:first-child {
+            margin-right: $margin-main-side;
             margin-left: $margin-main-side;
         }
 
         & > section:last-child {
+            margin-left: $margin-main-side;
             margin-right: $margin-main-side;
+
             * {
                 float: right
             }
@@ -63,6 +67,7 @@ body {
     & > article {
         min-height: 88vh;
         overflow: auto;
+        padding-top: 48px;
     }
 }
 
@@ -70,8 +75,7 @@ body {
 .fieldform {
     display: flex;
     justify-content: flex-end;
-    height: 25px;
-
+    align-items: center;
 
     * {
         &:first-child {
@@ -80,6 +84,7 @@ body {
 
         &:not(:first-child) {
             flex: 2 25px;
+            margin-left: 16px;
         }
 
         &[type="text"], &[type="number"] {
@@ -89,8 +94,10 @@ body {
 
         &[type="image"] {
             max-width: 25px;
+            max-height: 25px;
         }
     }
+    
 
     form > & {
         @include line-spacing;
@@ -105,7 +112,6 @@ button, input {
 }
 
 input {
-
     &[type="submit"] {
         @include rounding;
         margin: 16px 0px 16px 0;
@@ -122,6 +128,11 @@ input {
 }
 
 h {
+    &1 {
+        font-size: $size-h1;
+        font-weight: lighter;
+    }
+
     &2 {
         font-size: $size-h2;
         font-weight: 500;
