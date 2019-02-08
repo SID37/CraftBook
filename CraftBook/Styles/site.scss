@@ -25,11 +25,6 @@ body {
 
         & > section {
 
-            &.logo {
-                font-weight: bold;
-                font-size: $size-h1;
-            }
-
             input[type="text"], button {
                 font-size: $size-h2;
                 font-weight: 500;
@@ -43,21 +38,23 @@ body {
         justify-content: space-between;
 
         & > section:nth-child(odd) {
-            flex: 10;
+            min-width: 320px;
+            //flex-basis: 320px;
+            flex: 1 1 auto;
         }
 
         & > section:nth-child(even) {
-            flex: 50;
+            flex: 1 1 auto;
         }
 
         & > section:first-child {
-            margin-right: $margin-main-side;
-            margin-left: $margin-main-side;
+            padding-right: $margin-main-side;
+            padding-left: $margin-main-side;
         }
 
         & > section:last-child {
-            margin-left: $margin-main-side;
-            margin-right: $margin-main-side;
+            padding-left: $margin-main-side;
+            padding-right: $margin-main-side;
 
             * {
                 float: right
@@ -138,12 +135,22 @@ h {
 
     &2 {
         font-size: $size-h2;
-        font-weight: 500;
+        font-weight: bold;
     }
 
     &3 {
         font-size: $size-h3;
-        font-weight: normal;
+        font-weight: bold;
+    }
+
+    &4 {
+        font-size: $size-h4;
+        font-weight: bold;
+    }
+
+    &5 {
+        font-size: $size-h5;
+        font-weight: bold;
     }
 }
 
