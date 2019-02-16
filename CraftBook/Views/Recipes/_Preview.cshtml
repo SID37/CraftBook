@@ -2,25 +2,21 @@
 <a asp-action="Details" asp-route-id="@Model.ID">
     <article class="recipe-preview">
         <section>
-            @Html.Raw("<img src=" +(Model.Image != null ? Model.Image : "/images/recipe_default.jpg") + " />")
+            <img src="@(Model.Image != null ? Model.Image : "/images/recipe_default.jpg")"/>
         </section>
         <section>
             <header>
-                <h3>@Html.DisplayFor(modelItem => Model.Name)</h3>
+                <h3>@Model.Name</h3>
             </header>
             <section>
-                <img src="/images/recipe/time.svg" />
                 @Html.DisplayFor(modelItem => Model.CookingTime.Days) д.
                 @Html.DisplayFor(modelItem => Model.CookingTime.Hours) ч.
                 @Html.DisplayFor(modelItem => Model.CookingTime.Minutes) мин.
             </section>
             <section>
-                <img src="/images/recipe/instruction.svg" />
                 @Html.DisplayFor(modelItem => Model.Description)
             </section>
             <section>
-                <img src="/images/recipe/ingredients.svg" />
-
                 @foreach (var iq in Model.Ingredients)
                 {
                     <span>@iq.Name</span>
