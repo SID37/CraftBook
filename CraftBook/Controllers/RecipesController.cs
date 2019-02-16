@@ -221,5 +221,10 @@ namespace CraftBook.Controllers
         {
             return Recips.Skip((PageNumber - 1) * PageSize).Take(PageSize).ToList();
         }
+
+        public string Hello()
+        {
+            return "Очень важные изменения";
+        }
     }
 }
