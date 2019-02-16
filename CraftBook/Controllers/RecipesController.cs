@@ -224,7 +224,7 @@ namespace CraftBook.Controllers
 
         public string Hello()
         {
-            return "Очень важные изменения";
+            return "Ещё очень важные изменения";
         }
     }
 }
