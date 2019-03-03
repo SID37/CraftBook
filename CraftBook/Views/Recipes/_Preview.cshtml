@@ -14,13 +14,13 @@
                 @Html.DisplayFor(modelItem => Model.CookingTime.Minutes) мин.
             </section>
             <section>
-                @Html.DisplayFor(modelItem => Model.Description)
-            </section>
-            <section>
                 @foreach (var iq in Model.Ingredients)
                 {
                     <span>@iq.Name</span>
                 }
+            </section>
+            <section>
+                @Html.DisplayFor(modelItem => Model.Description)
             </section>
         </section>
         <!--section>

@@ -64,6 +64,7 @@ article.recipe-preview {
     $height: 128px;
     height: $height;
 
+
     & > section > img {
         border-radius: 5px 0 0 5px;
         height: 100%;
@@ -75,10 +76,14 @@ article.recipe-preview {
         flex-direction: column;
         justify-content: space-between;
         padding: 8px;
+        border-bottom-width: 4px;
+        border-bottom-style: solid;
+        border-bottom-color: green;
 
         & > section {
             display: flex;
             align-items: center;
+
 
             img {
                 height: 32px;
