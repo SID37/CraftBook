@@ -14,6 +14,7 @@
                 @Html.DisplayFor(modelItem => Model.CookingTime.Minutes) мин.
             </section>
             <section>
+                <i>Ингредиенты:</i>
                 @foreach (var iq in Model.Ingredients)
                 {
                     <span>@iq.Name</span>
