@@ -5,6 +5,11 @@
             <img src="@(Model.Image != null ? Model.Image : "/images/recipe_default.jpg")"/>
         </section>
         <section>
+                <form asp-controller="bookmark" asp-action="SearchByString">
+                    <div class="bookmark">
+                        <input type="image" src="/images/bookmark-passive.svg" />
+                    </div>
+                </form>
             <header>
                 <h3>@Model.Name</h3>
             </header>
