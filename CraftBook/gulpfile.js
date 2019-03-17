@@ -55,9 +55,6 @@ gulp.task("js:scripts", function() {
 
 gulp.task("js", ["clean:js", "js:scripts", "lib:concat"]);
 
-
-
-
 gulp.task("min:js", function () {
     return gulp.src([paths.js, "!" + paths.minJs], { base: "." })
         .pipe(concat(paths.concatJsDest))
