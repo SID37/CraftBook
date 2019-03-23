@@ -217,6 +217,47 @@ namespace CraftBook.Data
             return new ErrorMessage();
         }
 
+        /// <summary>
+        /// Проверяет на корректность сам ингредиент, его составляющие, и отсутствие в базе
+        /// </summary>
+        /// <param name="ingredient">ингредиент</param>
+        /// <returns></returns>
+        public ErrorMessage CheckIngredient(UserAbstractIngredient ingredient)
+        {
+            ErrorMessage error = ingredient.IsIncorrect();
+            if (error)
+                return error;
+
+            if (Ingredients.Any(igr => igr.Name == ingredient.Name))
+                return new ErrorMessage("Данный ингредиент у нас уже есть");
+
+            return new ErrorMessage();
+        }
+
+
+        /// <summary>
+        /// Добавляет ингредиент в базу данных
+        /// </summary>
+        /// <param name="ingredient">собственно ингредиент</param>
+        /// <returns></returns>
+        public ErrorMessage AddIngredient(ref UserAbstractIngredient ingredient)
+        {
+            ingredient.Name = ingredient.Name.ToLower();
+
+            ErrorMessage error = CheckIngredient(ingredient);
+            if (error)
+                return error;
+            
+            Ingredient entity = ingredient.ToIngredient();
+            Add(entity);
+            SaveChanges();
+
+            entity.Unit = UnitOfMeasurement.FirstOrDefault(u => u.ID == entity.UnitID);
+            ingredient = new UserAbstractIngredient(entity);
+
+            return new ErrorMessage();
+        }
+
         public DbSet<Recipe> Recipe { get; set; }
         public DbSet<IngredientQuantity> IngredientQuantities { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
