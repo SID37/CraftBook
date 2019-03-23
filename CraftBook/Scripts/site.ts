@@ -1,5 +1,6 @@
 ﻿{
-    let listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
+    let favoursRecipes = new ListFavoriteRecipes();
+    let listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement, favoursRecipes);
 
     let defaultSeacher = new SearcherByString("");
     defaultSeacher.search((html, me) => { listRecipes.setList(html, me); });

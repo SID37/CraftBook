@@ -15,7 +15,7 @@
 
 class ListRecipes {
     private headNode: HTMLElement;
-
+    private favors: ListFavoriteRecipes;
     setList(html: string, searcher: ISearchEnginePages): void {
         while (this.headNode.hasChildNodes())
             this.headNode.removeChild(this.headNode.firstChild);
@@ -29,8 +29,14 @@ class ListRecipes {
         this.headNode.querySelectorAll("article.recipe-preview").forEach((recipe:
             HTMLDivElement) => {
             let id = parseInt(recipe.id.substr(1));
-            new FavoriteMarkView(recipe.querySelector("section > header > img") as HTMLImageElement)
-                .onChangeMode = (m) => { console.log(m+" "+id); };
+            new FavoriteMarkView(recipe.querySelector("section > header > img") as HTMLImageElement, this.favors.has(id))
+                .onChangeMode = (m) => {
+                    console.log(m+" "+id);
+                    if (m)
+                        this.favors.add(id);
+                    else
+                        this.favors.delete(id);
+                };
         });
 
         //TODO так как теперь вместо img используется div с фоновым изображением, мы потеряли событие error
@@ -42,8 +48,9 @@ class ListRecipes {
         });*/
     }
 
-    constructor(node: HTMLElement) {
+    constructor(node: HTMLElement, favors: ListFavoriteRecipes) {
         this.headNode = node;
+        this.favors = favors;
     }
 }
 
@@ -71,13 +78,12 @@ class FavoriteMarkView {
     }
 }
 
-class ListFavoriteRecipes
-{
-    private ids: Array<Number>;
-    private storage: ListInStorage<Number>;
+class ListFavoriteRecipes {
+    ids: Set<Number>;
+    private storage: SetInStorage<Number>;
 
     constructor() {
-        this.storage = new ListInStorage<Number>("favoriteRecipes", false);
+        this.storage = new SetInStorage<Number>("favoriteRecipes", false);
         this.ids = this.storage.getList();
     }
 
@@ -86,6 +92,14 @@ class ListFavoriteRecipes
     }
 
     add(id: Number) {
-        this.ids.push(id);
+        this.ids.add(id);
+    }
+
+    delete(id: number) {
+        this.ids.delete(id);
+    }
+
+    has(id: number) {
+        return this.ids.has(id);
     }
 }
