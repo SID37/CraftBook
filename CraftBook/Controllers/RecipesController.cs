@@ -203,7 +203,8 @@ namespace CraftBook.Controllers
         [HttpPost]
         public IActionResult SearchByString(string searchString, int PageNumber = 1)
         {
-            var found = _context.FindRecipes(searchString); UserRecipesPage result;
+            var found = _context.FindRecipes(searchString);
+            UserRecipesPage result;
             if (found.Count == 0)
                 result = new UserRecipesPage { Title = "По вашему запросу ничего не найдено", Recipes = new List<UserRecipe>(), PageNumber = 0, PageCount = 0 };
             else
@@ -212,6 +213,29 @@ namespace CraftBook.Controllers
                     Title = (searchString != null) ? "Найденные рецепты" : "Рецепты",
                     Recipes = CutList(found, PageNumber, PageSize),
                     PageNumber = PageNumber,
+                    PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
+                };
+            return PartialView("Index", result);
+        }
+
+        /// <summary>
+        /// POST запрос, возвращаеттребуемую страницу с рецептами из списка
+        /// </summary>
+        /// <param name="request">Список рецептов со страницей</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult PageInListId([FromBody]UserListIdPage request)
+        {
+            var found = _context.FindRecipes(request.recipes);
+            UserRecipesPage result;
+            if (found.Count == 0)
+                result = new UserRecipesPage { Title = "Здесь ппока ничего нет", Recipes = new List<UserRecipe>(), PageNumber = 0, PageCount = 0 };
+            else
+                result = new UserRecipesPage
+                {
+                    Title = "Рецепты",
+                    Recipes = CutList(found, request.page, PageSize),
+                    PageNumber = request.page,
                     PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
                 };
             return PartialView("Index", result);
