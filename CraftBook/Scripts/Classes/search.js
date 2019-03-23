@@ -1,92 +1,121 @@
-var SearcherByStringView = /** @class */ (function () {
-    function SearcherByStringView(form) {
-        var _this = this;
+class SearcherByStringView {
+    constructor(form) {
         this.form = form;
         this.data = this.form.querySelector('input[name="searchString"]');
-        this.form.onsubmit = function () {
-            var str = _this.data.value;
+        this.form.onsubmit = () => {
+            const str = this.data.value;
             if (str) {
-                var searcher = new SearcherByString(str);
-                _this.onsearch(searcher);
+                let searcher = new SearcherByString(str);
+                this.onsearch(searcher);
             }
             return false;
         };
     }
-    return SearcherByStringView;
-}());
-var SearcherByString = /** @class */ (function () {
-    function SearcherByString(request) {
+}
+class SearcherByString {
+    constructor(request) {
         this.request = request.slice();
     }
-    SearcherByString.prototype.search = function (input) {
-        var _this = this;
+    search(input) {
         if (typeof (input) == "number") {
-            var page = input;
-            var requestSearch_1 = new XMLHttpRequest();
-            requestSearch_1.onloadend = function () {
-                if (requestSearch_1.status === 404) {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
                     //TODO как-то сообщить пользователю
-                    console.log("\u041F\u043E \u0437\u0430\u043F\u0440\u043E\u0441\u0443 \"" + _this.request + "\" \u043E\u0442\u0432\u0435\u0442: 404");
+                    console.log(`По запросу "${this.request}" ответ: 404`);
                     return;
                 }
-                _this.onsearched(requestSearch_1.response, _this);
+                this.onsearched(requestSearch.response, this);
             };
-            requestSearch_1.open("POST", "/Recipes/SearchByString", true);
-            requestSearch_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            requestSearch_1.send("searchString=" + encodeURIComponent(this.request) + "&pageNumber=" + page);
+            requestSearch.open("POST", "/Recipes/SearchByString", true);
+            requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSearch.send(`searchString=${encodeURIComponent(this.request)}&pageNumber=${page}`);
         }
         else {
             this.onsearched = input;
             this.search(1);
         }
-    };
-    return SearcherByString;
-}());
-var SearchByIngredientsView = /** @class */ (function () {
-    function SearchByIngredientsView(button, sourse) {
-        var _this = this;
+    }
+}
+class SearchByIngredientsView {
+    constructor(button, sourse) {
         this.button = button;
         this.data = sourse;
-        this.button.onclick = function () {
-            var ingredients = _this.data.getIngredients();
+        this.button.onclick = () => {
+            const ingredients = this.data.getIngredients();
             if (ingredients) {
-                var searcher = new SearcherByIngredients(ingredients);
-                _this.onsearch(searcher);
+                let searcher = new SearcherByIngredients(ingredients);
+                this.onsearch(searcher);
             }
             return false;
         };
     }
-    return SearchByIngredientsView;
-}());
-var SearcherByIngredients = /** @class */ (function () {
-    function SearcherByIngredients(request) {
+}
+class SearcherByIngredients {
+    constructor(request) {
         this.request = request.slice();
     }
-    SearcherByIngredients.prototype.search = function (input) {
-        var _this = this;
+    search(input) {
         if (typeof (input) == "number") {
-            var page = input;
-            var requestSearch_2 = new XMLHttpRequest();
-            requestSearch_2.onloadend = function () {
-                if (requestSearch_2.status === 404) {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
                     //TODO как-то сообщить пользователю
-                    console.log("\u041F\u043E \u0437\u0430\u043F\u0440\u043E\u0441\u0443 \"" + _this.request + "\" \u043E\u0442\u0432\u0435\u0442: 404");
+                    console.log(`По запросу "${this.request}" ответ: 404`);
                     return;
                 }
-                _this.onsearched(requestSearch_2.response, _this);
+                this.onsearched(requestSearch.response, this);
             };
-            requestSearch_2.open("POST", "/Recipes/SearchByIngredients", true);
-            requestSearch_2.setRequestHeader("Content-Type", "application/json");
-            var message = {
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
                 ingredients: this.request,
                 pageNumber: page
             };
-            requestSearch_2.send(JSON.stringify(message));
+            requestSearch.send(JSON.stringify(message));
         }
         else {
             this.onsearched = input;
             this.search(1);
         }
-    };
-    return SearcherByIngredients;
-}());
+    }
+}
+class PsevdoSearcherByFavors {
+    search(input) {
+        if (typeof (input) == "number") {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
+                    //TODO как-то сообщить пользователю
+                    console.log(`По запросу "${this.request}" ответ: 404`);
+                    return;
+                }
+                this.onsearched(requestSearch.response, this);
+            };
+            requestSearch.open("POST", "/Recipes/PageInListId", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
+                recipes: this.request,
+                pageNumber: page
+            };
+            requestSearch.send(JSON.stringify(message));
+        }
+        else {
+            this.onsearched = input;
+            this.search(1);
+        }
+    }
+    constructor(favors) {
+        this.request = favors;
+    }
+}
+class PsevdoSearcherByFavorsView {
+    constructor(button, favors) {
+        button.onclick = () => {
+            this.onsearch(new PsevdoSearcherByFavors(favors.get()));
+        };
+    }
+}

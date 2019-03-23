@@ -1,12 +1,12 @@
-var ErrorView = /** @class */ (function () {
-    function ErrorView(node) {
+class ErrorView {
+    constructor(node) {
         this.parent = node;
         this.view = document.createElement("div");
         this.view.classList.add("error");
         node.insertAdjacentElement("beforebegin", this.view);
         this.display(false);
     }
-    ErrorView.prototype.display = function (message) {
+    display(message) {
         if (message) {
             if (typeof message == "string")
                 this.view.textContent = message;
@@ -14,16 +14,14 @@ var ErrorView = /** @class */ (function () {
         }
         else
             this.view.style.display = "none";
-    };
-    return ErrorView;
-}());
+    }
+}
 
-var ImageUploader = /** @class */ (function () {
-    function ImageUploader(node, uploaded, mod) {
-        if (mod === void 0) { mod = "one"; }
-        var error = new ErrorView(node);
-        node.ondrop = function (ev) {
-            var data = ev.dataTransfer;
+class ImageUploader {
+    constructor(node, uploaded, mod = "one") {
+        let error = new ErrorView(node);
+        node.ondrop = (ev) => {
+            const data = ev.dataTransfer;
             if (data) {
                 if (data.files.length > 0) {
                     ev.preventDefault();
@@ -33,62 +31,53 @@ var ImageUploader = /** @class */ (function () {
                     }
                 }
                 console.group("files");
-                var _loop_1 = function (i) {
-                    var file = data.files[i];
+                for (let i = 0; i < data.files.length; i++) {
+                    let file = data.files[i];
                     if (file.type.match(/image/)) {
-                        var uploadRequest_1 = new XMLHttpRequest();
-                        console.log("\u041E\u0442\u043B\u043E\u0432\u0438\u043B\u0438 \u0444\u0430\u0439\u043B " + file.name);
-                        uploadRequest_1.onloadend = function () {
+                        let uploadRequest = new XMLHttpRequest();
+                        console.log(`Отловили файл ${file.name}`);
+                        uploadRequest.onloadend = () => {
                             error.display(false);
-                            if (uploadRequest_1.status > 300) {
+                            if (uploadRequest.status > 300) {
                                 //TODO как-то сообщить пользователю
-                                error.display("\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u043E\u0442\u043F\u0440\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u0443. \u041E\u0448\u0438\u0431\u043A\u0430 " + uploadRequest_1.status + ".");
+                                error.display(`Не удалось отправить картинку. Ошибка ${uploadRequest.status}.`);
                                 return;
                             }
-                            var message = JSON.parse(uploadRequest_1.response);
+                            let message = JSON.parse(uploadRequest.response);
                             if (message.message) {
                                 error.display(message.message);
                                 return;
                             }
                             uploaded(message.link);
                         };
-                        uploadRequest_1.open("POST", "/Images/Create", true);
-                        var formData = new FormData();
+                        uploadRequest.open("POST", "/Images/Create", true);
+                        let formData = new FormData();
                         formData.append("image", file);
-                        uploadRequest_1.send(formData);
+                        uploadRequest.send(formData);
                     }
-                };
-                for (var i = 0; i < data.files.length; i++) {
-                    _loop_1(i);
                 }
                 console.groupEnd();
             }
         };
     }
-    return ImageUploader;
-}());
-var ImageView = /** @class */ (function () {
-    function ImageView(imgNode, link) {
+}
+class ImageView {
+    constructor(imgNode, link) {
         this.img = imgNode;
         if (link)
             this.setLink(link);
     }
-    ImageView.prototype.setLink = function (link) {
+    setLink(link) {
         this.img.src = link;
-    };
-    return ImageView;
-}());
-
-var IngredientModel = /** @class */ (function () {
-    function IngredientModel() {
     }
-    return IngredientModel;
-}());
-var IngredientView = /** @class */ (function () {
-    function IngredientView(soul) {
-        var _this = this;
-        this.delete = function () {
-            _this.button.onclick(null);
+}
+
+class IngredientModel {
+}
+class IngredientView {
+    constructor(soul) {
+        this.delete = () => {
+            this.button.onclick(null);
         };
         this.main = document.createElement("div");
         this.main.classList.add("fieldform");
@@ -99,73 +88,61 @@ var IngredientView = /** @class */ (function () {
                 //'</div>' +
                 '<input type="image" name="del_ingredient" src="/images/ingredient/close.svg" />';
         this.button = this.main.querySelector("input[type=\"image\"");
-        this.button.onclick = function () {
-            _this.main.remove();
-            _this.ondeleted(_this);
+        this.button.onclick = () => {
+            this.main.remove();
+            this.ondeleted(this);
             return false;
         };
         this.name = this.main.querySelector('span[class="name"]');
         //this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
         this.volume = this.main.querySelector('span[class="volume"]');
         this.name.textContent = soul.name;
-        this.volume.textContent = soul.quantity + " " + soul.unitShortName;
+        this.volume.textContent = `${soul.quantity} ${soul.unitShortName}`;
         //this.unit.value = soul.unitShortName;
     }
-    return IngredientView;
-}());
+}
 //Отвечает за список ингредиентов в инвентаре
-var ListIngredients = /** @class */ (function () {
-    function ListIngredients(node, temporary, name) {
-        if (temporary === void 0) { temporary = false; }
-        if (name === void 0) { name = "listIngredient"; }
-        var _this = this;
+class ListIngredients {
+    constructor(node, temporary = false, name = "listIngredient") {
         //Лямбдой - чтоб можно было передавать как callback и this не теряла контекст
-        this.addIngredient = function (model) {
+        this.addIngredient = (model) => {
             //на случай, если добавляемый ингредиент уже есть
-            var find = _this.models.filter(function (model_) { return model_.id === model.id; });
+            let find = this.models.filter((model_) => model_.id === model.id);
             if (find != null && find.length !== 0) {
-                var j = _this.models.lastIndexOf(find[0]);
-                _this.views[j].delete();
+                let j = this.models.lastIndexOf(find[0]);
+                this.views[j].delete();
             }
-            var index = _this.models.length;
-            _this.models[index] = model;
-            _this.addView()(_this.models[index], index, _this.models);
+            const index = this.models.length;
+            this.models[index] = model;
+            this.addView()(this.models[index], index, this.models);
         };
         this.headNode = node;
-        this.storage = temporary ? sessionStorage : localStorage;
-        this.key = name;
+        this.storage = new ListInStorage(name, temporary);
         this.views = new Array();
-        this.models = JSON.parse(this.storage.getItem(this.key));
-        if (this.models == null)
-            this.models = new Array();
-        else
-            this.models.forEach(this.addView());
-        window.addEventListener("unload", function () { _this.storage.setItem(_this.key, JSON.stringify(_this.models)); });
-        this.headNode.onsubmit = function () {
+        this.models = this.storage.getList();
+        this.models.forEach(this.addView());
+        this.headNode.onsubmit = () => {
             return false;
         };
     }
-    ListIngredients.prototype.getIngredients = function () {
+    getIngredients() {
         return this.models;
-    };
+    }
     //Лямбдой - чтоб можно было передавать как callback и this не теряла контекст
-    ListIngredients.prototype.addView = function () {
-        var _this = this;
-        return function (soul, i) {
-            _this.views[i] = new IngredientView(soul);
-            _this.views[i].ondeleted = function (view) {
-                var j = _this.views.lastIndexOf(view);
-                _this.models.splice(j, 1);
-                _this.views.splice(j, 1);
+    addView() {
+        return (soul, i) => {
+            this.views[i] = new IngredientView(soul);
+            this.views[i].ondeleted = (view) => {
+                let j = this.views.lastIndexOf(view);
+                this.models.splice(j, 1);
+                this.views.splice(j, 1);
             };
-            _this.headNode.appendChild(_this.views[i].main);
+            this.headNode.appendChild(this.views[i].main);
         };
-    };
-    return ListIngredients;
-}());
-var IngredientAddatorView = /** @class */ (function () {
-    function IngredientAddatorView() {
-        var _this = this;
+    }
+}
+class IngredientAddatorView {
+    constructor() {
         this.name = document.querySelector("article.inventory input[type=\"text\"]");
         this.btnAdd = document.getElementById("buttonAddIngridient");
         this.count = document.querySelector("article.inventory input[type=\"number\"]");
@@ -174,64 +151,64 @@ var IngredientAddatorView = /** @class */ (function () {
         this.form = document.querySelector("article.inventory form.add-ingredient");
         this.error = new ErrorView(this.form);
         //Подсказки при вводе
-        this.name.addEventListener("input", function () {
-            var nameChip = _this.name.value;
+        this.name.addEventListener("input", () => {
+            let nameChip = this.name.value;
             console.log(nameChip);
             if (nameChip.length === 0)
                 return;
-            if (document.querySelector("option[value=\"" + nameChip + "\""))
+            if (document.querySelector(`option[value="${nameChip}"`))
                 return;
-            var requestSearch = new XMLHttpRequest();
+            let requestSearch = new XMLHttpRequest();
             requestSearch.open("POST", "/Ingredients/Index", true);
             requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            requestSearch.onloadend = function () {
+            requestSearch.onloadend = () => {
                 if (requestSearch.status === 404)
                     return;
-                var tmp = document.querySelector("datalist[id=\"ingredients\"");
+                let tmp = document.querySelector("datalist[id=\"ingredients\"");
                 if (tmp != null)
                     tmp.parentNode.removeChild(tmp);
-                _this.form.insertAdjacentHTML("afterend", requestSearch.response);
+                this.form.insertAdjacentHTML("afterend", requestSearch.response);
             };
-            requestSearch.send("nameChip=" + encodeURIComponent(nameChip));
+            requestSearch.send(`nameChip=${encodeURIComponent(nameChip)}`);
         });
         //Окончание ввода названия ингредиента - устанавливаем единицы измерения
-        this.name.addEventListener("change", function () {
-            var nameChip = _this.name.value;
-            var tmp = document.querySelector("option[value=\"" + nameChip + "\"");
+        this.name.addEventListener("change", () => {
+            const nameChip = this.name.value;
+            const tmp = document.querySelector(`option[value="${nameChip}"`);
             if (tmp == null) {
-                _this.unit.value = null;
+                this.unit.value = null;
             }
             else {
-                _this.unit.value = tmp.getAttribute("label");
+                this.unit.value = tmp.getAttribute("label");
             }
         });
         //Запрашиваем у сервера корректность ингредиента
-        this.form.onsubmit = function (event) {
-            _this.name.setCustomValidity("");
+        this.form.onsubmit = (event) => {
+            this.name.setCustomValidity("");
             //заглушение исключений ради того, чтобы страничка не обновлялась при сбое скрипта
             try {
-                if (_this.unit.value === "") {
-                    _this.error.display("Такого ингредиента не существует");
+                if (this.unit.value === "") {
+                    this.error.display("Такого ингредиента не существует");
                     return false;
                 }
-                _this.error.display(false);
-                var requestAdd_1 = new XMLHttpRequest();
-                requestAdd_1.open("POST", "/IngredientQuant/FindName", true);
-                requestAdd_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                requestAdd_1.onloadend = function () {
-                    var response = JSON.parse(requestAdd_1.response);
+                this.error.display(false);
+                const requestAdd = new XMLHttpRequest();
+                requestAdd.open("POST", "/IngredientQuant/FindName", true);
+                requestAdd.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                requestAdd.onloadend = () => {
+                    const response = JSON.parse(requestAdd.response);
                     if (response.message != null) {
-                        _this.error.display(response.message);
+                        this.error.display(response.message);
                         return;
                     }
-                    _this.onadded(response);
-                    _this.count.value = null;
-                    _this.name.value = null;
-                    _this.unit.value = null;
+                    this.onadded(response);
+                    this.count.value = null;
+                    this.name.value = null;
+                    this.unit.value = null;
                 };
-                var name_1 = _this.name.value;
-                var count = _this.count.value;
-                requestAdd_1.send("ingredientName=" + encodeURIComponent(name_1) + "&volume=" + encodeURIComponent(count));
+                const name = this.name.value;
+                const count = this.count.value;
+                requestAdd.send(`ingredientName=${encodeURIComponent(name)}&volume=${encodeURIComponent(count)}`);
             }
             catch (e) {
                 console.log(e.toString());
@@ -240,111 +217,181 @@ var IngredientAddatorView = /** @class */ (function () {
             return false;
         };
     }
-    return IngredientAddatorView;
-}());
-var Inventory = /** @class */ (function () {
-    function Inventory(temporary) {
-        if (temporary === void 0) { temporary = false; }
+}
+class Inventory {
+    getIngredients() {
+        return this.listIngridients.getIngredients();
+    }
+    constructor(temporary = false) {
         this.addator = new IngredientAddatorView();
         this.listIngridients =
             new ListIngredients((document.querySelector("article.inventory form.list-ingredients")), temporary);
         this.addator.onadded = this.listIngridients.addIngredient;
     }
-    Inventory.prototype.getIngredients = function () {
-        return this.listIngridients.getIngredients();
-    };
-    return Inventory;
-}());
+}
 
-var ListRecipesButton = /** @class */ (function () {
-    function ListRecipesButton(element) {
-        var _this = this;
+class ListInStorage {
+    constructor(name, temporary) {
+        this.key = name;
+        this.storage = temporary ? sessionStorage : localStorage;
+        this.list = JSON.parse(this.storage.getItem(this.key));
+        if (this.list == null)
+            this.list = new Array();
+        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(this.list)); });
+    }
+    getList() {
+        return this.list;
+    }
+    setList(list) {
+        this.list = list;
+    }
+}
+class SetInStorage {
+    constructor(name, temporary) {
+        this.key = name;
+        this.storage = temporary ? sessionStorage : localStorage;
+        let list = JSON.parse(this.storage.getItem(this.key));
+        this.list = new Set(list);
+        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(Array.from(this.list.values()))); });
+    }
+    getList() {
+        return this.list;
+    }
+    setList(list) {
+        this.list = list;
+    }
+}
+
+class ListRecipesButton {
+    constructor(element) {
         this.btn = element;
         if (this.btn.id !== "currentPage") {
-            this.btn.onclick = function (ev) {
-                _this.onclick(parseInt(_this.btn.textContent));
+            this.btn.onclick = ev => {
+                this.onclick(parseInt(this.btn.textContent));
             };
         }
     }
-    return ListRecipesButton;
-}());
-var ListRecipes = /** @class */ (function () {
-    function ListRecipes(node) {
-        this.headNode = node;
-    }
-    ListRecipes.prototype.setList = function (html, searcher) {
+}
+class ListRecipes {
+    setList(html, searcher) {
         while (this.headNode.hasChildNodes())
             this.headNode.removeChild(this.headNode.firstChild);
         this.headNode.insertAdjacentHTML("beforeend", html);
-        this.headNode.querySelectorAll(".page").forEach(function (btn) {
-            new ListRecipesButton(btn).onclick = function (page) {
+        this.headNode.querySelectorAll(".page").forEach((btn) => {
+            new ListRecipesButton(btn).onclick = (page) => {
                 searcher.search(page);
             };
         });
-        this.headNode.querySelectorAll("img").forEach(function (img) {
-            img.addEventListener("error", function () {
-                img.src = "/images/default.png";
-            });
+        this.headNode.querySelectorAll("article.recipe-preview").forEach((recipe) => {
+            let id = parseInt(recipe.id.substr(1));
+            new FavoriteMarkView(recipe.querySelector("section > header > img"), this.favors.has(id))
+                .onChangeMode = (m) => {
+                console.log(m + " " + id);
+                if (m)
+                    this.favors.add(id);
+                else
+                    this.favors.delete(id);
+            };
         });
-    };
-    return ListRecipes;
-}());
+        //TODO так как теперь вместо img используется div с фоновым изображением, мы потеряли событие error
+        /*this.headNode.querySelectorAll(".recipe_avatar").forEach((div: HTMLDivElement) => {
+            div.addEventListener("error",
+                () => {
+                    div.style.backgroundImage = "url(../images/default.png)";
+                });
+        });*/
+    }
+    constructor(node, favors) {
+        this.headNode = node;
+        this.favors = favors;
+    }
+}
+class FavoriteMarkView {
+    constructor(node, mode = false) {
+        this.img = node;
+        this.setMode(mode);
+        this.img.onclick = () => {
+            this.setMode(!this.mode);
+        };
+    }
+    setMode(mode) {
+        this.mode = mode;
+        if (mode)
+            this.img.src = "/images/bookmark-active.svg";
+        else
+            this.img.src = "/images/bookmark-passive.svg";
+        if (this.onChangeMode)
+            this.onChangeMode(mode);
+    }
+}
+class ListFavoriteRecipes {
+    constructor() {
+        this.storage = new SetInStorage("favoriteRecipes", false);
+        this.ids = this.storage.getList();
+    }
+    get() {
+        return Array.from(this.ids.values());
+    }
+    add(id) {
+        this.ids.add(id);
+    }
+    delete(id) {
+        this.ids.delete(id);
+    }
+    has(id) {
+        return this.ids.has(id);
+    }
+}
 
-var TimeRecipeModel = /** @class */ (function () {
-    function TimeRecipeModel(days, hours, minutes) {
+class TimeRecipeModel {
+    constructor(days, hours, minutes) {
         this.days = days;
         this.hours = hours;
         this.minutes = minutes;
     }
-    return TimeRecipeModel;
-}());
-var TimeRecipeView = /** @class */ (function () {
-    function TimeRecipeView(node) {
+}
+class TimeRecipeView {
+    constructor(node) {
         this.days = node.querySelector('[name="days"]');
         this.hours = node.querySelector('[name="hours"]');
         this.minutes = node.querySelector('[name="minutes"]');
     }
-    TimeRecipeView.prototype.getTime = function () {
+    getTime() {
         return new TimeRecipeModel(this.days.valueAsNumber, this.hours.valueAsNumber, this.minutes.valueAsNumber);
-    };
-    return TimeRecipeView;
-}());
-var RecipeModel = /** @class */ (function () {
-    function RecipeModel() {
     }
-    return RecipeModel;
-}());
-var RecipeCreateView = /** @class */ (function () {
-    function RecipeCreateView(form, inventory, listener) {
-        var _this = this;
+}
+class RecipeModel {
+}
+class RecipeCreateView {
+    constructor(form, inventory, listener) {
         this.name = document.getElementById("Name");
         this.description = document.getElementById("Description");
         this.instruction = document.getElementById("Instruction");
         this.image = document.getElementById("Image");
-        var img = new ImageView(document.getElementById("ImageOut"));
+        const img = new ImageView(document.getElementById("ImageOut"));
         this.error = new ErrorView(form);
-        this.image.addEventListener("change", function (ev) {
-            img.setLink(_this.image.value);
+        this.image.addEventListener("change", (ev) => {
+            img.setLink(this.image.value);
         });
-        var uploader = new ImageUploader(this.image, function (link) {
-            _this.image.value = link;
+        let uploader = new ImageUploader(this.image, (link) => {
+            this.image.value = link;
             img.setLink(link);
         });
         this.cookingTime = new TimeRecipeView(form.querySelector('[name="time"]'));
         this.ingredients = inventory;
-        form.onsubmit = function () {
+        form.onsubmit = () => {
             try {
-                var recipe = new RecipeModel();
-                for (var field in _this) {
+                let recipe = new RecipeModel();
+                for (let field in this) {
                     if (field == "ingredients") {
-                        recipe.ingredients = _this.ingredients.getIngredients();
-                        console.debug(_this.ingredients.getIngredients());
+                        recipe.ingredients = this.ingredients.getIngredients();
+                        console.debug(this.ingredients.getIngredients());
                     }
                     else if (field == "cookingTime") {
-                        recipe.cookingTime = _this.cookingTime.getTime();
+                        recipe.cookingTime = this.cookingTime.getTime();
                     }
                     else if (field != "error" && field != "setError") {
-                        recipe[field.toString()] = _this[field.toString()].value;
+                        recipe[field.toString()] = this[field.toString()].value;
                     }
                 }
                 listener(recipe);
@@ -355,101 +402,129 @@ var RecipeCreateView = /** @class */ (function () {
             return false;
         };
     }
-    RecipeCreateView.prototype.setError = function (message) {
+    setError(message) {
         this.error.display(message);
-    };
-    return RecipeCreateView;
-}());
+    }
+}
 
-var SearcherByStringView = /** @class */ (function () {
-    function SearcherByStringView(form) {
-        var _this = this;
+class SearcherByStringView {
+    constructor(form) {
         this.form = form;
         this.data = this.form.querySelector('input[name="searchString"]');
-        this.form.onsubmit = function () {
-            var str = _this.data.value;
+        this.form.onsubmit = () => {
+            const str = this.data.value;
             if (str) {
-                var searcher = new SearcherByString(str);
-                _this.onsearch(searcher);
+                let searcher = new SearcherByString(str);
+                this.onsearch(searcher);
             }
             return false;
         };
     }
-    return SearcherByStringView;
-}());
-var SearcherByString = /** @class */ (function () {
-    function SearcherByString(request) {
+}
+class SearcherByString {
+    constructor(request) {
         this.request = request.slice();
     }
-    SearcherByString.prototype.search = function (input) {
-        var _this = this;
+    search(input) {
         if (typeof (input) == "number") {
-            var page = input;
-            var requestSearch_1 = new XMLHttpRequest();
-            requestSearch_1.onloadend = function () {
-                if (requestSearch_1.status === 404) {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
                     //TODO как-то сообщить пользователю
-                    console.log("\u041F\u043E \u0437\u0430\u043F\u0440\u043E\u0441\u0443 \"" + _this.request + "\" \u043E\u0442\u0432\u0435\u0442: 404");
+                    console.log(`По запросу "${this.request}" ответ: 404`);
                     return;
                 }
-                _this.onsearched(requestSearch_1.response, _this);
+                this.onsearched(requestSearch.response, this);
             };
-            requestSearch_1.open("POST", "/Recipes/SearchByString", true);
-            requestSearch_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            requestSearch_1.send("searchString=" + encodeURIComponent(this.request) + "&pageNumber=" + page);
+            requestSearch.open("POST", "/Recipes/SearchByString", true);
+            requestSearch.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            requestSearch.send(`searchString=${encodeURIComponent(this.request)}&pageNumber=${page}`);
         }
         else {
             this.onsearched = input;
             this.search(1);
         }
-    };
-    return SearcherByString;
-}());
-var SearchByIngredientsView = /** @class */ (function () {
-    function SearchByIngredientsView(button, sourse) {
-        var _this = this;
+    }
+}
+class SearchByIngredientsView {
+    constructor(button, sourse) {
         this.button = button;
         this.data = sourse;
-        this.button.onclick = function () {
-            var ingredients = _this.data.getIngredients();
+        this.button.onclick = () => {
+            const ingredients = this.data.getIngredients();
             if (ingredients) {
-                var searcher = new SearcherByIngredients(ingredients);
-                _this.onsearch(searcher);
+                let searcher = new SearcherByIngredients(ingredients);
+                this.onsearch(searcher);
             }
             return false;
         };
     }
-    return SearchByIngredientsView;
-}());
-var SearcherByIngredients = /** @class */ (function () {
-    function SearcherByIngredients(request) {
+}
+class SearcherByIngredients {
+    constructor(request) {
         this.request = request.slice();
     }
-    SearcherByIngredients.prototype.search = function (input) {
-        var _this = this;
+    search(input) {
         if (typeof (input) == "number") {
-            var page = input;
-            var requestSearch_2 = new XMLHttpRequest();
-            requestSearch_2.onloadend = function () {
-                if (requestSearch_2.status === 404) {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
                     //TODO как-то сообщить пользователю
-                    console.log("\u041F\u043E \u0437\u0430\u043F\u0440\u043E\u0441\u0443 \"" + _this.request + "\" \u043E\u0442\u0432\u0435\u0442: 404");
+                    console.log(`По запросу "${this.request}" ответ: 404`);
                     return;
                 }
-                _this.onsearched(requestSearch_2.response, _this);
+                this.onsearched(requestSearch.response, this);
             };
-            requestSearch_2.open("POST", "/Recipes/SearchByIngredients", true);
-            requestSearch_2.setRequestHeader("Content-Type", "application/json");
-            var message = {
+            requestSearch.open("POST", "/Recipes/SearchByIngredients", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
                 ingredients: this.request,
                 pageNumber: page
             };
-            requestSearch_2.send(JSON.stringify(message));
+            requestSearch.send(JSON.stringify(message));
         }
         else {
             this.onsearched = input;
             this.search(1);
         }
-    };
-    return SearcherByIngredients;
-}());
+    }
+}
+class PsevdoSearcherByFavors {
+    search(input) {
+        if (typeof (input) == "number") {
+            const page = input;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
+                    //TODO как-то сообщить пользователю
+                    console.log(`По запросу "${this.request}" ответ: 404`);
+                    return;
+                }
+                this.onsearched(requestSearch.response, this);
+            };
+            requestSearch.open("POST", "/Recipes/PageInListId", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
+                recipes: this.request,
+                pageNumber: page
+            };
+            requestSearch.send(JSON.stringify(message));
+        }
+        else {
+            this.onsearched = input;
+            this.search(1);
+        }
+    }
+    constructor(favors) {
+        this.request = favors;
+    }
+}
+class PsevdoSearcherByFavorsView {
+    constructor(button, favors) {
+        button.onclick = () => {
+            this.onsearch(new PsevdoSearcherByFavors(favors.get()));
+        };
+    }
+}

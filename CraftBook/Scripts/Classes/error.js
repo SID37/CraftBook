@@ -1,12 +1,12 @@
-var ErrorView = /** @class */ (function () {
-    function ErrorView(node) {
+class ErrorView {
+    constructor(node) {
         this.parent = node;
         this.view = document.createElement("div");
         this.view.classList.add("error");
         node.insertAdjacentElement("beforebegin", this.view);
         this.display(false);
     }
-    ErrorView.prototype.display = function (message) {
+    display(message) {
         if (message) {
             if (typeof message == "string")
                 this.view.textContent = message;
@@ -14,6 +14,5 @@ var ErrorView = /** @class */ (function () {
         }
         else
             this.view.style.display = "none";
-    };
-    return ErrorView;
-}());
+    }
+}
