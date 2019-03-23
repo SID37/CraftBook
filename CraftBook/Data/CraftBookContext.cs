@@ -104,6 +104,8 @@ namespace CraftBook.Data
 
             searchString = Regex.Escape(searchString.ToLower());
             List<UserRecipe> result = new List<UserRecipe>();
+            if (searchString.Length > 100)
+                return result;
 
             while (result.Count == 0 && searchString.Length > 0)
             {
