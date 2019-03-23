@@ -26,12 +26,13 @@ class ListRecipes {
             }
         });
 
-        this.headNode.querySelectorAll("img").forEach((img: HTMLImageElement) => {
-            img.addEventListener("error",
+        //TODO так как теперь вместо img используется div с фоновым изображением, мы потеряли событие error
+        /*this.headNode.querySelectorAll(".recipe_avatar").forEach((div: HTMLDivElement) => {
+            div.addEventListener("error",
                 () => {
-                    img.src = "/images/default.png";
+                    div.style.backgroundImage = "url(../images/default.png)";
                 });
-        });
+        });*/
     }
 
     constructor(node: HTMLElement) {
