@@ -16,20 +16,20 @@
 </head>
 <body>
     <header>
-        <section class="logo"><h2>CraftBook</h2></section>
+        <section class="logo"><h2><a asp-area="" asp-controller="Home" asp-action="Index">CraftBook</a></h2></section>
         <section>
             <div class="search-string">
                 <form asp-controller="Recipes" asp-action="SearchByString">
                     <div class="fieldform">
-                        <input type="text" name="searchString" required placeholder="Ищем рецепт..."/>
-                        <input type="image" src="/images/search/white.svg"/>
+                        <input type="text" name="searchString" required placeholder="Ищем рецепт..." />
+                        <input type="image" src="/images/search/white.svg" />
                     </div>
                 </form>
             </div>
         </section>
         <section>
-            <!--Ссылка?-->
-            <button>Войти</button>
+            <!--Ссылка?>
+        <button>Войти</button-->
         </section>
     </header>
     <article>
@@ -40,22 +40,14 @@
             @RenderBody()
         </section>
         <section>
-            <a asp-controller="Recipes" asp-action="Create">Создать рецепт</a>
-
+            <nav>
+                <div>&copy; 2018 - Craft Book</div>
+                <a asp-controller="Recipes" asp-action="Create">Создать рецепт</a>
+                <a asp-area="" asp-controller="Home" asp-action="About">About</a>
+                <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+            </nav>
         </section>
     </article>
-    <footer>
-        <p>&copy; 2018 - Craft Book</p>
-        <nav>
-            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-area="" asp-controller="Home" asp-action="About">About</a>
-            <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
-        </nav>
-    </footer>
-
-
-
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

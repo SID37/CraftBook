@@ -69,10 +69,10 @@ article.recipe-preview {
     & > section:first-child {
         border-radius: 5px 0 0 5px;
         background-color: $primary-color-light*0.9;
-
+        width:33%;
         & div {
             height: 100%;
-            width: 16/9*$height;
+            //width: 16/9*$height;
             background-repeat: no-repeat;
             background-position: center center;
             background-size: contain;
