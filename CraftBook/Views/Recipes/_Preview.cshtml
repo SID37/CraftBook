@@ -1,5 +1,7 @@
 ﻿@model CraftBook.Models.UserRecipe
-<article class="recipe-preview">
+@{ var id = $"r{Model.ID}";}
+                                    
+    <article class="recipe-preview" id="@id">
     <section>
         <a asp-action="Details" asp-route-id="@Model.ID">
             <div class="recipe_avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
