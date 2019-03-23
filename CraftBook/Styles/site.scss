@@ -175,3 +175,8 @@ h {
     @include rounding;
     text-align: center;
 }
+
+.clickable {
+    cursor: pointer;
+    color: blue;
+}
