@@ -88,16 +88,37 @@ namespace CraftBook.Data
         /// <returns></returns>
         public List<UserRecipe> FindRecipes(string searchString)
         {
-            searchString = Regex.Escape(searchString ?? "");
-            Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
+            var unloadRecipec = this.Recipe
+                     .Include(r => r.Ingredients)
+                     .ThenInclude(iq => iq.Ingredient)
+                     .ThenInclude(i => i.Unit);
 
-            return this.Recipe
-                .Include(r => r.Ingredients)
-                .ThenInclude(iq => iq.Ingredient)
-                .ThenInclude(i => i.Unit)
-                .Where(r => regex.IsMatch(r.Name) || regex.IsMatch(r.Description))
-                .Select(r => new UserRecipe(r))
-                .ToList();
+            // рецепты на странице при входе, пока просто возвращаются все, 
+            // TODO надо что-то типа сортировки по популярности, когда будет статистика
+            if (searchString == null)
+            {
+                return unloadRecipec
+                     .Select(r => new UserRecipe(r))
+                     .ToList();
+            }
+
+            searchString = Regex.Escape(searchString.ToLower());
+            List<UserRecipe> result = new List<UserRecipe>();
+            if (searchString.Length > 100)
+                return result;
+
+            while (result.Count == 0 && searchString.Length > 0)
+            {
+                Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
+
+                result = unloadRecipec
+                     .Where(r => regex.IsMatch(r.Name.ToLower()) || regex.IsMatch(r.Description.ToLower()))
+                     .Select(r => new UserRecipe(r))
+                     .ToList();
+                searchString = Regex.Replace(searchString, @".$", "");
+            }
+
+            return result;
         }
         
         /// <summary>
