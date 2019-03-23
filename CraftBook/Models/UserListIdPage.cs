@@ -8,6 +8,6 @@ namespace CraftBook.Models
     public class UserListIdPage
     {
         public int[] recipes { get; set; }
-        public int page { get; set; }
+        public int pageNumber { get; set; }
     }
 }

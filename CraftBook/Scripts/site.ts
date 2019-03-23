@@ -20,4 +20,9 @@
     searchByIngr.onsearch = (searcher: ISearchEnginePages) => {
         searcher.search((html, me) => { listRecipes.setList(html, me); });
     };
+
+    let searchFavor = new PsevdoSearcherByFavorsView(document.getElementById("bookmark"), favoursRecipes);
+    searchFavor.onsearch = searcher => {
+        searcher.search((html, me) => { listRecipes.setList(html, me); });
+    };
 }

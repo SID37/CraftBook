@@ -88,7 +88,7 @@ class ListFavoriteRecipes {
     }
 
     get() {
-        return this.ids;
+        return Array.from(this.ids.values());
     }
 
     add(id: Number) {
