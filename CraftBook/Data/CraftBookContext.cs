@@ -70,6 +70,17 @@ namespace CraftBook.Data
                 .ToList();
         }
 
+        
+        public List<UserRecipe> FindRecipes(int[] recipes)
+        {
+            var unloadRecipec = this.Recipe
+                     .Where(r => recipes.Contains(r.ID))
+                     .Include(r => r.Ingredients)
+                     .ThenInclude(iq => iq.Ingredient)
+                     .ThenInclude(i => i.Unit);
+            return unloadRecipec.Select(r => new UserRecipe(r)).ToList();
+        }
+
         /// <summary>
         /// Возвращает часть, занимаемую quantity в requiredQuantity или 1 если quantity больше
         /// </summary>

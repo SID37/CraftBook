@@ -46,9 +46,8 @@ class IngredientView {
 class ListIngredients {
     private views: Array<IngredientView>;
     private models: Array<IngredientModel>;
-    private key: string;
-    private storage: Storage;
     private headNode: HTMLFormElement;
+    private storage: ListInStorage<IngredientModel>;
 
     getIngredients(): Array<IngredientModel> {
         return this.models;
@@ -56,15 +55,10 @@ class ListIngredients {
 
     constructor(node: HTMLFormElement, temporary: boolean = false, name: string = "listIngredient") {
         this.headNode = node;
-        this.storage = temporary ? sessionStorage : localStorage;
-        this.key = name;
+        this.storage = new ListInStorage<IngredientModel>(name, temporary);
         this.views = new Array<IngredientView>();
-        this.models = JSON.parse(this.storage.getItem(this.key)) as Array<IngredientModel>;
-        if (this.models == null)
-            this.models = new Array<IngredientModel>();
-        else
-            this.models.forEach(this.addView());
-        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(this.models)); });
+        this.models = this.storage.getList();
+        this.models.forEach(this.addView());
         this.headNode.onsubmit = () => {
             return false;
         }

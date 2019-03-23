@@ -1,6 +1,7 @@
 ﻿@import 'vars/_mixins.scss';
 @import 'vars/_palette.scss';
 @import 'vars/sizes.scss';
+@import '_scroll.scss';
 @import 'inventory';
 @import 'recipe';
 /*Адское зануление*/
@@ -16,12 +17,18 @@ body, fieldset, input, output, article, section, footer, header, p, h1, h2, h3, 
 
 body {
     @include main-font-family;
+    overflow: visible;
     //Цвета/всякие штуки
     & > header, & > footer {
         background: $color-header-background;
         color: $color-header-text;
         height: $size-header-height;
         align-items: center;
+
+        a {
+            color: inherit;
+            text-decoration-line: inherit;
+        }
 
         & > section {
 
@@ -38,18 +45,24 @@ body {
         justify-content: space-between;
 
         & > section:nth-child(odd) {
-            min-width: 320px;
-            //flex-basis: 320px;
+            max-width: 25%;
             flex: 1 1 auto;
+
+            nav {
+                display: flex;
+                flex-direction: column;
+            }
         }
 
         & > section:nth-child(even) {
             flex: 1 1 auto;
+            max-width: 50%;
         }
 
         & > section:first-child {
             padding-right: $margin-main-side;
             padding-left: $margin-main-side;
+            min-width: 320px;
         }
 
         & > section:last-child {
@@ -63,9 +76,10 @@ body {
     }
 
     & > article {
-        min-height: 88vh;
+        max-height: 91vh;
         overflow: auto;
-        padding-top: $margin-main-side;
+        padding-top: $margin-main-side/2;
+        margin-top: $margin-main-side/2;
     }
 }
 
@@ -160,4 +174,9 @@ h {
     font-size: $size-h4;
     @include rounding;
     text-align: center;
+}
+
+.clickable {
+    cursor: pointer;
+    color: blue;
 }
