@@ -10,6 +10,7 @@
     <None Remove="Scripts\Classes\error.ts" />
     <None Remove="Scripts\Classes\image.ts" />
     <None Remove="Scripts\Classes\ingredient.ts" />
+    <None Remove="Scripts\Classes\listInStorage.ts" />
     <None Remove="Scripts\Classes\listRecipe.ts" />
     <None Remove="Scripts\Classes\recipe.ts" />
     <None Remove="Scripts\Classes\search.ts" />
@@ -32,6 +33,7 @@
     <TypeScriptCompile Include="Scripts\Classes\error.ts" />
     <TypeScriptCompile Include="Scripts\Classes\image.ts" />
     <TypeScriptCompile Include="Scripts\Classes\ingredient.ts" />
+    <TypeScriptCompile Include="Scripts\Classes\listInStorage.ts" />
     <TypeScriptCompile Include="Scripts\Classes\listRecipe.ts" />
     <TypeScriptCompile Include="Scripts\Classes\recipe.ts" />
     <TypeScriptCompile Include="Scripts\Classes\search.ts" />
@@ -46,7 +48,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>

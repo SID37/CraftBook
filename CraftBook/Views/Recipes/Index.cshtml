@@ -4,13 +4,6 @@
 @{
     ViewData["Title"] = "Index";
 }
-<header>
-    <h2>
-        @Html.DisplayFor(modelItem => Model.Title)
-        <a asp-action="Create"><img src="images/add.svg" alt="+" /></a>
-    </h2>
-
-</header>
 @foreach (var item in Model.Recipes)
 {
     <section>

@@ -1,5 +1,5 @@
-﻿@import '_palette.scss';
-@import '_mixins.scss';
+﻿@import 'vars/_mixins.scss';
+@import 'vars/_palette.scss';
 
 article.recipe_list {
     display: flex;
@@ -9,8 +9,6 @@ article.recipe_list {
         img {
             height: $size-h2/2;
         }
-
-        margin-bottom: 8px;
     }
 
     & > section {
@@ -39,7 +37,7 @@ article.recipe_list {
 
 
                 &.page {
-                    color: $color-content-text;//$secondary-text-color;
+                    color: $color-content-text; //$secondary-text-color;
                     cursor: pointer;
 
                     &:hover {
@@ -65,40 +63,51 @@ article.recipe-preview {
     @include rounding;
     $height: 128px;
     height: $height;
+    border-bottom: 4px solid green;
 
-    & > section > img {
+
+    & > section:first-child {
         border-radius: 5px 0 0 5px;
-        height: 100%;
-        width: $height;
+        background-color: $primary-color-light*0.9;
+        width:33%;
+        & div {
+            height: 100%;
+            //width: 16/9*$height;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+        }
     }
 
     & > section:nth-child(2) {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        padding: 8px;
+        justify-content: flex-start;
+        padding: 0 16px 16px 16px;
+        width: 100%;
+        overflow: hidden;
+        margin-bottom: 8px;
 
-        & > section {
+        & > section, header {
             display: flex;
-            align-items: center;
 
             img {
                 height: 32px;
             }
 
-            * {
-                margin-right: 8px;
-            }
+            i {
+                inline-size: max-content;
+                padding-right: 4px;
 
-            span {
-                &:first-of-type::first-letter {
-                    text-transform: uppercase;
-                }
-
-                &:not(:last-of-type)::after {
+                &:not(:last-of-type):not(:first-of-type)::after {
                     content: ","
                 }
             }
+        }
+
+        & > header {
+            align-items: flex-end;
+            justify-content: space-between;
         }
     }
 }
@@ -107,7 +116,7 @@ article.recipe-creator {
     //Для отладки
     form {
         * {
-            input { 
+            input {
                 border: 1px dashed black;
             }
         }

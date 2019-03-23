@@ -114,3 +114,47 @@ class SearcherByIngredients implements ISearchEnginePages {
         }
     }
 }
+
+class PsevdoSearcherByFavors implements ISearchEnginePages {
+    search(page: number): void;
+    search(listener: (html: string, me: ISearchEnginePages) => void): void;
+    search(input: number | ((html: string, me: ISearchEnginePages) => void)): void {
+        if (typeof (input) == "number") {
+            const page = input as number;
+            const requestSearch = new XMLHttpRequest();
+            requestSearch.onloadend = () => {
+                if (requestSearch.status === 404) {
+                    //TODO как-то сообщить пользователю
+                    console.log(`По запросу "${this.request}" ответ: 404`);
+                    return;
+                }
+                this.onsearched(requestSearch.response, this);
+            }
+            requestSearch.open("POST", "/Recipes/PageInListId", true);
+            requestSearch.setRequestHeader("Content-Type", "application/json");
+            const message = {
+                recipes: this.request,
+                pageNumber: page
+            };
+            requestSearch.send(JSON.stringify(message));
+        } else {
+            this.onsearched = input as SearchListener;
+            this.search(1);
+        }
+    }
+    private request: Array<Number>;
+    private onsearched: SearchListener;
+    constructor(favors: Array<Number>) {
+        this.request = favors;
+    }
+}
+
+class PsevdoSearcherByFavorsView implements ISearchView{
+    onsearch: (searcher: ISearchEnginePages) => void;
+
+    constructor(button: HTMLElement, favors: ListFavoriteRecipes) {
+        button.onclick = () => {
+            this.onsearch(new PsevdoSearcherByFavors(favors.get()));
+        };
+    }
+}

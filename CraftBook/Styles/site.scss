@@ -1,9 +1,11 @@
-﻿@import 'palette';
+﻿@import 'vars/_mixins.scss';
+@import 'vars/_palette.scss';
+@import 'vars/sizes.scss';
+@import '_scroll.scss';
 @import 'inventory';
-@import 'mixins';
 @import 'recipe';
 /*Адское зануление*/
-body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
+body, fieldset, input, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
     margin: 0;
     padding: 0;
 }
@@ -15,45 +17,69 @@ body, fieldset, output, article, section, footer, header, p, h1, h2, h3, h4, h5,
 
 body {
     @include main-font-family;
-
+    overflow: visible;
+    //Цвета/всякие штуки
     & > header, & > footer {
-        height: 3.5em;
-        background: $color-main-background;
-        color: $color-main-text;
-        min-height: 6vh;
+        background: $color-header-background;
+        color: $color-header-text;
+        height: $size-header-height;
+        align-items: center;
 
-        div {
-            padding-top: 3vh;
-            //transform: rotate(-30deg);
-            //width:auto;
+        a {
+            color: inherit;
+            text-decoration-line: inherit;
         }
 
+        & > section {
 
-        img {
-            float: left;
-            height: 4vh;
-            margin: 1vh 4px 1vh 8px;
+            input[type="text"], button {
+                font-size: $size-h2;
+                font-weight: 500;
+                color: $color-header-text;
+            }
+        }
+    }
+    //Разметка сетки
+    & > header, & > footer, & > article {
+        display: flex;
+        justify-content: space-between;
+
+        & > section:nth-child(odd) {
+            max-width: 25%;
+            flex: 1 1 auto;
+
+            nav {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        & > section:nth-child(even) {
+            flex: 1 1 auto;
+            max-width: 50%;
+        }
+
+        & > section:first-child {
+            padding-right: $margin-main-side;
+            padding-left: $margin-main-side;
+            min-width: 320px;
+        }
+
+        & > section:last-child {
+            padding-left: $margin-main-side;
+            padding-right: $margin-main-side;
+
+            * {
+                float: right
+            }
         }
     }
 
     & > article {
-        display: flex;
-        min-height: 88vh;
+        max-height: 91vh;
         overflow: auto;
-
-        & > section:nth-child(even) {
-            flex: 3;
-        }
-
-        & > section:nth-child(odd) {
-            flex: 1;
-            background-color: $color-content-background;
-        }
-
-        & > section:nth-child(2) {
-            margin-left: 40px;
-            margin-right: 40px;
-        }
+        padding-top: $margin-main-side/2;
+        margin-top: $margin-main-side/2;
     }
 }
 
@@ -61,8 +87,7 @@ body {
 .fieldform {
     display: flex;
     justify-content: flex-end;
-    height: 25px;
-
+    align-items: center;
 
     * {
         &:first-child {
@@ -71,6 +96,7 @@ body {
 
         &:not(:first-child) {
             flex: 2 25px;
+            margin-left: 12px;
         }
 
         &[type="text"], &[type="number"] {
@@ -80,51 +106,65 @@ body {
 
         &[type="image"] {
             max-width: 25px;
+            max-height: 25px;
         }
     }
+    
 
     form > & {
         @include line-spacing;
     }
 }
 
-.in-frame {
-    @extend .fieldform;
-    border: 2px solid $color-border;
-    @include rounding;
-
-    *:not(:first-child) {
-        border-left: 1px solid $color-border;
-    }
+button, input {
+    border: 0;
+    @include main-font-family;
+    background-color: inherit;
+    color: $color-input-text;
 }
 
 input {
-    border: 0;
-    @include main-font-family;
-
-
     &[type="submit"] {
         @include rounding;
         margin: 16px 0px 16px 0;
         background-color: $color-button-background;
         color: $color-button-text;
-        height: 32px;
+        height: 24px;
     }
 
     &[type="text"], &[type="number"] {
-        padding-left: 4px;
+        color: $color-input-text;
+        border-bottom: 2px solid $color-input-text;
+        padding-bottom: 4px;
+        font-weight: lighter;
+        font-size: $size-h3;
     }
 }
 
 h {
+    &1 {
+        font-size: $size-h1;
+        font-weight: lighter;
+    }
+
     &2 {
         font-size: $size-h2;
-        font-weight: 500;
+        font-weight: bold;
     }
 
     &3 {
         font-size: $size-h3;
-        font-weight: normal;
+        font-weight: bold;
+    }
+
+    &4 {
+        font-size: $size-h4;
+        font-weight: bold;
+    }
+
+    &5 {
+        font-size: $size-h5;
+        font-weight: bold;
     }
 }
 
@@ -134,4 +174,9 @@ h {
     font-size: $size-h4;
     @include rounding;
     text-align: center;
+}
+
+.clickable {
+    cursor: pointer;
+    color: blue;
 }

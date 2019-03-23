@@ -13,7 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
-        private static int PageSize = 5;
+        private static int PageSize = 50;
 
         /// <summary>
         /// Конструктор
@@ -179,13 +179,17 @@ namespace CraftBook.Controllers
             }
 
             var found = _context.FindRecipes(request.ingredients);
-            UserRecipesPage result = new UserRecipesPage
-            {
-                Title = "Найденные рецепты",
-                Recipes = CutList(found, request.pageNumber, PageSize),
-                PageNumber = request.pageNumber,
-                PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
-            };
+            UserRecipesPage result;
+            if (found.Count == 0)
+                result = new UserRecipesPage { Title = "Ничего не найдено", Recipes = new List<UserRecipe>(), PageNumber = 0, PageCount = 0 };
+            else
+                result = new UserRecipesPage
+                {
+                    Title = "Найденные рецепты",
+                    Recipes = CutList(found, request.pageNumber, PageSize),
+                    PageNumber = request.pageNumber,
+                    PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
+                };
             return PartialView("Index", result);
         }
 
@@ -200,13 +204,40 @@ namespace CraftBook.Controllers
         public IActionResult SearchByString(string searchString, int PageNumber = 1)
         {
             var found = _context.FindRecipes(searchString);
-            UserRecipesPage result = new UserRecipesPage
-            {
-                Title = (searchString != null)?"Найденные рецепты":"Рецепты",
-                Recipes = CutList(found, PageNumber, PageSize),
-                PageNumber = PageNumber,
-                PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
-            };
+            UserRecipesPage result;
+            if (found.Count == 0)
+                result = new UserRecipesPage { Title = "По вашему запросу ничего не найдено", Recipes = new List<UserRecipe>(), PageNumber = 0, PageCount = 0 };
+            else
+                result = new UserRecipesPage
+                {
+                    Title = (searchString != null) ? "Найденные рецепты" : "Рецепты",
+                    Recipes = CutList(found, PageNumber, PageSize),
+                    PageNumber = PageNumber,
+                    PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
+                };
+            return PartialView("Index", result);
+        }
+
+        /// <summary>
+        /// POST запрос, возвращаеттребуемую страницу с рецептами из списка
+        /// </summary>
+        /// <param name="request">Список рецептов со страницей</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult PageInListId([FromBody]UserListIdPage request)
+        {
+            var found = _context.FindRecipes(request.recipes);
+            UserRecipesPage result;
+            if (found.Count == 0)
+                result = new UserRecipesPage { Title = "Здесь ппока ничего нет", Recipes = new List<UserRecipe>(), PageNumber = 0, PageCount = 0 };
+            else
+                result = new UserRecipesPage
+                {
+                    Title = "Рецепты",
+                    Recipes = CutList(found, request.pageNumber, PageSize),
+                    PageNumber = request.pageNumber,
+                    PageCount = (found.Count > PageSize) ? ((found.Count - 1) / PageSize + 1) : 1,
+                };
             return PartialView("Index", result);
         }
 

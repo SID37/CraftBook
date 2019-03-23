@@ -7,9 +7,9 @@
 
 class IngredientView {
     main: HTMLElement;
-    private name: HTMLInputElement;
-    private volume: HTMLInputElement;
-    private unit: HTMLInputElement;
+    private name: HTMLElement;
+    private volume: HTMLElement;
+    //private unit: HTMLInputElement;
     private button: HTMLInputElement;
     ondeleted: (v: IngredientView) => void;
     delete = () => {
@@ -19,25 +19,25 @@ class IngredientView {
     constructor(soul: IngredientModel) {
         this.main = document.createElement("div") as HTMLElement;
         this.main.classList.add("fieldform");
-        this.main.innerHTML = '<div class="in-frame">' +
-            '<input type="text" name="name" readonly />' +
-            '<input type="number" name="volume" readonly />' +
-            '<input type="text" name="unit" readonly />' +
-            '</div>' +
-            '<input type="image" name="del_ingredient" src="/images/close.svg" />';
+        this.main.innerHTML = //'<div class="fieldform">' +
+            '<span class="name"></span>' +
+            '<span class="volume"></span>' +
+            //'<input type="text" name="unit" readonly />' +
+            //'</div>' +
+            '<input type="image" name="del_ingredient" src="/images/ingredient/close.svg" />';
         this.button = (this.main.querySelector("input[type=\"image\"") as HTMLInputElement);
         this.button.onclick = () => {
             this.main.remove();
             this.ondeleted(this);
             return false;
         };
-        this.name = this.main.querySelector('input[name="name"]') as HTMLInputElement;
-        this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
-        this.volume = this.main.querySelector('input[name="volume"]') as HTMLInputElement;
+        this.name = this.main.querySelector('span[class="name"]') as HTMLElement;
+        //this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
+        this.volume = this.main.querySelector('span[class="volume"]') as HTMLElement;
 
-        this.name.value = soul.name;
-        this.volume.value = soul.quantity.toString();
-        this.unit.value = soul.unitShortName;
+        this.name.textContent = soul.name;
+        this.volume.textContent = `${soul.quantity} ${soul.unitShortName}`;
+        //this.unit.value = soul.unitShortName;
     }
 
 }
@@ -46,9 +46,8 @@ class IngredientView {
 class ListIngredients {
     private views: Array<IngredientView>;
     private models: Array<IngredientModel>;
-    private key: string;
-    private storage: Storage;
     private headNode: HTMLFormElement;
+    private storage: ListInStorage<IngredientModel>;
 
     getIngredients(): Array<IngredientModel> {
         return this.models;
@@ -56,15 +55,10 @@ class ListIngredients {
 
     constructor(node: HTMLFormElement, temporary: boolean = false, name: string = "listIngredient") {
         this.headNode = node;
-        this.storage = temporary ? sessionStorage : localStorage;
-        this.key = name;
+        this.storage = new ListInStorage<IngredientModel>(name, temporary);
         this.views = new Array<IngredientView>();
-        this.models = JSON.parse(this.storage.getItem(this.key)) as Array<IngredientModel>;
-        if (this.models == null)
-            this.models = new Array<IngredientModel>();
-        else
-            this.models.forEach(this.addView());
-        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(this.models)); });
+        this.models = this.storage.getList();
+        this.models.forEach(this.addView());
         this.headNode.onsubmit = () => {
             return false;
         }

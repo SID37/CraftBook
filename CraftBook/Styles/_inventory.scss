@@ -1,24 +1,42 @@
-﻿@import 'palette.scss';
-@import '_mixins.scss';
+﻿@import 'vars/_mixins.scss';
+@import 'vars/_palette.scss';
 
 article.inventory {
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
     display: flex;
     flex-direction: column;
-    background-color: $color-content-background;
-    color: $color-content-text;
+
+    & > header, & > form {
+        @include line-spacing;
+    }
 
     & > form {
-        border-bottom: 1px solid $color-line;
+        &.add-ingredient {
+            input[type="image"] {
+                max-height: $size-h3 * 0.9;
+                //max-width: $size-h3 * 0.9;
+                padding-left: (25px-$size-h3*0.8)/2;
+                padding-right: (25px-$size-h3*0.8)/2;
+            }
+        }
         //ингредиент
-        &.list-ingredients input {
-            &:not([type="image"]) {
-                background-color: $color-content-background;
-                color: $color-content-text;
-                font-weight:500;
-                font-variant:small-caps;
+        &.list-ingredients * {
+            color: $color-content-text;
+            border: 0;
+            font-size: $size-h3;
+            font-weight: lighter;
+
+            &::first-letter {
+                text-transform: uppercase;
+            }
+
+            &.volume {
+                text-align: right;
+            }
+
+            &[type="image"] {
+                max-height: $size-h3 * 0.8;
             }
         }
     }
