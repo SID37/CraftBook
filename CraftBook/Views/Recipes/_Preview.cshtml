@@ -1,38 +1,33 @@
 ﻿@model CraftBook.Models.UserRecipe
-<a asp-action="Details" asp-route-id="@Model.ID">
-    <article class="recipe-preview">
+<article class="recipe-preview">
+    <section>
+        <a asp-action="Details" asp-route-id="@Model.ID">
+            <div class="recipe_avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
+        </a>
+    </section>
+    <section>
+        <header>
+            <a asp-action="Details" asp-route-id="@Model.ID">
+                <h3>@Model.Name</h3>
+            </a>
+            <img src="/images/bookmark-passive.svg" alt="Избранное" />
+        </header>
         <section>
-            @Html.Raw("<img src=" +(Model.Image != null ? Model.Image : "/images/recipe_default.jpg") + " />")
+            <i>Ингредиенты:</i>
+            @foreach (var iq in Model.Ingredients)
+            {
+                <i>@iq.Name</i>
+            }
         </section>
         <section>
-            <header>
-                <h3>@Html.DisplayFor(modelItem => Model.Name)</h3>
-            </header>
-            <section>
-                <img src="/images/recipe/time.svg" />
-                @Html.DisplayFor(modelItem => Model.CookingTime.Days) д.
-                @Html.DisplayFor(modelItem => Model.CookingTime.Hours) ч.
-                @Html.DisplayFor(modelItem => Model.CookingTime.Minutes) мин.
-            </section>
-            <section>
-                <img src="/images/recipe/instruction.svg" />
-                @Html.DisplayFor(modelItem => Model.Description)
-            </section>
-            <section>
-                <img src="/images/recipe/ingredients.svg" />
-
-                @foreach (var iq in Model.Ingredients)
-                {
-                    <span>@iq.Name</span>
-                }
-            </section>
+            @Html.DisplayFor(modelItem => Model.Description)
         </section>
-        <!--section>
-        <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-        <a asp-action="Details" asp-route-id="@Model.ID">Details</a> |
-        <a asp-action="Delete" asp-route-id="@Model.ID">Delete</a>
-        </section-->
+    </section>
+    <!--section>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Details" asp-route-id="@Model.ID">Details</a> |
+    <a asp-action="Delete" asp-route-id="@Model.ID">Delete</a>
+    </section-->
 
 
-    </article>
-</a>
+</article>

@@ -13,7 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
-        private static int PageSize = 5;
+        private static int PageSize = 50;
 
         /// <summary>
         /// Конструктор
