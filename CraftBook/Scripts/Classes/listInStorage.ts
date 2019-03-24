@@ -40,3 +40,31 @@ class SetInStorage<T> {
         this.list = list;
     }
 }
+
+class ObjectInStorage<T> {
+    constructor(name: string, temporary: boolean, geter: ()=>T) {
+        this.key = name;
+        this.storage = temporary ? sessionStorage : localStorage;
+        this.obj = JSON.parse(this.storage.getItem(this.key)) as T;
+        if (this.obj == null) {
+            this.obj =  ({}) as T;
+        }
+        window.addEventListener("unload", () => { this.storage.setItem(this.key, JSON.stringify(geter())); });
+    }
+    private key: string;
+    private storage: Storage;
+    private obj: T;
+
+    getObj() : T {
+        if(this.obj)
+            return this.obj;
+    }
+
+    delObj() {
+        this.obj = ({}) as T;
+    }
+
+    setObj(obj: T) {
+        this.obj = obj;
+    }
+}
