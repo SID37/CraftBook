@@ -36,6 +36,20 @@ namespace CraftBook.Controllers
         }
         
         /// <summary>
+        /// POST запрос, Возвращает ингредиент с заданным названием 
+        /// </summary>
+        /// <param name="id">Его название</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult Get(string name)
+        {
+            UserAbstractIngredient ingredient = _context.GetINgredient(name);
+            if (ingredient != null)
+                return Json(ingredient);
+            return Json(new ErrorMessage("Ингредиент не найден"));
+        }
+
+        /// <summary>
         /// Страничка создания ингредиента
         /// </summary>
         /// <returns></returns>

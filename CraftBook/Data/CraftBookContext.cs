@@ -75,6 +75,20 @@ namespace CraftBook.Data
             return UnitOfMeasurement.ToList();
         }
         
+        /// <summary>
+        /// Возвращает ингредиент с заданным именем или ничего, если ингредиент не найден
+        /// </summary>
+        /// <param name="name">Его название</param>
+        /// <returns></returns>
+        public UserAbstractIngredient GetINgredient(string name)
+        {
+            Ingredient ingredient = Ingredients.Include(igr => igr.Unit).FirstOrDefault(igr => igr.Name == name);
+            if (ingredient != null)
+                return new UserAbstractIngredient(ingredient);
+            else
+                return null;
+        }
+
         public List<UserRecipe> FindRecipes(int[] recipes)
         {
             var unloadRecipec = this.Recipe
