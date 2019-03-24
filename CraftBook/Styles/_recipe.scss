@@ -115,9 +115,32 @@ article.recipe-preview {
 article.recipe-creator {
     //Для отладки
     form {
-        fieldset {
+        display: flex;
+        background-color: white;
+        flex-direction: column;
+        border: 0;
+
+        div {
             border: 0;
+            display: flex;
+
+            &[name="time1"] {
+                justify-content: center;
+            }
+
+            &[name="time"] {
+                flex-direction: row;
+            }
+
+            h {
+
+                &5 {
+                    
+                    justify-content: center;
+                }
+            }
         }
+
         * {
             input {
                 border: 1px dashed black;
