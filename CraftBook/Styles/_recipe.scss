@@ -115,6 +115,9 @@ article.recipe-preview {
 article.recipe-creator {
     //Для отладки
     form {
+        fieldset {
+            border: 0;
+        }
         * {
             input {
                 border: 1px dashed black;
