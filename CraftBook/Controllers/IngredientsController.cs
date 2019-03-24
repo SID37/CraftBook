@@ -34,18 +34,15 @@ namespace CraftBook.Controllers
         {
             return PartialView("View", _context.FindIngredients(nameChip, 5));
         }
-
-        /* Пока не нужна
+        
         /// <summary>
         /// Страничка создания ингредиента
         /// </summary>
         /// <returns></returns>
         public IActionResult Create()
         {
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID");
             return View();
         }
-        */
 
         /// <summary>
         /// POST Запрос на создание ингредиента
