@@ -12,45 +12,47 @@
     <form>
         <section>
             <section>
-                <fieldset name="name">
-                    <legend>Что будем готовить?</legend>
+                <div class="name">
+                    <h5>Что будем готовить?</h5>
                     <input type="text" name="name" required />
-                </fieldset>
-                <fieldset name="time">
-                    <legend>Время приготовления</legend>
-                    <div class="col">
-                        <h5>Дни</h5>
-                        <input type="number" name="days" value="0" required />
+                </div>
+                <div class="time1">
+                    <b>Время приготовления</b>
+                 </div>
+                    <div class="time">
+                        <div class="col">
+                            <h5>Дни</h5>
+                            <input type="number" name="days" value="0" required />
+                        </div>
+                        <div class="col">
+                            <h5>Часы</h5>
+                            <input type="number" name="hours" value="0" required />
+                        </div>
+                        <div class="col">
+                            <h5>Минуты</h5>
+                            <input type="number" name="minutes" required />
+                        </div>
                     </div>
-                    <div class="col">
-                        <h5>Часы</h5>
-                        <input type="number" name="hours" value="0" required />
-                    </div>
-                    <div class="col">
-                        <h5>Минуты</h5>
-                        <input type="number" name="minutes" required />
-                    </div>
-                </fieldset>
             </section>
             <section>
-                <fieldset name="avatar">
-                    <legend>Как будет выглядеть?</legend>
+                <div class="avatar">
+                    <b>Как будет выглядеть?</b>
                     <input asp-for="Image" class="form-control" required />
                     <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
-                </fieldset>
+                </div>
             </section>
         </section>
         <section>
-            <fieldset name="descriprion">
-                <legend>Придумайте описание рецепта</legend>
+            <div class="descriprion">
+                <b>Придумайте описание рецепта</b>
                 <textarea asp-for="Description" class="form-control" required></textarea>
-            </fieldset>
+            </div>
         </section>
         <section>
-            <fieldset name="descriprion">
-                <legend>Ход работы</legend>
+            <div class="descriprion">
+                <b>Ход работы</b>
                 <textarea asp-for="Instruction" class="form-control" required></textarea>
-            </fieldset>
+            </div>
         </section>
         <input type="submit" value="Create" class="btn btn-default" />
     </form>
