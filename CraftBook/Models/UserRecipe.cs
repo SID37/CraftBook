@@ -63,6 +63,8 @@ namespace CraftBook.Models
                     if (error)
                         return error;
                 }
+            if (CookingTime == null)
+                return new ErrorMessage("- Время, это всё время.. - А что с ним? - Его нет..");
             error = CookingTime.IsIncorrect();
             if (error)
                 return error;
