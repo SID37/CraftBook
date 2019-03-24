@@ -34,15 +34,14 @@ namespace CraftBook.Controllers
         {
             return PartialView("View", _context.FindIngredients(nameChip, 5));
         }
-
+        
         /// <summary>
         /// Страничка создания ингредиента
         /// </summary>
         /// <returns></returns>
         public IActionResult Create()
         {
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID");
-            return View();
+            return View(_context.GetUnitList());
         }
 
         /// <summary>
@@ -51,18 +50,15 @@ namespace CraftBook.Controllers
         /// <param name="ingredient">Ингредиент</param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,UnitID")] Ingredient ingredient)
+        public IActionResult Create([FromBody]UserAbstractIngredient ingredient)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(ingredient);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID", ingredient.UnitID);
-            return View(ingredient);
-        }        
+                if (ingredient == null)
+                    return Json(new ErrorMessage("Вы хотите создать ингредиент? И где он тогда?"));
+                ErrorMessage error = _context.AddIngredient(ref ingredient);
+                if (error)
+                    return Json(error);
+                return Json(ingredient);
+        }
 
         /// <summary>
         /// Страничка удаления ингредиента
