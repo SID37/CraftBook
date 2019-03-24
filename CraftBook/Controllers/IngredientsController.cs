@@ -41,7 +41,7 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
-            return View();
+            return View(_context.GetUnitList());
         }
 
         /// <summary>

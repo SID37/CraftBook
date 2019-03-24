@@ -70,6 +70,10 @@ namespace CraftBook.Data
                 .ToList();
         }
 
+        public List<UnitOfMeasurement> GetUnitList()
+        {
+            return UnitOfMeasurement.ToList();
+        }
         
         public List<UserRecipe> FindRecipes(int[] recipes)
         {
