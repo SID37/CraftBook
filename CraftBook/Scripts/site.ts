@@ -1,5 +1,6 @@
 ﻿{
-    let listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement);
+    let favoursRecipes = new ListFavoriteRecipes();
+    let listRecipes = new ListRecipes(document.querySelector('article.recipe_list') as HTMLElement, favoursRecipes);
 
     let defaultSeacher = new SearcherByString("");
     defaultSeacher.search((html, me) => { listRecipes.setList(html, me); });
@@ -17,6 +18,11 @@
 
     let searchByIngr = new SearchByIngredientsView(document.querySelector('input[name="find_recept_by_ingr"]') as HTMLElement, inventory);
     searchByIngr.onsearch = (searcher: ISearchEnginePages) => {
+        searcher.search((html, me) => { listRecipes.setList(html, me); });
+    };
+
+    let searchFavor = new PsevdoSearcherByFavorsView(document.getElementById("bookmark"), favoursRecipes);
+    searchFavor.onsearch = searcher => {
         searcher.search((html, me) => { listRecipes.setList(html, me); });
     };
 }

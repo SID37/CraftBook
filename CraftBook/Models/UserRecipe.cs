@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using MarkdownSharp;
 
 namespace CraftBook.Models
 {
@@ -33,7 +35,7 @@ namespace CraftBook.Models
             ID = recipe.ID;
             Name = recipe.Name;
             Description = recipe.Description;
-            Instruction = recipe.Instruction;
+            Instruction = ReplaceTags(recipe.Instruction);
             Image = recipe.Image;
             CookingTime = new UserTime(recipe.CookingTime);
 
@@ -41,6 +43,20 @@ namespace CraftBook.Models
                 .Ingredients
                 .Select(igr => new UserIngredient(igr))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Экранирует html теги, заменяет markdown теги на html(именно в таком порядке) в строке
+        /// </summary>
+        /// <param name="s">собственно, строка</param>
+        /// <returns></returns>
+        private string ReplaceTags(string s)
+        {
+            s = Regex.Replace(s, @"<", @"&lt;");
+            s = Regex.Replace(s, @">", @"&gt;");
+            s = Regex.Replace(s, @"'", @"&#39;");
+            s = Regex.Replace(s, "\"", @"&quot;");
+            return new Markdown().Transform(s);
         }
 
         /// <summary>
@@ -63,6 +79,8 @@ namespace CraftBook.Models
                     if (error)
                         return error;
                 }
+            if (CookingTime == null)
+                return new ErrorMessage("- Время, это всё время.. - А что с ним? - Его нет..");
             error = CookingTime.IsIncorrect();
             if (error)
                 return error;

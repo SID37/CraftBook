@@ -3,44 +3,41 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h2>Details</h2>
+<h2>
+    <p style="text-align: center"> @Html.DisplayFor(model => model.Name)
+</h2>
+<dd> <p style="text-align: center">@Html.DisplayFor(model => model.CookingTime.Days) дней @Html.DisplayFor(model => model.CookingTime.Hours) часов @Html.DisplayFor(model => model.CookingTime.Minutes) минут</dd>
 
 <div>
-    <h4>Recipe</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayFor(model => model.Image)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            <p style="text-align: center">
+                @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+        <dd><br></dd>
         <dd>
-            @Html.DisplayFor(model => model.Description)
+            <p style="color: forestgreen; text-align: center">
+                @foreach (var iq in Model.Ingredients)
+                {
+                    @iq.Name
+                    for (var i = 0; i < 30 - iq.Name.Length - iq.UnitShortName.Length; i++)
+                    {
+                        <h>_</h>
+                    }
+                    @iq.Quantity
+                    @iq.UnitShortName
+                    <br>
+                }
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Instruction)
-        </dt>
         <dd>
-            @Html.DisplayFor(model => model.Instruction)
+            <br>
+            @Html.Raw(Model.Instruction)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Ingredients)
-        </dt>
-        <dd>
-            @foreach (var iq in Model.Ingredients)
-            {
-                @iq.Name
-                <h> </h>
-                @iq.Quantity
-                @iq.UnitShortName
-                <br>
-            }
-        </dd>
+
     </dl>
 </div>
 <div>
