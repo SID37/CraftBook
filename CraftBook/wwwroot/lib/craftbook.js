@@ -97,7 +97,7 @@ class IngredientView {
         //this.unit = this.main.querySelector('input[name="unit"]') as HTMLInputElement;
         this.volume = this.main.querySelector('span[class="volume"]');
         this.name.textContent = soul.name;
-        this.volume.textContent = `${soul.quantity} ${soul.unitShortName}`;
+        this.volume.textContent = soul.quantity == null ? "по вкусу" : `${soul.quantity} ${soul.unitShortName}`;
         //this.unit.value = soul.unitShortName;
     }
 }
@@ -147,17 +147,17 @@ class ListIngredients {
 }
 class IngredientAddatorView {
     constructor() {
+        this.form = document.querySelector("article.inventory form.add-ingredient");
         this.name = document.querySelector("article.inventory input[type=\"text\"]");
         this.btnAdd = document.getElementById("buttonAddIngridient");
         this.count = document.querySelector("article.inventory input[type=\"number\"]");
+        this.realUnit = this.form.querySelector(".unit_view");
         this.unit =
             document.querySelector("article.inventory input[name=\"ingredient_unit\"]");
-        this.form = document.querySelector("article.inventory form.add-ingredient");
         this.error = new ErrorView(this.form);
         //Подсказки при вводе
         this.name.addEventListener("input", () => {
             let nameChip = this.name.value;
-            console.log(nameChip);
             if (nameChip.length === 0)
                 return;
             if (document.querySelector(`option[value="${nameChip}"`))
@@ -180,9 +180,11 @@ class IngredientAddatorView {
             const nameChip = this.name.value;
             const tmp = document.querySelector(`option[value="${nameChip}"`);
             if (tmp == null) {
+                this.realUnit.innerHTML = "<pre>   </pre>";
                 this.unit.value = null;
             }
             else {
+                this.realUnit.textContent = tmp.getAttribute("label");
                 this.unit.value = tmp.getAttribute("label");
             }
         });
@@ -207,12 +209,13 @@ class IngredientAddatorView {
                     }
                     this.onadded(response);
                     this.count.value = null;
+                    this.realUnit.innerHTML = "<pre>   </pre>";
                     this.name.value = null;
                     this.unit.value = null;
                 };
                 const name = this.name.value;
                 const count = this.count.value;
-                requestAdd.send(`ingredientName=${encodeURIComponent(name)}&volume=${encodeURIComponent(count)}`);
+                requestAdd.send(`ingredientName=${encodeURIComponent(name)}&volume=${count.length > 0 ? encodeURIComponent(count) : "null"}`);
             }
             catch (e) {
                 console.log(e.toString());
