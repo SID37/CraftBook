@@ -52,7 +52,6 @@ namespace CraftBook.Models
         /// <returns></returns>
         private string ReplaceTags(string s)
         {
-            s = Regex.Replace(s, @"&", @"&amp;");
             s = Regex.Replace(s, @"<", @"&lt;");
             s = Regex.Replace(s, @">", @"&gt;");
             s = Regex.Replace(s, @"'", @"&#39;");
