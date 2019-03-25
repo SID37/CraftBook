@@ -103,7 +103,6 @@ namespace CraftBook.Controllers
         /// <param name="id">Его ID</param>
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ingredient = await _context.Ingredients.FindAsync(id);
