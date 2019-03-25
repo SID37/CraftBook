@@ -122,7 +122,7 @@ article.recipe-preview {
   display: flex;
   border-width: 2px;
   border-radius: 5px;
-  height: 128px;
+  height: 160px;
   border-bottom: 4px solid green; }
   article.recipe-preview > section:first-child {
     border-radius: 5px 0 0 5px;
@@ -156,6 +156,50 @@ article.recipe-preview {
 
 article.recipe-creator form * input {
   border: 1px dashed black; }
+
+article.recipe-view div.recipe-avatar {
+  height: 200px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  border-width: 2px;
+  border-radius: 5px; }
+
+article.recipe-view > section, article.recipe-view header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #212121; }
+  article.recipe-view > section > *, article.recipe-view header > * {
+    margin: 8px 0 16px 0; }
+  article.recipe-view > section > section.time, article.recipe-view header > section.time {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%; }
+    article.recipe-view > section > section.time img, article.recipe-view header > section.time img {
+      height: 20px; }
+    article.recipe-view > section > section.time > *, article.recipe-view header > section.time > * {
+      margin-right: 4px; }
+  article.recipe-view > section .ingredient, article.recipe-view header .ingredient {
+    width: 60%;
+    display: flex;
+    justify-content: space-between; }
+    article.recipe-view > section .ingredient > span:first-of-type::first-letter, article.recipe-view header .ingredient > span:first-of-type::first-letter {
+      text-transform: uppercase; }
+    article.recipe-view > section .ingredient > div, article.recipe-view header .ingredient > div {
+      flex: 1;
+      border-bottom: 1px #BDBDBD solid;
+      margin: 0px 8px; }
+  article.recipe-view > section.instruction img, article.recipe-view header.instruction img {
+    max-height: 50%;
+    max-width: 50%;
+    display: block;
+    margin: 10px auto;
+    border: 4px #BDBDBD solid;
+    border-width: 2px;
+    border-radius: 5px; }
 
 /*Адское зануление*/
 body, fieldset, input, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
