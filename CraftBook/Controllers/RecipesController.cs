@@ -124,7 +124,7 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Delete(int? id)
         {
-            return Redirect("~/Error/Code404/");
+            return NotFound();
 
             if (id == null)
             {
