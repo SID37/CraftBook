@@ -124,6 +124,8 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Delete(int? id)
         {
+            return Redirect("~/Error/Code404/");
+
             if (id == null)
             {
                 return NotFound();
@@ -145,7 +147,6 @@ namespace CraftBook.Controllers
         /// <param name="id">Его ID</param>
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recipe = await _context.Recipe.FindAsync(id);
