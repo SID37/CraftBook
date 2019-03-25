@@ -131,17 +131,17 @@ namespace CraftBook.Data
                      .ToList();
             }
 
-            searchString = Regex.Escape(searchString.ToLower());
+            searchString = Regex.Escape(searchString);
             List<UserRecipe> result = new List<UserRecipe>();
             if (searchString.Length > 100)
                 return result;
 
             while (result.Count == 0 && searchString.Length > 0)
             {
-                Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled);
+                Regex regex = new Regex(@"(^|\s)" + searchString, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
                 result = unloadRecipec
-                     .Where(r => regex.IsMatch(r.Name.ToLower()) || regex.IsMatch(r.Description.ToLower()))
+                     .Where(r => regex.IsMatch(r.Name) || regex.IsMatch(r.Description))
                      .Select(r => new UserRecipe(r))
                      .ToList();
                 searchString = Regex.Replace(searchString, @".$", "");
