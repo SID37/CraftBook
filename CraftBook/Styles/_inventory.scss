@@ -19,6 +19,30 @@ article.inventory {
                 padding-left: (25px-$size-h3*0.8)/2;
                 padding-right: (25px-$size-h3*0.8)/2;
             }
+
+            .fieldform {
+
+                input, .unit_view {
+                    font-size: $size-h4;
+
+                    &[type="number"] {
+                        font-size: $size-h4;
+                    }
+                }
+
+                .unit_view {
+                    flex: 0;
+                    margin-left: -20px;
+                    color: $color-input-text;
+                    padding-bottom: 4px;
+                    background-color: white;
+                    border-bottom: 2px solid $color-border;
+                    pre {
+                        margin: 0;
+                        padding: 0;
+                    }
+                }
+            }
         }
         //ингредиент
         &.list-ingredients * {
@@ -27,8 +51,10 @@ article.inventory {
             font-size: $size-h3;
             font-weight: lighter;
 
-            &::first-letter {
-                text-transform: uppercase;
+            &:first-of-type{
+                &::first-letter {
+                    text-transform: uppercase;
+                }
             }
 
             &.volume {
