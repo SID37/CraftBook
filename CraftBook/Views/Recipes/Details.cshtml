@@ -37,7 +37,16 @@
                 <div class="ingredient">
                     <span>@iq.Name</span>
                     <div></div>
-                    <span>@iq.Quantity @iq.UnitShortName</span>
+                    <span>
+                        @if (iq.Quantity == null)
+                        {
+                        <text>по вкусу</text>
+                        } else
+                        {
+                            @iq.Quantity
+                            @iq.UnitShortName
+                        }
+                    </span>
                 </div>
             }
     </section>

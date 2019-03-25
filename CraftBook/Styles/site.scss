@@ -44,9 +44,18 @@ body {
         display: flex;
         justify-content: space-between;
 
+        @media (max-width: $size-media-mobile) {
+            flex-direction: column;
+            align-items: center;
+        }
+
         & > section:nth-child(odd) {
             max-width: 25%;
             flex: 1 1 auto;
+
+            @media (max-width: $size-media-mobile) {
+                max-width: 80%;
+            }
 
             nav {
                 display: flex;
@@ -57,17 +66,39 @@ body {
         & > section:nth-child(even) {
             flex: 1 1 auto;
             max-width: 50%;
+
+            @media (max-width: $size-media-mobile) {
+                max-width: 80%;
+                min-width: 80%;
+                order: 3;
+            }
         }
 
         & > section:first-child {
             padding-right: $margin-main-side;
             padding-left: $margin-main-side;
             min-width: 320px;
+
+            @media (max-width: $size-media-mobile) {
+                order: 2;
+                padding-right: 0;
+                padding-left: 0;
+                min-width: 80%;
+
+                &.logo {
+                    padding-top: 4px;
+                    min-width: 0;
+                }
+            }
         }
 
         & > section:last-child {
             padding-left: $margin-main-side;
             padding-right: $margin-main-side;
+
+            @media (max-width: $size-media-mobile) {
+                order: 1;
+            }
 
             * {
                 float: right
@@ -79,104 +110,104 @@ body {
         max-height: 91vh;
         overflow: auto;
         padding-top: $margin-main-side/2;
-        margin-top: $margin-main-side/2;
+        //margin-top: $margin-main-side/2;
     }
 }
 
 
-.fieldform {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    .fieldform {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
 
-    * {
-        &:first-child {
-            flex: 7;
+        * {
+            &:first-child {
+                flex: 5;
+            }
+
+            &:not(:first-child) {
+                flex: 2 25px;
+                margin-left: 12px;
+            }
+
+            &[type="text"], &[type="number"] {
+                min-width: 0;
+                width: 100%;
+            }
+
+            &[type="image"] {
+                max-width: 25px;
+                max-height: 25px;
+            }
         }
 
-        &:not(:first-child) {
-            flex: 2 25px;
-            margin-left: 12px;
+
+        form > & {
+            @include line-spacing;
+        }
+    }
+
+    button, input {
+        border: 0;
+        @include main-font-family;
+        background-color: inherit;
+        color: $color-input-text;
+    }
+
+    input {
+        &[type="submit"] {
+            @include rounding;
+            margin: 16px 0px 16px 0;
+            background-color: $color-button-background;
+            color: $color-button-text;
+            height: 24px;
         }
 
         &[type="text"], &[type="number"] {
-            min-width: 0;
-            width: 100%;
-        }
-
-        &[type="image"] {
-            max-width: 25px;
-            max-height: 25px;
+            color: $color-input-text;
+            border-bottom: 2px solid $color-input-text;
+            padding-bottom: 4px;
+            font-weight: lighter;
+            font-size: $size-h3;
         }
     }
-    
 
-    form > & {
-        @include line-spacing;
-    }
-}
+    h {
+        &1 {
+            font-size: $size-h1;
+            font-weight: lighter;
+        }
 
-button, input {
-    border: 0;
-    @include main-font-family;
-    background-color: inherit;
-    color: $color-input-text;
-}
+        &2 {
+            font-size: $size-h2;
+            font-weight: bold;
+        }
 
-input {
-    &[type="submit"] {
-        @include rounding;
-        margin: 16px 0px 16px 0;
-        background-color: $color-button-background;
-        color: $color-button-text;
-        height: 24px;
-    }
+        &3 {
+            font-size: $size-h3;
+            font-weight: bold;
+        }
 
-    &[type="text"], &[type="number"] {
-        color: $color-input-text;
-        border-bottom: 2px solid $color-input-text;
-        padding-bottom: 4px;
-        font-weight: lighter;
-        font-size: $size-h3;
-    }
-}
+        &4 {
+            font-size: $size-h4;
+            font-weight: bold;
+        }
 
-h {
-    &1 {
-        font-size: $size-h1;
-        font-weight: lighter;
+        &5 {
+            font-size: $size-h5;
+            font-weight: bold;
+        }
     }
 
-    &2 {
-        font-size: $size-h2;
-        font-weight: bold;
-    }
-
-    &3 {
-        font-size: $size-h3;
-        font-weight: bold;
-    }
-
-    &4 {
+    .error {
+        background-color: $color-error-background;
+        color: $color-error-text;
         font-size: $size-h4;
-        font-weight: bold;
+        @include rounding;
+        text-align: center;
     }
 
-    &5 {
-        font-size: $size-h5;
-        font-weight: bold;
+    .clickable {
+        cursor: pointer;
+        color: blue;
     }
-}
-
-.error {
-    background-color: $color-error-background;
-    color: $color-error-text;
-    font-size: $size-h4;
-    @include rounding;
-    text-align: center;
-}
-
-.clickable {
-    cursor: pointer;
-    color: blue;
-}
