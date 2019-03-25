@@ -31,18 +31,14 @@
         <p style="text-align: center">
             @Html.DisplayFor(model => model.Description)
     </section>
-    <section>
-        <p style="color: forestgreen; text-align: center">
+    <section class="list-ingredients">
             @foreach (var iq in Model.Ingredients)
             {
-                @iq.Name
-                for (var i = 0; i < 30 - iq.Name.Length - iq.UnitShortName.Length; i++)
-                {
-                    <h>_</h>
-                }
-                @iq.Quantity
-                @iq.UnitShortName
-                <br>
+                <div class="ingredient">
+                    <span>@iq.Name</span>
+                    <div></div>
+                    <span>@iq.Quantity @iq.UnitShortName</span>
+                </div>
             }
     </section>
     <section class="instruction">
