@@ -115,99 +115,101 @@ body {
 }
 
 
-    .fieldform {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
+.fieldform {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 
-        * {
-            &:first-child {
-                flex: 5;
-            }
-
-            &:not(:first-child) {
-                flex: 2 25px;
-                margin-left: 12px;
-            }
-
-            &[type="text"], &[type="number"] {
-                min-width: 0;
-                width: 100%;
-            }
-
-            &[type="image"] {
-                max-width: 25px;
-                max-height: 25px;
-            }
+    * {
+        &:first-child {
+            flex: 5;
         }
 
-
-        form > & {
-            @include line-spacing;
-        }
-    }
-
-    button, input {
-        border: 0;
-        @include main-font-family;
-        background-color: inherit;
-        color: $color-input-text;
-    }
-
-    input {
-        &[type="submit"] {
-            @include rounding;
-            margin: 16px 0px 16px 0;
-            background-color: $color-button-background;
-            color: $color-button-text;
-            height: 24px;
+        &:not(:first-child) {
+            flex: 2 25px;
+            margin-left: 12px;
         }
 
         &[type="text"], &[type="number"] {
-            color: $color-input-text;
-            border-bottom: 2px solid $color-input-text;
-            padding-bottom: 4px;
-            font-weight: lighter;
-            font-size: $size-h3;
+            min-width: 0;
+            width: 100%;
+        }
+
+        &[type="image"] {
+            max-width: 25px;
+            max-height: 25px;
         }
     }
 
-    h {
-        &1 {
-            font-size: $size-h1;
-            font-weight: lighter;
-        }
 
-        &2 {
-            font-size: $size-h2;
-            font-weight: bold;
-        }
-
-        &3 {
-            font-size: $size-h3;
-            font-weight: bold;
-        }
-
-        &4 {
-            font-size: $size-h4;
-            font-weight: bold;
-        }
-
-        &5 {
-            font-size: $size-h5;
-            font-weight: bold;
-        }
+    form > & {
+        @include line-spacing;
     }
+}
 
-    .error {
-        background-color: $color-error-background;
-        color: $color-error-text;
-        font-size: $size-h4;
+button, input {
+    border: 0;
+    @include main-font-family;
+    background-color: inherit;
+    color: $color-input-text;
+}
+
+input {
+    &[type="submit"] {
         @include rounding;
-        text-align: center;
+        margin: 16px 0px 16px 0;
+        background-color: $color-button-background;
+        color: $color-button-text;
+        height: 24px;
     }
 
-    .clickable {
-        cursor: pointer;
-        color: blue;
+    &[type="text"], &[type="number"] {
+        color: $color-input-text;
+        border-bottom: 2px solid $color-input-text;
+        padding-bottom: 4px;
+        font-weight: lighter;
+        font-size: $size-h3;
     }
+}
+
+h {
+    &1 {
+        font-size: $size-h1;
+        font-weight: lighter;
+    }
+
+    &2 {
+        font-size: $size-h2;
+        font-weight: bold;
+    }
+
+    &3 {
+        font-size: $size-h3;
+        font-weight: bold;
+    }
+
+    &4 {
+        font-size: $size-h4;
+        font-weight: bold;
+    }
+
+    &5 {
+        font-size: $size-h5;
+        font-weight: bold;
+    }
+}
+
+.error {
+    background-color: $color-error-background;
+    color: $color-error-text;
+    font-size: $size-h4;
+    @include rounding;
+    text-align: center;
+}
+
+.clickable {
+    cursor: pointer;
+    color: blue;
+    border: 0;
+    text-decoration: none;
+}

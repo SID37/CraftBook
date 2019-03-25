@@ -1,5 +1,6 @@
 ﻿@import 'vars/_mixins.scss';
 @import 'vars/_palette.scss';
+@import 'vars/sizes.scss';
 
 article.recipe_list {
     display: flex;
@@ -66,11 +67,21 @@ article.recipe-preview {
     height: $height;
     border-bottom: 4px solid green;
 
+    @media (max-width: $size-media-mobile2) {
+        flex-direction: column;
+        height: 200px;
+    }
 
     & > section:first-child {
         border-radius: 5px 0 0 5px;
         background-color: $primary-color-light*0.9;
-        width:33%;
+        width: 33%;
+
+        @media (max-width: $size-media-mobile2) {
+            width: auto;
+            height: 100px;
+        }
+
         & div {
             height: 100%;
             //width: 16/9*$height;
@@ -101,13 +112,12 @@ article.recipe-preview {
                 padding-right: 4px;
 
                 &:not(:last-of-type):not(:first-of-type)::after {
-                    content: ","
+                    content: ",";
                 }
             }
         }
 
         & > header {
-            align-items: flex-end;
             justify-content: space-between;
         }
     }
@@ -123,6 +133,7 @@ article.recipe-creator {
         }
     }
 }
+
 
 article.recipe-view {
 
@@ -178,6 +189,11 @@ article.recipe-view {
 
         &.instruction {
             img {
+                @media (max-width: $size-media-mobile) {
+                    max-height: 80%;
+                    max-width: 90%;
+                }
+
                 max-height: 50%;
                 max-width: 50%;
                 display: block;

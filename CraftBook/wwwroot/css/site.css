@@ -138,10 +138,18 @@ article.recipe-preview {
   border-radius: 5px;
   height: 160px;
   border-bottom: 4px solid green; }
+  @media (max-width: 480px) {
+    article.recipe-preview {
+      flex-direction: column;
+      height: 200px; } }
   article.recipe-preview > section:first-child {
     border-radius: 5px 0 0 5px;
     background-color: #dddddd;
     width: 33%; }
+    @media (max-width: 480px) {
+      article.recipe-preview > section:first-child {
+        width: auto;
+        height: 100px; } }
     article.recipe-preview > section:first-child div {
       height: 100%;
       background-repeat: no-repeat;
@@ -165,7 +173,6 @@ article.recipe-preview {
         article.recipe-preview > section:nth-child(2) > section i:not(:last-of-type):not(:first-of-type)::after, article.recipe-preview > section:nth-child(2) header i:not(:last-of-type):not(:first-of-type)::after {
           content: ","; }
     article.recipe-preview > section:nth-child(2) > header {
-      align-items: flex-end;
       justify-content: space-between; }
 
 article.recipe-creator form * input {
@@ -214,6 +221,10 @@ article.recipe-view > section, article.recipe-view header {
     border: 4px #BDBDBD solid;
     border-width: 2px;
     border-radius: 5px; }
+    @media (max-width: 800px) {
+      article.recipe-view > section.instruction img, article.recipe-view header.instruction img {
+        max-height: 80%;
+        max-width: 90%; } }
 
 /*Адское зануление*/
 body, fieldset, input, output, article, section, footer, header, p, h1, h2, h3, h4, h5, h6 {
@@ -358,4 +369,6 @@ h5 {
 
 .clickable {
   cursor: pointer;
-  color: blue; }
+  color: blue;
+  border: 0;
+  text-decoration: none; }

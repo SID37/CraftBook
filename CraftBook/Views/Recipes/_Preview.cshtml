@@ -1,7 +1,7 @@
 ﻿@model CraftBook.Models.UserRecipe
 @{ var id = $"r{Model.ID}";}
-                                    
-    <article class="recipe-preview" id="@id">
+
+<article class="recipe-preview" id="@id">
     <section>
         <a asp-action="Details" asp-route-id="@Model.ID">
             <div class="recipe_avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
@@ -10,7 +10,7 @@
     <section>
         <header>
             <a asp-action="Details" asp-route-id="@Model.ID">
-                <h3>@Model.Name</h3>
+                <div><h3>@Model.Name</h3></div>
             </a>
             <img src="/images/bookmark-passive.svg" alt="Избранное" class="clickable" />
         </header>
@@ -18,7 +18,7 @@
             <i>Ингредиенты:</i>
             @foreach (var iq in Model.Ingredients)
             {
-                <i>@iq.Name</i>
+                <i>@Html.Raw(iq.Name.Replace(" ", "&nbsp"))</i>
             }
         </section>
         <section>
