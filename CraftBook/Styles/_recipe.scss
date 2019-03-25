@@ -62,7 +62,7 @@ article.recipe-preview {
     color: $color-content-text;
     display: flex;
     @include rounding;
-    $height: 128px;
+    $height: 160px;
     height: $height;
     border-bottom: 4px solid green;
 
