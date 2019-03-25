@@ -13,7 +13,7 @@ namespace CraftBook.Controllers
     public class RecipesController : Controller
     {
         private readonly CraftBookContext _context;
-        private static int PageSize = 50;
+        private static int PageSize = 10;
 
         /// <summary>
         /// Конструктор
@@ -145,6 +145,7 @@ namespace CraftBook.Controllers
         /// <param name="id">Его ID</param>
         /// <returns></returns>
         [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var recipe = await _context.Recipe.FindAsync(id);
