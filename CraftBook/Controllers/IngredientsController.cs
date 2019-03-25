@@ -34,6 +34,20 @@ namespace CraftBook.Controllers
         {
             return PartialView("View", _context.FindIngredients(nameChip, 5));
         }
+        
+        /// <summary>
+        /// POST запрос, Возвращает ингредиент с заданным названием 
+        /// </summary>
+        /// <param name="id">Его название</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult Get(string name)
+        {
+            UserAbstractIngredient ingredient = _context.GetINgredient(name);
+            if (ingredient != null)
+                return Json(ingredient);
+            return Json(new ErrorMessage("Ингредиент не найден"));
+        }
 
         /// <summary>
         /// Страничка создания ингредиента
@@ -41,8 +55,7 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID");
-            return View();
+            return View(_context.GetUnitList());
         }
 
         /// <summary>
@@ -51,18 +64,15 @@ namespace CraftBook.Controllers
         /// <param name="ingredient">Ингредиент</param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,UnitID")] Ingredient ingredient)
+        public IActionResult Create([FromBody]UserAbstractIngredient ingredient)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(ingredient);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["UnitID"] = new SelectList(_context.UnitOfMeasurement, "ID", "ID", ingredient.UnitID);
-            return View(ingredient);
-        }        
+                if (ingredient == null)
+                    return Json(new ErrorMessage("Вы хотите создать ингредиент? И где он тогда?"));
+                ErrorMessage error = _context.AddIngredient(ref ingredient);
+                if (error)
+                    return Json(error);
+                return Json(ingredient);
+        }
 
         /// <summary>
         /// Страничка удаления ингредиента

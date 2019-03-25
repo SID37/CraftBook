@@ -64,6 +64,11 @@ class ListIngredients {
         }
     }
 
+    clean() {
+        this.storage.setList(new Array<IngredientModel>());
+        this.models = this.storage.getList();
+    }
+
     //Лямбдой - чтоб можно было передавать как callback и this не теряла контекст
     addIngredient = (model: IngredientModel) => {
         //на случай, если добавляемый ингредиент уже есть
@@ -185,6 +190,10 @@ class Inventory {
     private listIngridients: ListIngredients;
     getIngredients(): IngredientModel[] {
         return this.listIngridients.getIngredients();
+    }
+
+    delIngredients() {
+        this.listIngridients.clean();
     }
     constructor(temporary: boolean = false) {
         this.addator = new IngredientAddatorView();

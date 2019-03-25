@@ -70,7 +70,25 @@ namespace CraftBook.Data
                 .ToList();
         }
 
+        public List<UnitOfMeasurement> GetUnitList()
+        {
+            return UnitOfMeasurement.ToList();
+        }
         
+        /// <summary>
+        /// Возвращает ингредиент с заданным именем или ничего, если ингредиент не найден
+        /// </summary>
+        /// <param name="name">Его название</param>
+        /// <returns></returns>
+        public UserAbstractIngredient GetINgredient(string name)
+        {
+            Ingredient ingredient = Ingredients.Include(igr => igr.Unit).FirstOrDefault(igr => igr.Name == name);
+            if (ingredient != null)
+                return new UserAbstractIngredient(ingredient);
+            else
+                return null;
+        }
+
         public List<UserRecipe> FindRecipes(int[] recipes)
         {
             var unloadRecipec = this.Recipe
@@ -224,6 +242,47 @@ namespace CraftBook.Data
 
             recipe.Ingredients.ForEach(iq => IngredientQuantities.Remove(iq));
             Recipe.Remove(recipe);
+
+            return new ErrorMessage();
+        }
+
+        /// <summary>
+        /// Проверяет на корректность сам ингредиент, его составляющие, и отсутствие в базе
+        /// </summary>
+        /// <param name="ingredient">ингредиент</param>
+        /// <returns></returns>
+        public ErrorMessage CheckIngredient(UserAbstractIngredient ingredient)
+        {
+            ErrorMessage error = ingredient.IsIncorrect();
+            if (error)
+                return error;
+
+            if (Ingredients.Any(igr => igr.Name == ingredient.Name))
+                return new ErrorMessage("Данный ингредиент у нас уже есть");
+
+            return new ErrorMessage();
+        }
+
+
+        /// <summary>
+        /// Добавляет ингредиент в базу данных
+        /// </summary>
+        /// <param name="ingredient">собственно ингредиент</param>
+        /// <returns></returns>
+        public ErrorMessage AddIngredient(ref UserAbstractIngredient ingredient)
+        {
+            ingredient.Name = ingredient.Name.ToLower();
+
+            ErrorMessage error = CheckIngredient(ingredient);
+            if (error)
+                return error;
+            
+            Ingredient entity = ingredient.ToIngredient();
+            Add(entity);
+            SaveChanges();
+
+            entity.Unit = UnitOfMeasurement.FirstOrDefault(u => u.ID == entity.UnitID);
+            ingredient = new UserAbstractIngredient(entity);
 
             return new ErrorMessage();
         }
