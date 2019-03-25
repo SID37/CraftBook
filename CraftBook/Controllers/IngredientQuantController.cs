@@ -41,7 +41,7 @@ namespace CraftBook.Controllers
         /// <param name="volume">Количество</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult FindName(string ingredientName, double volume)
+        public JsonResult FindName(string ingredientName, double? volume)
         {
             Ingredient ing = _context.Ingredients.Include(i => i.Unit).FirstOrDefault(i => i.Name == ingredientName);
 
