@@ -1,61 +1,110 @@
-var TimeRecipeModel = /** @class */ (function () {
-    function TimeRecipeModel(days, hours, minutes) {
+class TimeRecipeModel {
+    constructor(days, hours, minutes) {
         this.days = days;
         this.hours = hours;
         this.minutes = minutes;
     }
-    return TimeRecipeModel;
-}());
-var TimeRecipeView = /** @class */ (function () {
-    function TimeRecipeView(node) {
+}
+class TimeRecipeView {
+    constructor(node) {
         this.days = node.querySelector('[name="days"]');
         this.hours = node.querySelector('[name="hours"]');
         this.minutes = node.querySelector('[name="minutes"]');
     }
-    TimeRecipeView.prototype.getTime = function () {
+    getTime() {
         return new TimeRecipeModel(this.days.valueAsNumber, this.hours.valueAsNumber, this.minutes.valueAsNumber);
-    };
-    return TimeRecipeView;
-}());
-var RecipeModel = /** @class */ (function () {
-    function RecipeModel() {
     }
-    return RecipeModel;
-}());
-var RecipeCreateView = /** @class */ (function () {
-    function RecipeCreateView(form, inventory, listener) {
-        var _this = this;
+    setTime(time) {
+        if (time) {
+            this.days.value = String(time.days);
+            this.hours.value = String(time.hours);
+            this.minutes.value = String(time.minutes);
+        }
+        else {
+            this.days.value = "0";
+            this.hours.value = "0";
+            this.minutes.value = null;
+        }
+    }
+}
+class RecipeModel {
+}
+class RecipePartialView {
+    constructor(form) {
         this.name = document.getElementById("Name");
         this.description = document.getElementById("Description");
         this.instruction = document.getElementById("Instruction");
         this.image = document.getElementById("Image");
-        var img = new ImageView(document.getElementById("ImageOut"));
-        this.error = new ErrorView(form);
-        this.image.addEventListener("change", function (ev) {
-            img.setLink(_this.image.value);
+        const img = new ImageView(document.getElementById("ImageOut"));
+        this.image.addEventListener("change", (ev) => {
+            img.setLink(this.image.value);
         });
-        var uploader = new ImageUploader(this.image, function (link) {
-            _this.image.value = link;
+        let uploader = new ImageUploader(this.image, (link) => {
+            this.image.value = link;
             img.setLink(link);
         });
+    }
+    set(model) {
+        if (model) {
+            this.name.value = model.name ? model.name : null;
+            this.description.value = model.description ? model.description : null;
+            ;
+            this.instruction.value = model.instruction ? model.instruction : null;
+            ;
+            this.image.value = model.image ? model.image : null;
+            ;
+        }
+    }
+}
+class RecipeCreateView {
+    constructor(form, inventory) {
         this.cookingTime = new TimeRecipeView(form.querySelector('[name="time"]'));
         this.ingredients = inventory;
-        form.onsubmit = function () {
+        this.main = new RecipePartialView(form);
+        this.storage = new ObjectInStorage("creatingRecipe", true, () => { return this.getModel(); });
+        this.setModel(this.storage.getObj());
+    }
+    getModelWithOutIngredients() {
+        let recipe = this.storage.getObj();
+        for (let field in this.main) {
+            recipe[field.toString()] = this.main[field.toString()].value;
+        }
+        recipe.cookingTime = this.cookingTime.getTime();
+        return recipe;
+    }
+    getModel() {
+        let recipe = this.getModelWithOutIngredients();
+        recipe.ingredients = this.ingredients.getIngredients();
+        return recipe;
+    }
+    cleanModel() {
+        this.setModel(new RecipeModel());
+        this.ingredients.delIngredients();
+    }
+    setModel(model) {
+        this.cookingTime.setTime(model.cookingTime);
+        this.main.set(model);
+    }
+}
+class RecipeCreateController {
+    constructor(form, inventory) {
+        this.view = new RecipeCreateView(form, inventory);
+        this.error = new ErrorView(form);
+        form.onsubmit = () => {
             try {
-                var recipe = new RecipeModel();
-                for (var field in _this) {
-                    if (field == "ingredients") {
-                        recipe.ingredients = _this.ingredients.getIngredients();
-                        console.debug(_this.ingredients.getIngredients());
+                let recipe = this.view.getModel();
+                let createRequest = new XMLHttpRequest();
+                createRequest.onload = () => {
+                    let msg = JSON.parse(createRequest.response);
+                    if (msg["link"]) {
+                        this.view.cleanModel();
+                        location.href = msg["link"];
                     }
-                    else if (field == "cookingTime") {
-                        recipe.cookingTime = _this.cookingTime.getTime();
-                    }
-                    else if (field != "error" && field != "setError") {
-                        recipe[field.toString()] = _this[field.toString()].value;
-                    }
-                }
-                listener(recipe);
+                    this.setError(msg.message);
+                };
+                createRequest.open("POST", "/Recipes/Create", true);
+                createRequest.setRequestHeader("Content-Type", "application/json");
+                createRequest.send(JSON.stringify(recipe));
             }
             catch (err) {
                 console.log(err);
@@ -63,8 +112,7 @@ var RecipeCreateView = /** @class */ (function () {
             return false;
         };
     }
-    RecipeCreateView.prototype.setError = function (message) {
+    setError(message) {
         this.error.display(message);
-    };
-    return RecipeCreateView;
-}());
+    }
+}
