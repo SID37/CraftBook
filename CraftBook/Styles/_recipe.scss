@@ -55,13 +55,7 @@ article.recipe_list {
     }
 }
 
-div {
-    height: 100%;
-    //width: 16/9*$height;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-}
+
 
 article.recipe-preview {
     background-color: $color-content-background;
@@ -131,12 +125,46 @@ article.recipe-creator {
 }
 
 article.recipe-view {
-    & > section {
+    div.recipe-avatar {
+        height: 200px;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: contain;
+        @include rounding;
+    }
+
+    & > section, header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & > * {
+            @include line-spacing;
+        }
+
+        & > section.time {
+            display:flex;
+            align-items: center;
+            justify-content:center;
+            width: 50%;
+            img {
+                height: $size-h3;
+            }
+            &>* {
+                margin-right:4px;
+            }
+            
+        }
+
         &.instruction {
             img {
-                float:right;
                 max-height: 50%;
                 max-width: 50%;
+                display: block;
+                margin: 10px auto;
+                border: 4px $color-border solid;
+                @include rounding;
             }
         }
     }

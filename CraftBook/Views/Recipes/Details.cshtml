@@ -8,9 +8,23 @@
 <article class="recipe-view">
     <header>
         <h2>
-            <p style="text-align: center"> @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Name)
         </h2>
-        <p style="text-align: center">@Html.DisplayFor(model => model.CookingTime.Days) дней @Html.DisplayFor(model => model.CookingTime.Hours) часов @Html.DisplayFor(model => model.CookingTime.Minutes) минут</p>
+        <section class="time">
+            <img src="/images/recipe/time.svg" />
+            @if (Model.CookingTime.Days > 0)
+            {
+                <span>@Html.DisplayFor(model => model.CookingTime.Days)</span>
+                <span>дней</span>
+            }
+            @if (Model.CookingTime.Hours > 0)
+            {
+            <span>@Html.DisplayFor(model => model.CookingTime.Hours)</span>
+            <span>часов</span>
+            }
+            <span>@Html.DisplayFor(model => model.CookingTime.Minutes)</span>
+            <span>минут</span>
+        </section>
         <div class="recipe-avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
     </header>
     <section>
