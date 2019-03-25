@@ -15,15 +15,15 @@
             @if (Model.CookingTime.Days > 0)
             {
                 <span>@Html.DisplayFor(model => model.CookingTime.Days)</span>
-                <span>дней</span>
+                <span>д.</span>
             }
             @if (Model.CookingTime.Hours > 0)
             {
             <span>@Html.DisplayFor(model => model.CookingTime.Hours)</span>
-            <span>часов</span>
+            <span>ч.</span>
             }
             <span>@Html.DisplayFor(model => model.CookingTime.Minutes)</span>
-            <span>минут</span>
+            <span>мин.</span>
         </section>
         <div class="recipe-avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
     </header>
