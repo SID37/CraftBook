@@ -55,6 +55,13 @@ article.recipe_list {
     }
 }
 
+div {
+    height: 100%;
+    //width: 16/9*$height;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
 
 article.recipe-preview {
     background-color: $color-content-background;
@@ -118,6 +125,18 @@ article.recipe-creator {
         * {
             input {
                 border: 1px dashed black;
+            }
+        }
+    }
+}
+
+article.recipe-view {
+    & > section {
+        &.instruction {
+            img {
+                float:right;
+                max-height: 50%;
+                max-width: 50%;
             }
         }
     }

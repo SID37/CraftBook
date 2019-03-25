@@ -3,44 +3,36 @@
 @{
     ViewData["Title"] = "Details";
 }
-<h2>
-    <p style="text-align: center"> @Html.DisplayFor(model => model.Name)
-</h2>
-<dd> <p style="text-align: center">@Html.DisplayFor(model => model.CookingTime.Days) дней @Html.DisplayFor(model => model.CookingTime.Hours) часов @Html.DisplayFor(model => model.CookingTime.Minutes) минут</dd>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayFor(model => model.Image)
-        </dt>
-        <dd>
-            <p style="text-align: center">
-                @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dd><br></dd>
-        <dd>
-            <p style="color: forestgreen; text-align: center">
-                @foreach (var iq in Model.Ingredients)
+
+<article class="recipe-view">
+    <header>
+        <h2>
+            <p style="text-align: center"> @Html.DisplayFor(model => model.Name)
+        </h2>
+        <p style="text-align: center">@Html.DisplayFor(model => model.CookingTime.Days) дней @Html.DisplayFor(model => model.CookingTime.Hours) часов @Html.DisplayFor(model => model.CookingTime.Minutes) минут</p>
+        <div class="recipe-avatar" style="background-image: url(@(Model.Image ?? "../images/recipe_default.jpg"));"></div>
+    </header>
+    <section>
+        <p style="text-align: center">
+            @Html.DisplayFor(model => model.Description)
+    </section>
+    <section>
+        <p style="color: forestgreen; text-align: center">
+            @foreach (var iq in Model.Ingredients)
+            {
+                @iq.Name
+                for (var i = 0; i < 30 - iq.Name.Length - iq.UnitShortName.Length; i++)
                 {
-                    @iq.Name
-                    for (var i = 0; i < 30 - iq.Name.Length - iq.UnitShortName.Length; i++)
-                    {
-                        <h>_</h>
-                    }
-                    @iq.Quantity
-                    @iq.UnitShortName
-                    <br>
+                    <h>_</h>
                 }
-        </dd>
-        <dd>
-            <br>
-            @Html.Raw(Model.Instruction)
-        </dd>
+                @iq.Quantity
+                @iq.UnitShortName
+                <br>
+            }
+    </section>
+    <section class="instruction">
+        @Html.Raw(Model.Instruction)
+    </section>
 
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+</article>
