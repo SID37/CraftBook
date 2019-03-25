@@ -44,8 +44,8 @@ namespace CraftBook.Data
                 .Include(r => r.Ingredients)
                 .ThenInclude(iq => iq.Ingredient)
                 .ThenInclude(i => i.Unit)
-                .Where(r => ingredients.Any(ui => r.Ingredients.Select(iq => iq.IngredientID).Contains(ui.ID)))
-                .ToList();  //  тут я сдался и сделал вместо запросов к БД обычный список
+                .ToList() //  тут я сдался и сделал вместо запросов к БД обычный список, так оно ещё и оказалось быстрее!
+                .Where(r => ingredients.Any(ui => r.Ingredients.Select(iq => iq.IngredientID).Contains(ui.ID)));
 
             //  сортировака по соответствию списку ингредиентов
             var ingredSort = filter
