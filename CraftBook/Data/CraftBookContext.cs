@@ -120,7 +120,7 @@ namespace CraftBook.Data
             var unloadRecipec = this.Recipe
                      .Include(r => r.Ingredients)
                      .ThenInclude(iq => iq.Ingredient)
-                     .ThenInclude(i => i.Unit);
+                     .ThenInclude(i => i.Unit).ToList();
 
             // рецепты на странице при входе, пока просто возвращаются все, 
             // TODO надо что-то типа сортировки по популярности, когда будет статистика
