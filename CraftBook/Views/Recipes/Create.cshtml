@@ -9,16 +9,15 @@
 <h4>Recipe</h4>
 <hr />
 <article class="recipe-creator">
-    <form>
+    <form class="col">
         <section>
             <section>
-                <div class="name">
+                <div class="name col">
                     <h5>Что будем готовить?</h5>
                     <input type="text" name="name" required />
                 </div>
-                <div class="time1">
+                <div class="col">
                     <b>Время приготовления</b>
-                 </div>
                     <div class="time">
                         <div class="col">
                             <h5>Дни</h5>
@@ -33,26 +32,21 @@
                             <input type="number" name="minutes" required />
                         </div>
                     </div>
-            </section>
-            <section>
-                <div class="avatar">
-                    <b>Как будет выглядеть?</b>
-                    <input asp-for="Image" class="form-control" required />
-                    <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
                 </div>
             </section>
+            <section class="avatar col">
+                <b>Как будет выглядеть?</b>
+                <input asp-for="Image" class="form-control" required />
+                <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
+            </section>
         </section>
-        <section>
-            <div class="descriprion">
-                <b>Придумайте описание рецепта</b>
-                <textarea asp-for="Description" class="form-control" required></textarea>
-            </div>
+        <section class="descriprion col">
+            <b>Придумайте описание рецепта</b>
+            <textarea asp-for="Description" class="form-control" required></textarea>
         </section>
-        <section>
-            <div class="descriprion">
-                <b>Ход работы</b>
-                <textarea asp-for="Instruction" class="form-control" required></textarea>
-            </div>
+        <section class="instruction col">
+            <b>Ход работы</b>
+            <textarea asp-for="Instruction" class="form-control" required></textarea>
         </section>
         <input type="submit" value="Create" class="btn btn-default" />
     </form>

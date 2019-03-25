@@ -69,7 +69,8 @@ article.recipe-preview {
     & > section:first-child {
         border-radius: 5px 0 0 5px;
         background-color: $primary-color-light*0.9;
-        width:33%;
+        width: 33%;
+
         & div {
             height: 100%;
             //width: 16/9*$height;
@@ -113,37 +114,56 @@ article.recipe-preview {
 }
 
 article.recipe-creator {
-    //Для отладки
-    form {
+
+    .col {
         display: flex;
-        background-color: white;
         flex-direction: column;
+
+        img {
+            max-width: 100px;
+        }
+    }
+
+    form {
+        background-color: white;
         border: 0;
 
-        div {
-            border: 0;
+
+        & > section {
             display: flex;
+            justify-content: space-between;
 
-            &[name="time1"] {
-                justify-content: center;
-            }
+            & > section {
+                display: flex;
+                flex-direction: column;
+                width: 50%;
 
-            &[name="time"] {
-                flex-direction: row;
-            }
+                div {
+                    border: 0;
+                    display: flex;
 
-            h {
+                    &.time {
+                        input {
+                            max-width: 60px;
+                            $border-width: 1px;
+                            margin-left: -$border-width;
+                            border: $border-width solid $color-border;
+                        }
+                    }
 
-                &5 {
-                    
-                    justify-content: center;
+                    h {
+
+                        &5 {
+                            justify-content: center;
+                        }
+                    }
                 }
-            }
-        }
 
-        * {
-            input {
-                border: 1px dashed black;
+                * {
+                    input {
+                        border: 1px dashed black;
+                    }
+                }
             }
         }
     }
