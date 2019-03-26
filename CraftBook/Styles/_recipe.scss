@@ -77,7 +77,7 @@ article.recipe-preview {
         background-color: $primary-color-light*0.9;
         width: 33%;
 
-        @media (max-width: $size-media-mobile) {
+        @media (max-width: $size-media-mobile2) {
             width: auto;
             height: 100px;
         }
@@ -102,10 +102,12 @@ article.recipe-preview {
 
         @media (max-width: $size-media-mobile) {
             overflow: scroll;
+            justify-content: space-between;
         }
 
         & > section, header {
             display: flex;
+            flex-wrap: wrap;
 
             img {
                 height: 32px;
@@ -118,6 +120,12 @@ article.recipe-preview {
                 &:not(:last-of-type):not(:first-of-type)::after {
                     content: ",";
                 }
+            }
+        }
+
+        @media (max-width: $size-media-mobile2) {
+            &>section:last-of-type {
+                display:none;
             }
         }
 
