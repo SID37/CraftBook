@@ -77,7 +77,7 @@ article.recipe-preview {
         background-color: $primary-color-light*0.9;
         width: 33%;
 
-        @media (max-width: $size-media-mobile2) {
+        @media (max-width: $size-media-mobile) {
             width: auto;
             height: 100px;
         }
@@ -99,6 +99,10 @@ article.recipe-preview {
         width: 100%;
         overflow: hidden;
         margin-bottom: 8px;
+
+        @media (max-width: $size-media-mobile) {
+            overflow: scroll;
+        }
 
         & > section, header {
             display: flex;
@@ -123,84 +127,84 @@ article.recipe-preview {
     }
 }
 
-article.recipe-creator {
-    //Для отладки
-    form {
-        * {
-            input {
-                border: 1px dashed black;
+    article.recipe-creator {
+        //Для отладки
+        form {
+            * {
+                input {
+                    border: 1px dashed black;
+                }
             }
         }
     }
-}
 
 
-article.recipe-view {
+    article.recipe-view {
 
-    div.recipe-avatar {
-        height: 200px;
-        width: 100%;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: contain;
-        @include rounding;
-    }
-
-    & > section, header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: $color-content-text;
-
-        & > * {
-            @include line-spacing;
+        div.recipe-avatar {
+            height: 200px;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            @include rounding;
         }
 
-        & > section.time {
+        & > section, header {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            width: 50%;
-
-            img {
-                height: $size-h3;
-            }
+            color: $color-content-text;
 
             & > * {
-                margin-right: 4px;
-            }
-        }
-
-        .ingredient {
-            width: 60%;
-            display: flex;
-            justify-content: space-between;
-
-            & > span:first-of-type::first-letter {
-                text-transform: uppercase;
+                @include line-spacing;
             }
 
-            & > div {
-                flex: 1;
-                border-bottom: 1px $color-border solid;
-                margin: 0px 8px;
-            }
-        }
+            & > section.time {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50%;
 
-        &.instruction {
-            img {
-                @media (max-width: $size-media-mobile) {
-                    max-height: 80%;
-                    max-width: 90%;
+                img {
+                    height: $size-h3;
                 }
 
-                max-height: 50%;
-                max-width: 50%;
-                display: block;
-                margin: 10px auto;
-                border: 4px $color-border solid;
-                @include rounding;
+                & > * {
+                    margin-right: 4px;
+                }
+            }
+
+            .ingredient {
+                width: 60%;
+                display: flex;
+                justify-content: space-between;
+
+                & > span:first-of-type::first-letter {
+                    text-transform: uppercase;
+                }
+
+                & > div {
+                    flex: 1;
+                    border-bottom: 1px $color-border solid;
+                    margin: 0px 8px;
+                }
+            }
+
+            &.instruction {
+                img {
+                    @media (max-width: $size-media-mobile) {
+                        max-height: 80%;
+                        max-width: 90%;
+                    }
+
+                    max-height: 50%;
+                    max-width: 50%;
+                    display: block;
+                    margin: 10px auto;
+                    border: 4px $color-border solid;
+                    @include rounding;
+                }
             }
         }
     }
-}

@@ -1,20 +1,27 @@
 ﻿@import 'vars/_palette.scss';
+@import 'vars/sizes.scss';
 
 ::-webkit-scrollbar-track {
     border: 2px solid $color-border;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-}
 
-::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    border: 2px solid $color-border;
-    border-bottom-color: white;
-    border-top-color: white;
-    background-color: $color-scroll;
-}
+    @media (max-width: $size-media-mobile) {
+        display: none;
+    }
 
-::-webkit-scrollbar {
-    width: 8px;
+    ::-webkit-scrollbar-thumb {
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        border: 2px solid $color-border;
+        border-bottom-color: white;
+        border-top-color: white;
+        background-color: $color-scroll;
+        display: none;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        display: none;
+    }
 }
