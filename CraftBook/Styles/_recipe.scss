@@ -124,7 +124,7 @@ article.recipe-preview {
         }
 
         @media (max-width: $size-media-mobile2) {
-            &>section:last-of-type {
+            &>section {
                 display:none;
             }
         }
