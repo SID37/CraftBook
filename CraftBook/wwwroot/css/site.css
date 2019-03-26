@@ -171,8 +171,7 @@ article.recipe-preview {
         overflow: scroll;
         justify-content: space-between; } }
     article.recipe-preview > section:nth-child(2) > section, article.recipe-preview > section:nth-child(2) header {
-      display: flex;
-      flex-wrap: wrap; }
+      display: flex; }
       article.recipe-preview > section:nth-child(2) > section img, article.recipe-preview > section:nth-child(2) header img {
         height: 32px; }
       article.recipe-preview > section:nth-child(2) > section i, article.recipe-preview > section:nth-child(2) header i {
@@ -180,6 +179,8 @@ article.recipe-preview {
         padding-right: 4px; }
         article.recipe-preview > section:nth-child(2) > section i:not(:last-of-type):not(:first-of-type)::after, article.recipe-preview > section:nth-child(2) header i:not(:last-of-type):not(:first-of-type)::after {
           content: ","; }
+    article.recipe-preview > section:nth-child(2) > section {
+      flex-wrap: wrap; }
     @media (max-width: 480px) {
       article.recipe-preview > section:nth-child(2) > section:last-of-type {
         display: none; } }

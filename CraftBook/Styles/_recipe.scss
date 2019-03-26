@@ -107,7 +107,6 @@ article.recipe-preview {
 
         & > section, header {
             display: flex;
-            flex-wrap: wrap;
 
             img {
                 height: 32px;
@@ -123,9 +122,14 @@ article.recipe-preview {
             }
         }
 
+        & > section {
+            flex-wrap: wrap;
+        }
+
         @media (max-width: $size-media-mobile2) {
-            &>section:last-of-type {
-                display:none;
+
+            & > section:last-of-type {
+                display: none;
             }
         }
 
