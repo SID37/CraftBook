@@ -85,7 +85,7 @@ class RecipeCreateView {
     private storage: ObjectInStorage<RecipeModel>;
 
     constructor(form: HTMLFormElement, inventory: Inventory) {
-        this.cookingTime = new TimeRecipeView(form.querySelector<HTMLElement>('[name="time"]'));
+        this.cookingTime = new TimeRecipeView(form.querySelector<HTMLElement>('[class="time"]'));
         this.ingredients = inventory;
         this.main = new RecipePartialView(form);
         this.storage = new ObjectInStorage<RecipeModel>("creatingRecipe", true, () => {return this.getModel()});

@@ -1,5 +1,5 @@
 ﻿{
     let inventory = new Inventory(true);
-    let rV = new RecipeCreateController(document.querySelector('form[action="/Recipes/Create"]') as HTMLFormElement, inventory);
+    let rV = new RecipeCreateController(document.querySelector('.recipe-creator>form') as HTMLFormElement, inventory);
 
 }
