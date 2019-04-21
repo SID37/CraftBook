@@ -154,14 +154,16 @@ body {
         color: $color-input-text;
     }
 
-    input {
-        &[type="submit"] {
-            @include rounding;
-            margin: 16px 0px 16px 0;
-            background-color: $color-button-background;
-            color: $color-button-text;
-            height: 24px;
-        }
+input {
+    &[type="submit"] {
+        @include rounding;
+        margin: 16px 0px 16px 0;
+        background-color: $color-button-background;
+        color: $color-button-text;
+        height: 40px;
+        font-size: $size-h3;
+        font-weight: bold;
+    }
 
         &[type="text"], &[type="number"] {
             color: $color-input-text;

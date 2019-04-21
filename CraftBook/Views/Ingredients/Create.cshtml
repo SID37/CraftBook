@@ -1,0 +1,16 @@
+﻿@model IEnumerable<CraftBook.Models.UnitOfMeasurement>
+
+<form class="create-ingredient">
+    <div class="fieldform">
+        <input type="text" name="ingredient_name" placeholder="Ингредиент" required />
+        <select name="ingredient_unit" placeholder="ед. изм." required readonly list="units">
+            <option disabled>ед. изм.</option>
+            @foreach (var item in Model)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+        <input type="image" name="add_ingredient" src="/images/ingredient/add.png" id="buttonCreateIngridient" />
+    </div>
+</form>
+<script src="/js/createIngredient.js"></script>

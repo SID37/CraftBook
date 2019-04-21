@@ -106,6 +106,11 @@ class IngredientAddatorView {
     private error: ErrorView;
     onadded: (model: IngredientModel) => void;
 
+    setIngedient(model: IngredientModel) {
+        this.name.value = model.name;
+        this.unit.value = model.unitShortName;
+    }
+
     constructor() {
         this.form = document.querySelector("article.inventory form.add-ingredient") as HTMLFormElement;
         this.name = document.querySelector("article.inventory input[type=\"text\"]") as HTMLInputElement;
@@ -192,6 +197,11 @@ class IngredientAddatorView {
 class Inventory {
     private addator: IngredientAddatorView;
     private listIngridients: ListIngredients;
+
+    setInAddator(model: IngredientModel) {
+        this.addator.setIngedient(model);
+    }
+
     getIngredients(): IngredientModel[] {
         return this.listIngridients.getIngredients();
     }

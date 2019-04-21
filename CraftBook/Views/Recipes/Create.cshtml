@@ -4,50 +4,52 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
-
-<h4>Recipe</h4>
-<hr />
 <article class="recipe-creator">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" required />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" required />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Instruction" class="control-label"></label>
-                <input asp-for="Instruction" class="form-control" required />
-                <span asp-validation-for="Instruction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" required />
-                <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <fieldset name="time">
-                <legend>Время</legend>
-                Дни
-                <input type="number" name="days" value="0" required/>
-                Часы
-                <input type="number" name="hours" value="0" required/>
-                Минуты
-                <input type="number" name="minutes" required/>
-            </fieldset>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-
-        </form>
-    </div>
+    <form class="col">
+        <section>
+            <section>
+                <div class="name col">
+                    <h4>Что будем готовить?</h4>
+                    <input type="text" id ="Name" name="name" required />
+                </div>
+                <div class="col">
+                    <h4>Время приготовления</h4>
+                    <div class="time">
+                        <div class="col">
+                            <h5>Дни</h5>
+                            <input type="number" name="days" value="0" required />
+                        </div>
+                        <div class="col">
+                            <h5>Часы</h5>
+                            <input type="number" name="hours" value="0" required />
+                        </div>
+                        <div class="col">
+                            <h5>Минуты</h5>
+                            <input type="number" name="minutes" required />
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="avatar col">
+                <h4>Как будет выглядеть?</h4>
+                <div class="col">
+                    <input asp-for="Image" required />
+                    <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
+                </div>
+            </section>
+        </section>
+        <section class="descriprion col">
+            <h4>Придумайте описание рецепта</h4>
+            <textarea asp-for="Description" required rows="3"></textarea>
+        </section>
+        <section class="instruction col">
+            <h4>Ход работы</h4>
+            <textarea asp-for="Instruction" required rows="12"></textarea>
+        </section>
+        <section>
+            <input type="submit" value="Создать рецепт" />
+        </section>
+    </form>
 </article>
 
 @section Scripts {
@@ -55,6 +57,6 @@
         <script src="~/js/createRecipe.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
-        <script src="~/js/createRecipe.min.js" asp-append-version="true"></script>
+        <script src="~/js/createRecipe.js" asp-append-version="true"></script>
     </environment>
 }
