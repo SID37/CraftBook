@@ -72,6 +72,10 @@ class ListIngredients {
     }
 }
 class IngredientAddatorView {
+    setIngedient(model) {
+        this.name.value = model.name;
+        this.unit.value = model.unitShortName;
+    }
     constructor() {
         this.form = document.querySelector("article.inventory form.add-ingredient");
         this.name = document.querySelector("article.inventory input[type=\"text\"]");
@@ -152,6 +156,9 @@ class IngredientAddatorView {
     }
 }
 class Inventory {
+    setInAddator(model) {
+        this.addator.setIngedient(model);
+    }
     getIngredients() {
         return this.listIngridients.getIngredients();
     }

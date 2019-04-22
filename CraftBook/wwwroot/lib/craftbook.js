@@ -146,6 +146,10 @@ class ListIngredients {
     }
 }
 class IngredientAddatorView {
+    setIngedient(model) {
+        this.name.value = model.name;
+        this.unit.value = model.unitShortName;
+    }
     constructor() {
         this.form = document.querySelector("article.inventory form.add-ingredient");
         this.name = document.querySelector("article.inventory input[type=\"text\"]");
@@ -226,6 +230,9 @@ class IngredientAddatorView {
     }
 }
 class Inventory {
+    setInAddator(model) {
+        this.addator.setIngedient(model);
+    }
     getIngredients() {
         return this.listIngridients.getIngredients();
     }
@@ -434,7 +441,7 @@ class RecipePartialView {
 }
 class RecipeCreateView {
     constructor(form, inventory) {
-        this.cookingTime = new TimeRecipeView(form.querySelector('[name="time"]'));
+        this.cookingTime = new TimeRecipeView(form.querySelector('[class="time"]'));
         this.ingredients = inventory;
         this.main = new RecipePartialView(form);
         this.storage = new ObjectInStorage("creatingRecipe", true, () => { return this.getModel(); });

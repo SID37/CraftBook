@@ -58,7 +58,7 @@ class RecipePartialView {
 }
 class RecipeCreateView {
     constructor(form, inventory) {
-        this.cookingTime = new TimeRecipeView(form.querySelector('[name="time"]'));
+        this.cookingTime = new TimeRecipeView(form.querySelector('[class="time"]'));
         this.ingredients = inventory;
         this.main = new RecipePartialView(form);
         this.storage = new ObjectInStorage("creatingRecipe", true, () => { return this.getModel(); });

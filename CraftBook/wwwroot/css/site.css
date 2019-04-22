@@ -135,7 +135,7 @@ article.recipe_list {
           article.recipe_list .nav > nav > span.page:hover {
             background-color: #F5F5F5; }
         article.recipe_list .nav > nav > span#currentPage {
-          background-color: #9E9E9E;
+          background-color: #62ae4c;
           color: #FFFFFF;
           cursor: default; }
 
@@ -193,8 +193,50 @@ article.recipe-preview {
     article.recipe-preview > section:nth-child(2) > header {
       justify-content: space-between; }
 
-article.recipe-creator form * input {
-  border: 1px dashed black; }
+article.recipe-creator .col {
+  display: flex;
+  flex-direction: column; }
+  article.recipe-creator .col img {
+    max-width: 100px; }
+
+article.recipe-creator form {
+  background-color: white;
+  border: 0; }
+  article.recipe-creator form > section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px; }
+    article.recipe-creator form > section:first-of-type > section {
+      max-width: 33%; }
+    article.recipe-creator form > section > section {
+      display: flex;
+      flex-direction: column;
+      width: 50%; }
+      article.recipe-creator form > section > section div {
+        display: flex; }
+        article.recipe-creator form > section > section div.time input {
+          max-width: 60px;
+          margin-left: -1px;
+          border-radius: 0; }
+        article.recipe-creator form > section > section div h5 {
+          font-weight: 100; }
+      article.recipe-creator form > section > section.avatar > div, article.recipe-creator form > section > section input, article.recipe-creator form > section > section textarea {
+        border-width: 2px;
+        border-radius: 5px;
+        border: 1px solid #BDBDBD; }
+      article.recipe-creator form > section > section.avatar > div {
+        align-items: center; }
+        article.recipe-creator form > section > section.avatar > div > input {
+          border-left: 0;
+          border-right: 0;
+          border-top: 0; }
+    article.recipe-creator form > section h4 {
+      margin-bottom: 8px;
+      margin-top: 8px; }
+    article.recipe-creator form > section input[type="submit"] {
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%; }
 
 article.recipe-view div.recipe-avatar {
   height: 200px;
@@ -346,9 +388,11 @@ input[type="submit"] {
   border-width: 2px;
   border-radius: 5px;
   margin: 16px 0px 16px 0;
-  background-color: #9E9E9E;
+  background-color: #62ae4c;
   color: #FFFFFF;
-  height: 24px; }
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold; }
 
 input[type="text"], input[type="number"] {
   color: #bebebe;
