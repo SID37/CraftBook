@@ -105,17 +105,9 @@ article.recipe-preview {
             @include justifycontentsb;
         }
 
-        & > section, header {
-            display:block;
-            @include flex;
-            -webkit-flex-wrap: wrap;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-
-            img {
-                height: 32px;
-            }
-
+        & > section {
+            display: block;
+            margin-top: 4px;
             i {
                 inline-size: max-content;
                 padding-right: 4px;
@@ -123,6 +115,24 @@ article.recipe-preview {
                 &:not(:last-of-type):not(:first-of-type)::after {
                     content: ",";
                 }
+            }
+        }
+
+        & > header {
+            text-align: justify;
+
+
+            & > * {
+                display: inline-block;
+            }
+
+            & > a {
+                max-width: 80%;
+            }
+
+            & > img {
+                height: 32px;
+                float: right;
             }
         }
         /*@media (max-width: $size-media-mobile2) {

@@ -193,23 +193,23 @@ article.recipe-preview {
         -webkit-justify-content: space-between;
         -webkit-box-pack: justify;
         justify-content: space-between; } }
-    article.recipe-preview > section:nth-child(2) > section, article.recipe-preview > section:nth-child(2) header {
+    article.recipe-preview > section:nth-child(2) > section {
       display: block;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: -moz-flex;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
-      article.recipe-preview > section:nth-child(2) > section img, article.recipe-preview > section:nth-child(2) header img {
-        height: 32px; }
-      article.recipe-preview > section:nth-child(2) > section i, article.recipe-preview > section:nth-child(2) header i {
+      margin-top: 4px; }
+      article.recipe-preview > section:nth-child(2) > section i {
         inline-size: max-content;
         padding-right: 4px; }
-        article.recipe-preview > section:nth-child(2) > section i:not(:last-of-type):not(:first-of-type)::after, article.recipe-preview > section:nth-child(2) header i:not(:last-of-type):not(:first-of-type)::after {
+        article.recipe-preview > section:nth-child(2) > section i:not(:last-of-type):not(:first-of-type)::after {
           content: ","; }
+    article.recipe-preview > section:nth-child(2) > header {
+      text-align: justify; }
+      article.recipe-preview > section:nth-child(2) > header > * {
+        display: inline-block; }
+      article.recipe-preview > section:nth-child(2) > header > a {
+        max-width: 80%; }
+      article.recipe-preview > section:nth-child(2) > header > img {
+        height: 32px;
+        float: right; }
     article.recipe-preview > section:nth-child(2) > header {
       -ms-flex-pack: justify;
       -webkit-justify-content: space-between;
