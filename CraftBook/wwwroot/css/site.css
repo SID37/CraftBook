@@ -201,15 +201,13 @@ article.recipe-preview {
         padding-right: 4px; }
         article.recipe-preview > section:nth-child(2) > section i:not(:last-of-type):not(:first-of-type)::after {
           content: ","; }
-    article.recipe-preview > section:nth-child(2) > header {
-      text-align: justify; }
-      article.recipe-preview > section:nth-child(2) > header > * {
-        display: inline-block; }
-      article.recipe-preview > section:nth-child(2) > header > a {
-        max-width: 80%; }
-      article.recipe-preview > section:nth-child(2) > header > img {
-        height: 32px;
-        float: right; }
+    article.recipe-preview > section:nth-child(2) > header > * {
+      display: inline-block; }
+    article.recipe-preview > section:nth-child(2) > header > a {
+      max-width: 80%; }
+    article.recipe-preview > section:nth-child(2) > header > img {
+      height: 32px;
+      float: right; }
     article.recipe-preview > section:nth-child(2) > header {
       -ms-flex-pack: justify;
       -webkit-justify-content: space-between;
