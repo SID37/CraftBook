@@ -107,6 +107,8 @@ article.recipe-preview {
 
         & > section, header {
             @include flex;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
 
             img {
@@ -122,13 +124,11 @@ article.recipe-preview {
                 }
             }
         }
-
         /*@media (max-width: $size-media-mobile2) {
             &>section {
                 display:none;
             }
         }*/
-
         & > header {
             @include justifycontentsb;
         }
