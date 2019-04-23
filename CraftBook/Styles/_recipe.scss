@@ -3,7 +3,7 @@
 @import 'vars/sizes.scss';
 
 article.recipe_list {
-    display: flex;
+    @include flex;
     flex-direction: column;
 
     & > header {
@@ -61,7 +61,7 @@ article.recipe_list {
 article.recipe-preview {
     background-color: $color-content-background;
     color: $color-content-text;
-    display: flex;
+    @include flex;
     @include rounding;
     $height: 160px;
     height: $height;
@@ -92,7 +92,7 @@ article.recipe-preview {
     }
 
     & > section:nth-child(2) {
-        display: flex;
+        @include flex;
         flex-direction: column;
         justify-content: flex-start;
         padding: 0 16px 16px 16px;
@@ -102,11 +102,11 @@ article.recipe-preview {
 
         @media (max-width: $size-media-mobile) {
             overflow: scroll;
-            justify-content: space-between;
+            @include justifycontentsb;
         }
 
         & > section, header {
-            display: flex;
+            @include flex;
             flex-wrap: wrap;
 
             img {
@@ -123,14 +123,14 @@ article.recipe-preview {
             }
         }
 
-        @media (max-width: $size-media-mobile2) {
+        /*@media (max-width: $size-media-mobile2) {
             &>section {
                 display:none;
             }
-        }
+        }*/
 
         & > header {
-            justify-content: space-between;
+            @include justifycontentsb;
         }
     }
 }
@@ -138,7 +138,7 @@ article.recipe-preview {
 article.recipe-creator {
 
     .col {
-        display: flex;
+        @include flex;
         flex-direction: column;
 
         img {
@@ -152,15 +152,15 @@ article.recipe-creator {
 
 
         & > section {
-            display: flex;
-            justify-content: space-between;
+            @include flex;
+            @include justifycontentsb;
 
             @media (max-width: $size-media-mobile) {
                 flex-direction: column;
             }
 
             &:first-of-type {
-                align-items: center;
+                @include alignitemscenter;
 
                 @media (min-width: $size-media-mobile) {
                     & > section {
@@ -170,7 +170,7 @@ article.recipe-creator {
             }
 
             & > section {
-                display: flex;
+                @include flex;
                 flex-direction: column;
 
                 @media (min-width: $size-media-mobile) {
@@ -178,10 +178,10 @@ article.recipe-creator {
                 }
 
                 div {
-                    display: flex;
+                    @include flex;
 
                     @media (max-width: $size-media-mobile) {
-                        align-items: center;
+                        @include alignitemscenter;
                         flex-direction: column;
                     }
 
@@ -205,7 +205,7 @@ article.recipe-creator {
                 }
 
                 &.avatar > div {
-                    align-items: center;
+                    @include alignitemscenter;
 
                     & > input {
                         border-left: 0;
@@ -243,9 +243,9 @@ article.recipe-creator {
         }
 
         & > section, header {
-            display: flex;
+            @include flex;
             flex-direction: column;
-            align-items: center;
+            @include alignitemscenter;
             color: $color-content-text;
 
             & > * {
@@ -253,8 +253,8 @@ article.recipe-creator {
             }
 
             & > section.time {
-                display: flex;
-                align-items: center;
+                @include flex;
+                @include alignitemscenter;
                 justify-content: center;
                 width: 50%;
 
@@ -269,8 +269,8 @@ article.recipe-creator {
 
             .ingredient {
                 width: 60%;
-                display: flex;
-                justify-content: space-between;
+                @include flex;
+                @include justifycontentsb;
 
                 & > span:first-of-type::first-letter {
                     text-transform: uppercase;

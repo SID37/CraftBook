@@ -4,7 +4,7 @@
 article.inventory {
     margin-left: auto;
     margin-right: auto;
-    display: flex;
+    @include flex;
     flex-direction: column;
 
     & > header, & > form {

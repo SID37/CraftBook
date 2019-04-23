@@ -23,7 +23,7 @@ body {
         background: $color-header-background;
         color: $color-header-text;
         height: $size-header-height;
-        align-items: center;
+        @include alignitemscenter;
 
         a {
             color: inherit;
@@ -41,12 +41,12 @@ body {
     }
     //Разметка сетки
     & > header, & > footer, & > article {
-        display: flex;
-        justify-content: space-between;
+        @include flex;
+        @include justifycontentsb;
 
         @media (max-width: $size-media-mobile) {
             flex-direction: column;
-            align-items: center;
+            @include alignitemscenter;
         }
 
         & > section:nth-child(odd) {
@@ -58,7 +58,7 @@ body {
             }
 
             nav {
-                display: flex;
+                @include flex;
                 flex-direction: column;
             }
         }
@@ -116,9 +116,9 @@ body {
 
 
     .fieldform {
-        display: flex;
+        @include flex;
         justify-content: flex-end;
-        align-items: center;
+        @include alignitemscenter;
 
         * {
             &:first-child {
