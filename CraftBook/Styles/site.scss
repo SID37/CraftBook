@@ -209,9 +209,22 @@ h {
     text-align: center;
 }
 
+:not(img).clickable {
+    background-color: $color-header-background*2;
+    color: $color-header-text;
+    @include rounding;
+    text-align: center;
+
+    @media (max-width: $size-media-mobile) {
+        font-size: $size-h2;
+    }
+
+    margin-bottom: 4px;
+    padding: 4px;
+}
+
 .clickable {
     cursor: pointer;
-    color: blue;
     border: 0;
     text-decoration: none;
 }

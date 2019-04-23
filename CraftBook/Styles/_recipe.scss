@@ -101,7 +101,6 @@ article.recipe-preview {
         margin-bottom: 8px;
 
         @media (max-width: $size-media-mobile) {
-            overflow: scroll;
             @include justifycontentsb;
         }
 

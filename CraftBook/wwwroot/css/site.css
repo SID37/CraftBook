@@ -188,7 +188,6 @@ article.recipe-preview {
         }*/ }
     @media (max-width: 800px) {
       article.recipe-preview > section:nth-child(2) {
-        overflow: scroll;
         -ms-flex-pack: justify;
         -webkit-justify-content: space-between;
         -webkit-box-pack: justify;
@@ -538,8 +537,19 @@ h5 {
   border-radius: 5px;
   text-align: center; }
 
+:not(img).clickable {
+  background-color: #666666;
+  color: #fff;
+  border-width: 2px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 4px;
+  padding: 4px; }
+  @media (max-width: 800px) {
+    :not(img).clickable {
+      font-size: 24px; } }
+
 .clickable {
   cursor: pointer;
-  color: blue;
   border: 0;
   text-decoration: none; }
