@@ -46,6 +46,7 @@ class ListRecipes {
                     div.style.backgroundImage = "url(../images/default.png)";
                 });
         });*/
+        this.headNode.scrollIntoView();
     }
 
     constructor(node: HTMLElement, favors: ListFavoriteRecipes) {
