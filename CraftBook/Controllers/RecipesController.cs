@@ -52,6 +52,8 @@ namespace CraftBook.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
+            ViewData["HeaderTitle"] = "Создаём рецепт";
+            ViewData["InventoryTitle"] = "Ингредиенты";
             return View();
         }
 
