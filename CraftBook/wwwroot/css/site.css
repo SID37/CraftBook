@@ -236,8 +236,7 @@ article.recipe-creator form {
     -ms-flex-pack: justify;
     -webkit-justify-content: space-between;
     -webkit-box-pack: justify;
-    justify-content: space-between;
-    margin-bottom: 8px; }
+    justify-content: space-between; }
     @media (max-width: 800px) {
       article.recipe-creator form > section {
         flex-direction: column; } }
@@ -281,7 +280,8 @@ article.recipe-creator form {
       article.recipe-creator form > section > section.avatar > div, article.recipe-creator form > section > section input, article.recipe-creator form > section > section textarea {
         border-width: 2px;
         border-radius: 5px;
-        border: 1px solid #BDBDBD; }
+        border: 1px solid #BDBDBD;
+        max-width: 100%; }
       article.recipe-creator form > section > section.avatar > div {
         -webkit-box-align: center;
         -webkit-align-items: center;
@@ -297,7 +297,10 @@ article.recipe-creator form {
     article.recipe-creator form > section input[type="submit"] {
       margin-left: auto;
       margin-right: auto;
-      width: 50%; }
+      margin-bottom: 8px; }
+      @media (min-width: 800px) {
+        article.recipe-creator form > section input[type="submit"] {
+          width: 50%; } }
 
 article.recipe-view div.recipe-avatar {
   height: 200px;

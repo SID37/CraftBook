@@ -33,7 +33,8 @@
             <section class="avatar col">
                 <h4>Как будет выглядеть?</h4>
                 <div class="col">
-                    <input asp-for="Image" required />
+                    <input asp-for="Image" required placeholder="Введите url или бросьте сюда картинку"/>
+                    <input type="file" name="photo" accept="image/*">
                     <img src="/images/logo.png" id="ImageOut" class="recipe-avatar" />
                 </div>
             </section>

@@ -19,8 +19,8 @@
             }
             @if (Model.CookingTime.Hours > 0)
             {
-            <span>@Html.DisplayFor(model => model.CookingTime.Hours)</span>
-            <span>ч.</span>
+                <span>@Html.DisplayFor(model => model.CookingTime.Hours)</span>
+                <span>ч.</span>
             }
             <span>@Html.DisplayFor(model => model.CookingTime.Minutes)</span>
             <span>мин.</span>
@@ -32,27 +32,30 @@
             @Html.DisplayFor(model => model.Description)
     </section>
     <section class="list-ingredients">
-            @foreach (var iq in Model.Ingredients)
-            {
-                <div class="ingredient">
-                    <span>@iq.Name</span>
-                    <div></div>
-                    <span>
-                        @if (iq.Quantity == null)
-                        {
+        @foreach (var iq in Model.Ingredients)
+        {
+            <div class="ingredient">
+                <span>@iq.Name</span>
+                <div></div>
+                <span>
+                    @if (iq.Quantity == null)
+                    {
                         <text>по вкусу</text>
-                        } else
-                        {
-                            @iq.Quantity
-                            @iq.UnitShortName
-                        }
-                    </span>
-                </div>
-            }
+                    }
+                    else
+                    {
+                        @iq.Quantity
+                        @iq.UnitShortName
+                    }
+                </span>
+            </div>
+        }
     </section>
     <section class="instruction">
         @Html.Raw(Model.Instruction)
     </section>
 
 </article>
-<script>new Inventory();</script>
+@section Scripts {
+    <script src="~/js/viewRecipe.js" asp-append-version="true"></script>
+}

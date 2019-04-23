@@ -17,6 +17,7 @@
     <None Remove="Scripts\createIngredient.ts" />
     <None Remove="Scripts\createRecipe.ts" />
     <None Remove="Scripts\site.ts" />
+    <None Remove="Scripts\viewRecipe.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +41,7 @@
     <TypeScriptCompile Include="Scripts\Classes\search.ts" />
     <TypeScriptCompile Include="Scripts\createIngredient.ts" />
     <TypeScriptCompile Include="Scripts\createRecipe.ts" />
+    <TypeScriptCompile Include="Scripts\viewRecipe.ts" />
     <TypeScriptCompile Include="Scripts\site.ts" />
   </ItemGroup>
 
@@ -47,6 +49,12 @@
     <Content Update="wwwroot\favicon.ico">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Scripts\viewRecipe.js">
+      <DependentUpon>viewRecipe.ts</DependentUpon>
+    </None>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

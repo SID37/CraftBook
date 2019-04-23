@@ -47,13 +47,18 @@
             @RenderBody()
         </section>
         <section>
-            @if (ViewData["Title"] == "Home Page")
-            {
-                <nav>
+            <nav>
+                @if (ViewData["Title"] == "Home Page")
+                {
                     <span id="bookmark" class="clickable">Избранное</span>
-                    <a asp-area="" asp-controller="Home" asp-action="About" class="clickable">О проекте</a>
-                </nav>
-            }
+                }
+                else
+                {
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="clickable">На главную</a>
+                }
+                <a asp-area="" asp-controller="Recipes" asp-action="Create" class="clickable">Создать рецепт</a>
+                <a asp-area="" asp-controller="Home" asp-action="About" class="clickable">О проекте</a>
+            </nav>
         </section>
     </article>
     @RenderSection("Scripts", required: false)
