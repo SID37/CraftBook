@@ -18,14 +18,21 @@
     <header>
         <section class="logo"><h2><a asp-area="" asp-controller="Home" asp-action="Index">CraftBook</a></h2></section>
         <section>
-            <div class="search-string">
-                <form asp-controller="Recipes" asp-action="SearchByString">
-                    <div class="fieldform">
-                        <input type="text" name="searchString" required placeholder="Ищем рецепт..." />
-                        <input type="image" src="/images/search/white.svg" />
-                    </div>
-                </form>
-            </div>
+            @if (ViewData["HeaderTitle"] == null)
+            {
+                <div class="search-string">
+                    <form asp-controller="Recipes" asp-action="SearchByString">
+                        <div class="fieldform">
+                            <input type="text" name="searchString" required placeholder="Ищем рецепт..."/>
+                            <input type="image" src="/images/search/white.svg"/>
+                        </div>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <h2>@ViewData["HeaderTitle"]</h2>
+            }
         </section>
         <section>
             <!--Ссылка?>

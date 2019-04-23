@@ -5,9 +5,19 @@
 }
 <article class="inventory">
     <header class="fieldform">
-        <h1>Инвентарь</h1>
-        <input type="image" form="list-ingredients" name="find_recept_by_ingr" src="/images/search/black.svg" />
-    </header>
+        <h1>
+            @if (ViewData["InventoryTitle"] == null)
+            {
+                <text>Инвентарь</text>
+            }
+                else
+            {
+                @ViewData["InventoryTitle"]
+            }
+        </h1>
+            <input type="image" form="list-ingredients" name="find_recept_by_ingr" src="/images/search/black.svg"
+                   @if (ViewData["InventoryTitle"] != null) { <text> style="display:none" </text> } />
+</header>
     
 
     <form class="add-ingredient">
