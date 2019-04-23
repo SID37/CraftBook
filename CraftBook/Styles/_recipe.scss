@@ -92,9 +92,9 @@ article.recipe-preview {
     }
 
     & > section:nth-child(2) {
-        @include flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        //@include flex;
+        //flex-direction: column;
+        //justify-content: flex-start;
         padding: 0 16px 16px 16px;
         width: 100%;
         overflow: hidden;
@@ -106,6 +106,7 @@ article.recipe-preview {
         }
 
         & > section, header {
+            display:block;
             @include flex;
             -webkit-flex-wrap: wrap;
             -ms-flex-wrap: wrap;

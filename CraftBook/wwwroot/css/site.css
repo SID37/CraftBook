@@ -65,6 +65,7 @@ article.inventory {
   margin-right: auto;
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   flex-direction: column; }
@@ -115,6 +116,7 @@ article.inventory {
 article.recipe_list {
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   flex-direction: column; }
@@ -150,6 +152,7 @@ article.recipe-preview {
   color: #212121;
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   border-width: 2px;
@@ -174,12 +177,6 @@ article.recipe-preview {
       background-position: center center;
       background-size: contain; }
   article.recipe-preview > section:nth-child(2) {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     padding: 0 16px 16px 16px;
     width: 100%;
     overflow: hidden;
@@ -197,8 +194,10 @@ article.recipe-preview {
         -webkit-box-pack: justify;
         justify-content: space-between; } }
     article.recipe-preview > section:nth-child(2) > section, article.recipe-preview > section:nth-child(2) header {
+      display: block;
       display: -webkit-box;
       display: -webkit-flex;
+      display: -moz-flex;
       display: -ms-flexbox;
       display: flex;
       -webkit-flex-wrap: wrap;
@@ -220,6 +219,7 @@ article.recipe-preview {
 article.recipe-creator .col {
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   flex-direction: column; }
@@ -232,6 +232,7 @@ article.recipe-creator form {
   article.recipe-creator form > section {
     display: -webkit-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: justify;
@@ -253,6 +254,7 @@ article.recipe-creator form {
     article.recipe-creator form > section > section {
       display: -webkit-box;
       display: -webkit-flex;
+      display: -moz-flex;
       display: -ms-flexbox;
       display: flex;
       flex-direction: column; }
@@ -262,6 +264,7 @@ article.recipe-creator form {
       article.recipe-creator form > section > section div {
         display: -webkit-box;
         display: -webkit-flex;
+        display: -moz-flex;
         display: -ms-flexbox;
         display: flex; }
         @media (max-width: 800px) {
@@ -310,6 +313,7 @@ article.recipe-view div.recipe-avatar {
 article.recipe-view > section, article.recipe-view header {
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   flex-direction: column;
@@ -323,6 +327,7 @@ article.recipe-view > section, article.recipe-view header {
   article.recipe-view > section > section.time, article.recipe-view header > section.time {
     display: -webkit-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
@@ -339,6 +344,7 @@ article.recipe-view > section, article.recipe-view header {
     width: 60%;
     display: -webkit-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: justify;
@@ -394,6 +400,7 @@ body {
   body > header, body > footer, body > article {
     display: -webkit-box;
     display: -webkit-flex;
+    display: -moz-flex;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-pack: justify;
@@ -416,6 +423,7 @@ body {
       body > header > section:nth-child(odd) nav, body > footer > section:nth-child(odd) nav, body > article > section:nth-child(odd) nav {
         display: -webkit-box;
         display: -webkit-flex;
+        display: -moz-flex;
         display: -ms-flexbox;
         display: flex;
         flex-direction: column; }
@@ -456,6 +464,7 @@ body {
 .fieldform {
   display: -webkit-box;
   display: -webkit-flex;
+  display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
   justify-content: flex-end;
