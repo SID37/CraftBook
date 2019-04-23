@@ -43,6 +43,7 @@ namespace CraftBook.Controllers
                 return NotFound();
             }
 
+            ViewData["HeaderTitle"] = recipe.Name;
             return View(recipe);
         }
 
