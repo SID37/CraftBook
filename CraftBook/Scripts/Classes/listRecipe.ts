@@ -17,6 +17,8 @@ class ListRecipes {
     private headNode: HTMLElement;
     private favors: ListFavoriteRecipes;
     setList(html: string, searcher: ISearchEnginePages): void {
+        if (this.headNode.innerHTML.length > 0)
+            this.headNode.scrollIntoView();
         while (this.headNode.hasChildNodes())
             this.headNode.removeChild(this.headNode.firstChild);
         this.headNode.insertAdjacentHTML("beforeend", html);
@@ -46,7 +48,7 @@ class ListRecipes {
                     div.style.backgroundImage = "url(../images/default.png)";
                 });
         });*/
-        this.headNode.scrollIntoView();
+        
     }
 
     constructor(node: HTMLElement, favors: ListFavoriteRecipes) {

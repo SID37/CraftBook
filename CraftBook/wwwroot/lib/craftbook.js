@@ -11,6 +11,7 @@ class ErrorView {
             if (typeof message == "string")
                 this.view.textContent = message;
             this.view.style.display = "initial";
+            this.view.scrollIntoView();
         }
         else
             this.view.style.display = "none";
@@ -351,6 +352,8 @@ class ListRecipesButton {
 }
 class ListRecipes {
     setList(html, searcher) {
+        if (this.headNode.innerHTML.length > 0)
+            this.headNode.scrollIntoView();
         while (this.headNode.hasChildNodes())
             this.headNode.removeChild(this.headNode.firstChild);
         this.headNode.insertAdjacentHTML("beforeend", html);

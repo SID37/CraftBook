@@ -14,6 +14,7 @@
             if (typeof message == "string")
                 this.view.textContent = message;
             this.view.style.display = "initial";
+            this.view.scrollIntoView();
         } else
             this.view.style.display = "none";
     }

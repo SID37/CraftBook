@@ -10,6 +10,8 @@ class ListRecipesButton {
 }
 class ListRecipes {
     setList(html, searcher) {
+        if (this.headNode.innerHTML.length > 0)
+            this.headNode.scrollIntoView();
         while (this.headNode.hasChildNodes())
             this.headNode.removeChild(this.headNode.firstChild);
         this.headNode.insertAdjacentHTML("beforeend", html);

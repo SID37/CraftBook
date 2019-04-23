@@ -531,8 +531,8 @@ h5 {
   font-weight: bold; }
 
 .error {
-  background-color: red;
-  color: black;
+  background-color: #d8777e;
+  color: white;
   font-size: 16px;
   border-width: 2px;
   border-radius: 5px;
