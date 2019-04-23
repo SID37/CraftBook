@@ -201,6 +201,8 @@ article.recipe-preview {
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
+      -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
       flex-wrap: wrap; }
       article.recipe-preview > section:nth-child(2) > section img, article.recipe-preview > section:nth-child(2) header img {
         height: 32px; }
